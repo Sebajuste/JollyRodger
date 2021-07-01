@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/ui/BoatInfo/BoatInfo.gd" type="Script" id=1]
+
+[node name="BoatInfo" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Position" type="HBoxContainer" parent="."]
+margin_top = 550.0
+margin_right = 1024.0
+margin_bottom = 564.0
+
+[node name="Label" type="Label" parent="Position"]
+margin_right = 510.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Position"
+
+[node name="Value" type="Label" parent="Position"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Direction" type="HBoxContainer" parent="."]
+margin_top = 568.0
+margin_right = 1024.0
+margin_bottom = 582.0
+
+[node name="Label" type="Label" parent="Direction"]
+margin_right = 510.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Azimut"
+
+[node name="Value" type="Label" parent="Direction"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Speed" type="HBoxContainer" parent="."]
+margin_top = 586.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="Label" type="Label" parent="Speed"]
+margin_right = 510.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Speed"
+
+[node name="Value" type="Label" parent="Speed"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 14.0
+size_flags_horizontal = 3

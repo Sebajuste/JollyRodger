@@ -1,0 +1,108 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/objects/Canon/Canon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/games/TestCanon/TestCanon.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 300, 1, 300 )
+
+[sub_resource type="PlaneMesh" id=2]
+size = Vector2( 500, 500 )
+
+[sub_resource type="SpatialMaterial" id=3]
+
+[sub_resource type="BoxShape" id=4]
+
+[sub_resource type="CubeMesh" id=5]
+
+[sub_resource type="Animation" id=6]
+tracks/0/type = "transform"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray( 0, 1, 50.3872, 1.5, 105.094, 0, 0, 0, 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=7]
+length = 20.0
+loop = true
+tracks/0/type = "transform"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray( 0, 1, 50.3872, 1.5, 105.094, 0, 0, 0, 1, 1, 1, 1, 5, 1, -13.3973, 1.5, 38.364, 0, 0, 0, 1, 1, 1, 1 )
+
+[node name="TestCanon" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Ground" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+shape = SubResource( 1 )
+
+[node name="Ground" type="MeshInstance" parent="Ground"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="Canon" parent="." instance=ExtResource( 1 )]
+transform = Transform( -0.999948, 0, 0.0102448, 0, 1, 0, -0.0102448, 0, -0.999948, 0, -0.138374, 0 )
+speed = 40.0
+fire_rate = 60
+
+[node name="Target" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.28941, 1.5, 61.0522 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Target"]
+shape = SubResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.267033, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Target"]
+autoplay = "move"
+playback_process_mode = 0
+anims/default = SubResource( 6 )
+anims/move = SubResource( 7 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.876248, -0.239691, 0.418017, -0.154563, 0.681855, 0.714971, -0.456399, -0.691102, 0.560427, 0, 34.9224, 67.0189 )
+light_color = Color( 0.894118, 0.643137, 0.34902, 1 )
+shadow_enabled = true
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -0.99826, 0, -0.0589579, 0, 1, 0, 0.0589579, 0, -0.99826, 1.38479, 1.40923, -2.41934 )
+far = 300.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Status" type="MarginContainer" parent="CanvasLayer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 319.0
+margin_bottom = 168.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Status"]
+margin_right = 299.0
+margin_bottom = 148.0
+
+[node name="Range" type="HBoxContainer" parent="CanvasLayer/Status/VBoxContainer"]
+margin_right = 299.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Status/VBoxContainer/Range"]
+margin_right = 147.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "In range"
+
+[node name="Value" type="Label" parent="CanvasLayer/Status/VBoxContainer/Range"]
+margin_left = 151.0
+margin_right = 299.0
+margin_bottom = 14.0
+size_flags_horizontal = 3

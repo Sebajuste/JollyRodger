@@ -1,0 +1,423 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/ui/DebugPanel/DebugPanel.gd" type="Script" id=1]
+
+[node name="DebugPanel" type="VBoxContainer"]
+margin_right = 366.0
+margin_bottom = 372.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShowHideButton" type="Button" parent="."]
+margin_right = 366.0
+margin_bottom = 20.0
+text = "Show / Hide"
+
+[node name="ControlList" type="VBoxContainer" parent="."]
+margin_top = 24.0
+margin_right = 366.0
+margin_bottom = 342.0
+
+[node name="Gravity" type="HBoxContainer" parent="ControlList"]
+margin_right = 366.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="ControlList/Gravity"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Gravity"
+
+[node name="HSlider" type="HSlider" parent="ControlList/Gravity"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="Value" type="Label" parent="ControlList/Gravity"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="HSeparator" type="HSeparator" parent="ControlList"]
+margin_top = 20.0
+margin_right = 366.0
+margin_bottom = 24.0
+
+[node name="Mass" type="HBoxContainer" parent="ControlList"]
+margin_top = 28.0
+margin_right = 366.0
+margin_bottom = 44.0
+
+[node name="Label" type="Label" parent="ControlList/Mass"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Boat Mass"
+
+[node name="HSlider" type="HSlider" parent="ControlList/Mass"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+
+[node name="Value" type="Label" parent="ControlList/Mass"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="BoatVelocityDamp" type="HBoxContainer" parent="ControlList"]
+margin_top = 48.0
+margin_right = 366.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="ControlList/BoatVelocityDamp"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Boat velocity damp"
+
+[node name="HSlider" type="HSlider" parent="ControlList/BoatVelocityDamp"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = -1.0
+max_value = 20.0
+step = 0.1
+
+[node name="Value" type="Label" parent="ControlList/BoatVelocityDamp"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="BoatAngularDamp" type="HBoxContainer" parent="ControlList"]
+margin_top = 68.0
+margin_right = 366.0
+margin_bottom = 84.0
+
+[node name="Label" type="Label" parent="ControlList/BoatAngularDamp"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Boat angular damp"
+
+[node name="HSlider" type="HSlider" parent="ControlList/BoatAngularDamp"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = -1.0
+max_value = 20.0
+step = 0.1
+
+[node name="Value" type="Label" parent="ControlList/BoatAngularDamp"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="HSeparator2" type="HSeparator" parent="ControlList"]
+margin_top = 88.0
+margin_right = 366.0
+margin_bottom = 92.0
+
+[node name="FloaterWaterDrag" type="HBoxContainer" parent="ControlList"]
+margin_top = 96.0
+margin_right = 366.0
+margin_bottom = 112.0
+
+[node name="Label" type="Label" parent="ControlList/FloaterWaterDrag"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Floater water drag"
+
+[node name="HSlider" type="HSlider" parent="ControlList/FloaterWaterDrag"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 20.0
+step = 0.1
+
+[node name="Value" type="Label" parent="ControlList/FloaterWaterDrag"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="FloaterAngularDrag" type="HBoxContainer" parent="ControlList"]
+margin_top = 116.0
+margin_right = 366.0
+margin_bottom = 132.0
+
+[node name="Label" type="Label" parent="ControlList/FloaterAngularDrag"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Floater angular drag"
+
+[node name="HSlider" type="HSlider" parent="ControlList/FloaterAngularDrag"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 20.0
+step = 0.1
+
+[node name="Value" type="Label" parent="ControlList/FloaterAngularDrag"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="DepthBeforeSumberged" type="HBoxContainer" parent="ControlList"]
+margin_top = 136.0
+margin_right = 366.0
+margin_bottom = 152.0
+
+[node name="Label" type="Label" parent="ControlList/DepthBeforeSumberged"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Depth before submerge"
+
+[node name="HSlider" type="HSlider" parent="ControlList/DepthBeforeSumberged"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 0.1
+
+[node name="Value" type="Label" parent="ControlList/DepthBeforeSumberged"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="DisplacementAmount" type="HBoxContainer" parent="ControlList"]
+margin_top = 156.0
+margin_right = 366.0
+margin_bottom = 172.0
+
+[node name="Label" type="Label" parent="ControlList/DisplacementAmount"]
+margin_top = 1.0
+margin_right = 154.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Displacement amount"
+
+[node name="HSlider" type="HSlider" parent="ControlList/DisplacementAmount"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 0.1
+
+[node name="Value" type="Label" parent="ControlList/DisplacementAmount"]
+margin_left = 316.0
+margin_top = 1.0
+margin_right = 366.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="HSeparator3" type="HSeparator" parent="ControlList"]
+margin_top = 176.0
+margin_right = 366.0
+margin_bottom = 180.0
+
+[node name="ShowWater" type="HBoxContainer" parent="ControlList"]
+margin_top = 184.0
+margin_right = 366.0
+margin_bottom = 208.0
+
+[node name="Label" type="Label" parent="ControlList/ShowWater"]
+margin_top = 5.0
+margin_right = 284.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Show water"
+
+[node name="CheckBox" type="CheckBox" parent="ControlList/ShowWater"]
+margin_left = 288.0
+margin_right = 312.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="Value" type="Label" parent="ControlList/ShowWater"]
+margin_left = 316.0
+margin_top = 5.0
+margin_right = 366.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="WaveDirection" type="HBoxContainer" parent="ControlList"]
+margin_top = 212.0
+margin_right = 366.0
+margin_bottom = 248.0
+
+[node name="Label" type="Label" parent="ControlList/WaveDirection"]
+margin_top = 11.0
+margin_right = 154.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+text = "Wave direction"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlList/WaveDirection"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WaveDirectionX" type="HBoxContainer" parent="ControlList/WaveDirection/VBoxContainer"]
+margin_right = 154.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="ControlList/WaveDirection/VBoxContainer/WaveDirectionX"]
+margin_top = 1.0
+margin_right = 8.0
+margin_bottom = 15.0
+text = "X"
+
+[node name="HSlider" type="HSlider" parent="ControlList/WaveDirection/VBoxContainer/WaveDirectionX"]
+margin_left = 12.0
+margin_right = 154.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="WaveDirectionY" type="HBoxContainer" parent="ControlList/WaveDirection/VBoxContainer"]
+margin_top = 20.0
+margin_right = 154.0
+margin_bottom = 36.0
+
+[node name="Label" type="Label" parent="ControlList/WaveDirection/VBoxContainer/WaveDirectionY"]
+margin_top = 1.0
+margin_right = 7.0
+margin_bottom = 15.0
+text = "Y"
+
+[node name="HSlider" type="HSlider" parent="ControlList/WaveDirection/VBoxContainer/WaveDirectionY"]
+margin_left = 11.0
+margin_right = 154.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="Value" type="Label" parent="ControlList/WaveDirection"]
+margin_left = 316.0
+margin_top = 11.0
+margin_right = 366.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="Steepness" type="HBoxContainer" parent="ControlList"]
+margin_top = 252.0
+margin_right = 366.0
+margin_bottom = 283.0
+
+[node name="Label" type="Label" parent="ControlList/Steepness"]
+margin_right = 154.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+text = "Steepness
+"
+
+[node name="HSlider" type="HSlider" parent="ControlList/Steepness"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 1.0
+step = 0.01
+value = 0.1
+
+[node name="Value" type="Label" parent="ControlList/Steepness"]
+margin_left = 316.0
+margin_top = 8.0
+margin_right = 366.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="WaveLength" type="HBoxContainer" parent="ControlList"]
+margin_top = 287.0
+margin_right = 366.0
+margin_bottom = 318.0
+
+[node name="Label" type="Label" parent="ControlList/WaveLength"]
+margin_right = 154.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+text = "Wave Length
+"
+
+[node name="HSlider" type="HSlider" parent="ControlList/WaveLength"]
+margin_left = 158.0
+margin_right = 312.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 0.1
+
+[node name="Value" type="Label" parent="ControlList/WaveLength"]
+margin_left = 316.0
+margin_top = 8.0
+margin_right = 366.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 50, 0 )
+
+[connection signal="pressed" from="ShowHideButton" to="." method="_on_ShowHideButton_pressed"]
+[connection signal="value_changed" from="ControlList/Gravity/HSlider" to="." method="_on_Gravity_value_changed"]
+[connection signal="value_changed" from="ControlList/Mass/HSlider" to="." method="_on_Mass_value_changed"]
+[connection signal="value_changed" from="ControlList/BoatVelocityDamp/HSlider" to="." method="_on_BoatVelocityDamp_value_changed"]
+[connection signal="value_changed" from="ControlList/BoatAngularDamp/HSlider" to="." method="_on_BoatAngularDamp_value_changed"]
+[connection signal="value_changed" from="ControlList/FloaterWaterDrag/HSlider" to="." method="_on_FloaterWaterDrag_value_changed"]
+[connection signal="value_changed" from="ControlList/FloaterAngularDrag/HSlider" to="." method="_on_FloaterAngularDrag_value_changed"]
+[connection signal="value_changed" from="ControlList/DepthBeforeSumberged/HSlider" to="." method="_on_DepthBeforeSumberged_value_changed"]
+[connection signal="value_changed" from="ControlList/DisplacementAmount/HSlider" to="." method="_on_DisplacementAmount_value_changed"]
+[connection signal="toggled" from="ControlList/ShowWater/CheckBox" to="." method="_on_ShowWater_toggled"]
+[connection signal="value_changed" from="ControlList/WaveDirection/VBoxContainer/WaveDirectionX/HSlider" to="." method="_on_WaveDirectionX_value_changed"]
+[connection signal="value_changed" from="ControlList/WaveDirection/VBoxContainer/WaveDirectionY/HSlider" to="." method="_on_WaveDirectionY_value_changed"]
+[connection signal="value_changed" from="ControlList/Steepness/HSlider" to="." method="_on_Steepness_value_changed"]
+[connection signal="value_changed" from="ControlList/WaveLength/HSlider" to="." method="_on_wavelength_value_changed"]

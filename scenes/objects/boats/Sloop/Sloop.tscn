@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/objects/boats/Sloop/Sloop.gd" type="Script" id=1]
+[ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/Floater/FloatManager.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/3d/boats/Sloop/sloop.glb" type="PackedScene" id=4]
+[ext_resource path="res://scenes/objects/Canon/Canon.tscn" type="PackedScene" id=5]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 4, 2, 8 )
+
+[sub_resource type="CylinderShape" id=2]
+radius = 0.412539
+height = 17.6691
+
+[sub_resource type="CapsuleShape" id=3]
+radius = 1.40647
+height = 1.95059
+
+[node name="Sloop" type="RigidBody" groups=[
+"water_boat",
+]]
+gravity_scale = 0.0
+continuous_cd = true
+linear_damp = 0.9
+angular_damp = 0.9
+script = ExtResource( 1 )
+depth_before_submerged = 7.0
+displacement_amount = 0.8
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.43429, 0 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.962417, -0.271575, 0, 0.271575, 0.962417, 0, 0.689575, -9.74555 )
+shape = SubResource( 3 )
+
+[node name="sloop" parent="." instance=ExtResource( 4 )]
+transform = Transform( 8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0 )
+
+[node name="FloatManager" parent="." groups=[
+"water_floater_manager",
+] instance=ExtResource( 3 )]
+
+[node name="Floater" parent="FloatManager" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
+visible = true
+debug = true
+
+[node name="Floater2" parent="FloatManager" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, 8 )
+visible = true
+debug = true
+
+[node name="Floater6" parent="FloatManager" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, -8 )
+visible = true
+debug = true
+
+[node name="Floater7" parent="FloatManager" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -8 )
+visible = true
+debug = true
+
+[node name="Rudder" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0 )
+
+[node name="Canons" type="Spatial" parent="."]
+
+[node name="Canon" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.0619021, 0, 0.998082, 0, 1, 0, -0.998082, 0, 0.0619021, -3, 2.46744, 2.66646 )
+
+[node name="Canon2" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.0318817, 0, 0.999492, 0, 1, 0, -0.999492, 0, 0.0318817, -3, 2.46744, -0.349405 )
+
+[node name="Canon3" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.300889, 0, 0.953659, 0, 1, 0, -0.953659, 0, 0.300889, -3, 2.46744, -3.37647 )
+
+[node name="Canon4" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.144667, 0, -0.98948, 0, 1, 0, 0.98948, 0, 0.144667, 2.88306, 2.46744, -3.32465 )
+
+[node name="Canon5" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.0142588, 0, -0.999898, 0, 1, 0, 0.999898, 0, 0.0142588, 2.88272, 2.46744, -0.349406 )
+
+[node name="Canon6" parent="Canons" instance=ExtResource( 5 )]
+transform = Transform( 0.011327, 0, -0.999936, 0, 1, 0, 0.999936, 0, 0.011327, 2.91385, 2.46744, 2.66646 )

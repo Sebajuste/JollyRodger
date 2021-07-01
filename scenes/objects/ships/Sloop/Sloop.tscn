@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/3d/boats/Sloop/sloop.glb" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/objects/Canon/Canon.tscn" type="PackedScene" id=4]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 4, 2, 8 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 3.80358, 9.17323, 9.13072 )
+
+[node name="Sloop" instance=ExtResource( 1 )]
+mass = 2.0
+depth_before_submerged = 7.0
+displacement_amount = 0.8
+
+[node name="sloop" parent="Skin" index="0" instance=ExtResource( 2 )]
+transform = Transform( 8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
+shape = SubResource( 1 )
+
+[node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
+
+[node name="Floater2" parent="FloatManager" index="1" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -2, 8 )
+
+[node name="Floater3" parent="FloatManager" index="2" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -8 )
+
+[node name="Floater4" parent="FloatManager" index="3" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, -8 )
+
+[node name="Rudder" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.19339 )
+
+[node name="CaptainPlace" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.10756, 7.42132 )
+
+[node name="Cannon" parent="Cannons" index="0" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 2.5, 2 )
+
+[node name="Cannon2" parent="Cannons" index="1" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 2.5, 2 )
+
+[node name="Cannon3" parent="Cannons" index="2" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 2.5, -1 )
+
+[node name="Cannon4" parent="Cannons" index="3" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 2.5, -1 )
+
+[node name="Cannon5" parent="Cannons" index="4" instance=ExtResource( 4 )]
+transform = Transform( 0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, -3, 2.5, -4 )
+
+[node name="Cannon6" parent="Cannons" index="5" instance=ExtResource( 4 )]
+transform = Transform( 0.34202, 0, -0.939693, 0, 1, 0, 0.939693, 0, 0.34202, 3, 2.5, -4 )
+
+[node name="SelectArea" parent="." index="6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.770585, 0 )
+group_target = "water_boat"
+
+[node name="CollisionShape" parent="SelectArea" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.89425, 0 )
+shape = SubResource( 2 )
+
+[node name="3DSticker" parent="." index="7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4028, 0 )
+
+[editable path="SelectArea"]

@@ -1,0 +1,11 @@
+/build
+**/*.import
+**/*/.TMP
+**/*.translation
+*.import
+
+*.TMP
+Settings.cfg
+game_config.json
+
+export_preset.cfg

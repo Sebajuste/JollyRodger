@@ -1,0 +1,111 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/games/Multiplayer/Multiplayer.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ui/BoatInfo/BoatInfo.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=7]
+[ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/objects/Terrain/IslandHeightCurve.tres" type="Curve" id=10]
+[ext_resource path="res://scenes/objects/Terrain/IslandFalls01.tres" type="Curve" id=11]
+[ext_resource path="res://scenes/objects/Terrain/Terrain.tscn" type="PackedScene" id=12]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+seed = 1
+
+[node name="Multiplayer" type="Node"]
+script = ExtResource( 3 )
+
+[node name="World" type="Spatial" parent="."]
+
+[node name="Ocean" parent="World" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00425148, 0.0453434, -0.00850868 )
+wave_direction = Vector2( 1, 1 )
+amplitude = 20.0
+steepness = 0.137
+
+[node name="CameraRig" parent="World" instance=ExtResource( 6 )]
+mode = "Gimbal"
+current = true
+
+[node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
+
+[node name="Island1" parent="World" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 677.438, -15.9008, 562.65 )
+noise = SubResource( 1 )
+height = 60.0
+height_curve = ExtResource( 10 )
+island_curve = ExtResource( 11 )
+
+[node name="Island2" parent="World" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -290.996, -20.7954, -624.422 )
+noise = SubResource( 1 )
+height = 80.0
+height_curve = ExtResource( 10 )
+island_curve = ExtResource( 11 )
+
+[node name="NetSceneSync" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="Node" type="Node" parent="."]
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = -161.0
+margin_right = 198.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BoatInfo" parent="GUI/MarginContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 178.0
+margin_bottom = 141.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="GUI"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -233.0
+margin_top = -182.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BoatControl" parent="GUI/MarginContainer2" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 213.0
+margin_bottom = 162.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="GUI"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 350.0
+margin_bottom = 215.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputHelper" parent="GUI/MarginContainer3" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 330.0
+margin_bottom = 195.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+autoplay = true
+bus = "sound"

@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/games/TestOcean/TestOcean.gd" type="Script" id=2]
+[ext_resource path="res://scenes/objects/Bullet/Bullet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/ui/DebugPanel/DebugPanel.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/objects/ships/Sloop/Sloop.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=8]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.443137, 0.501961, 1, 1 )
+
+[sub_resource type="CubeMesh" id=2]
+material = SubResource( 1 )
+
+[sub_resource type="BoxShape" id=3]
+
+[node name="TestOcean" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Ocean" parent="." instance=ExtResource( 1 )]
+amplitude = 30.0
+steepness = 0.134
+
+[node name="Cube" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8646, 2.66534, -53.3791 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="RigidBody" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.02189, 0, -1.96247 )
+gravity_scale = 0.0
+
+[node name="Cube2" type="MeshInstance" parent="RigidBody"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="RigidBody"]
+shape = SubResource( 3 )
+
+[node name="Floater" parent="RigidBody" instance=ExtResource( 5 )]
+visible = true
+depth_before_submerged = 0.5
+displacement_amount = 1.5
+debug = true
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.946153, 0.323719, 0, -0.323719, 0.946153, 0, 6.37879, 14.5206 )
+far = 2000.0
+
+[node name="CameraRig" parent="." instance=ExtResource( 8 )]
+transform = Transform( 0.998193, 0, 0.0600904, 0, 1, 0, -0.0600904, 0, 0.998193, 0.507993, 10.9273, 8.43854 )
+mode = "Gimbal"
+target_path = NodePath("../Cube")
+current = true
+
+[node name="Bullet" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.32213, 6.25633, -3.66346 )
+
+[node name="Sloop" parent="." instance=ExtResource( 7 )]
+transform = Transform( 0.934092, 0, 0.357031, 0, 1, 0, -0.357031, 0, 0.934092, 31.831, 0, -28.3125 )
+mass = 1.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 449.0
+margin_bottom = 357.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DebugPanel" parent="CanvasLayer/MarginContainer" instance=ExtResource( 6 )]
+margin_right = 429.0
+margin_bottom = 342.0
