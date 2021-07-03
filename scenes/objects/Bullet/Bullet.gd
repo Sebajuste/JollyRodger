@@ -30,6 +30,9 @@ func _physics_process(delta):
 				var water_splash : Spatial = WATER_SPLASH_SCENE.instance()
 				water_splash.global_transform.origin = self.global_transform.origin
 				get_parent().add_child(water_splash)
+				
+				# TODO : ricochet
+				
 			
 			submerded = true
 		else:
@@ -37,9 +40,9 @@ func _physics_process(delta):
 	
 	
 	if colliding_bodies.size() > 0:
-		self.mass = 0.01
 		self.visible = false
 		queue_free()
+		pass
 
 
 func _integrate_forces(state : PhysicsDirectBodyState):
@@ -49,6 +52,12 @@ func _integrate_forces(state : PhysicsDirectBodyState):
 
 
 func _on_LifeTimer_timeout():
+	
+	queue_free()
+	
+
+
+func _on_DamageSource_hit(hit_box):
 	
 	queue_free()
 	

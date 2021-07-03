@@ -6,7 +6,7 @@ var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 
 
 onready var water_manager := $Ocean
-onready var sloop : RigidBody = $Sloop
+onready var ship : RigidBody = $SwedishRoyalYachtAmadis
 
 var target : RigidBody = null
 var select_hint = null
@@ -52,7 +52,7 @@ func _physics_process(_delta):
 	pass
 
 
-func _unhandled_input(event):
+func _input(event):
 	
 	if event is InputEventMouseButton:
 		
@@ -63,12 +63,14 @@ func _unhandled_input(event):
 				select_hint = null
 			target = null
 	
-	
+
+
+func _unhandled_input(event):
 	if event.is_action_pressed("fire_order") and target:
 		
-		for canon in sloop.get_node("Canons").get_children():
+		for canon in ship.get_node("Cannons").get_children():
 			
-			var target_pos := target.global_transform.origin + Vector3.UP*3.0
+			var target_pos := target.global_transform.origin
 			var target_velocity := target.linear_velocity
 			
 			if canon.fire_ready and canon.is_in_range(target_pos):
@@ -82,9 +84,8 @@ func _unhandled_input(event):
 func _on_object_selected(object):
 	
 	select_hint = SELECT_HINT_SCENE.instance()
-	
+	select_hint.offset = Vector3.UP * 20
 	object.add_child(select_hint)
-	select_hint.transform.origin.y = 15
 	
 	target = object
 	

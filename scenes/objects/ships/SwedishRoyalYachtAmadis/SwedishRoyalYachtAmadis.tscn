@@ -1,0 +1,93 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/3d/ships/swedish_royal_yacht_amadis/SwedishRoyalTachtAmadis.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/objects/cannons/AbstractCannon/AbstractCannon.tscn" type="PackedScene" id=4]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 2.82842, 2, 9.04053 )
+
+[sub_resource type="SphereShape" id=2]
+radius = 12.5004
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 3.00194, 2.06492, 9.17935 )
+
+[node name="SwedishRoyalYachtAmadis" instance=ExtResource( 3 )]
+mass = 25.0
+depth_before_submerged = 6.0
+displacement_amount = 2.4
+rudder_force = 80.0
+sail_force = 80.0
+
+[node name="CollisionShape" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.242932 )
+shape = SubResource( 1 )
+
+[node name="scene" parent="Skin" index="0" instance=ExtResource( 2 )]
+transform = Transform( -0.01, 0, -8.74228e-10, 0, 0.01, 0, 8.74228e-10, 0, -0.01, 0, 0, -1.54988 )
+
+[node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
+
+[node name="Floater2" parent="FloatManager" index="1" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -2, 8 )
+
+[node name="Floater3" parent="FloatManager" index="2" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -8 )
+
+[node name="Floater4" parent="FloatManager" index="3" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, -8 )
+
+[node name="Rudder" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949787, 7.81677 )
+
+[node name="CaptainPlace" parent="." index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21393, 2.74632, 3.27008 )
+
+[node name="Cannon" parent="Cannons" index="0" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.87559, 1.73236, 0.689554 )
+
+[node name="Cannon2" parent="Cannons" index="1" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.87559, 1.73236, -0.458618 )
+
+[node name="Cannon3" parent="Cannons" index="2" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.87559, 1.74893, -2.79015 )
+
+[node name="Cannon4" parent="Cannons" index="3" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.87559, 1.84845, -4.14217 )
+
+[node name="Cannon5" parent="Cannons" index="4" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.81797, 1.73198, 0.703675 )
+
+[node name="Cannon6" parent="Cannons" index="5" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.81797, 1.73198, -0.437995 )
+
+[node name="Cannon7" parent="Cannons" index="6" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.81797, 1.74891, -2.79488 )
+
+[node name="Cannon8" parent="Cannons" index="7" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.7035, 1.85146, -4.1278 )
+
+[node name="SelectArea" parent="." index="6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.32715, -0.943612 )
+group_target = "water_boat"
+
+[node name="CollisionShape" parent="SelectArea" index="0"]
+shape = SubResource( 2 )
+
+[node name="3DSticker" parent="." index="7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4028, 0 )
+
+[node name="HitBox" parent="." index="8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )
+
+[node name="CollisionShape" parent="HitBox" index="0"]
+shape = SubResource( 3 )
+
+[node name="DamageStats" parent="." index="9"]
+max_health = 15
+
+[editable path="SelectArea"]
+[editable path="HitBox"]

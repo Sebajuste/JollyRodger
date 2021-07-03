@@ -14,7 +14,7 @@ var Settings = {
 	{
 		"WIDTH": 1600,
 		"HEIGHT": 900,
-		"FullScreen": true,
+		"FullScreen": false,
 		"Vsync": true,
 		"Antialiasing": true
 	},
@@ -89,12 +89,12 @@ func apply_settings():
 	
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Settings.Audio.MASTER)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Settings.Audio.MUSIC)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundEffects"), Settings.Audio.SOUND_EFFECTS)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundEffect"), Settings.Audio.SOUND_EFFECTS)
 	
 	if Settings.Audio.MUTE:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), true)
-		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundEffects"), true)
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundEffect"), true)
 	
 	TranslationServer.set_locale( Settings.Game.Language )
 	

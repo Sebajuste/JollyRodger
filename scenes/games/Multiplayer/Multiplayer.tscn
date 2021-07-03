@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -9,12 +9,7 @@
 [ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=7]
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/objects/Terrain/IslandHeightCurve.tres" type="Curve" id=10]
-[ext_resource path="res://scenes/objects/Terrain/IslandFalls01.tres" type="Curve" id=11]
-[ext_resource path="res://scenes/objects/Terrain/Terrain.tscn" type="PackedScene" id=12]
-
-[sub_resource type="OpenSimplexNoise" id=1]
-seed = 1
+[ext_resource path="res://scenes/ui/SimpleWindow/SimpleWindow.tscn" type="PackedScene" id=10]
 
 [node name="Multiplayer" type="Node"]
 script = ExtResource( 3 )
@@ -32,20 +27,6 @@ mode = "Gimbal"
 current = true
 
 [node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
-
-[node name="Island1" parent="World" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 677.438, -15.9008, 562.65 )
-noise = SubResource( 1 )
-height = 60.0
-height_curve = ExtResource( 10 )
-island_curve = ExtResource( 11 )
-
-[node name="Island2" parent="World" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -290.996, -20.7954, -624.422 )
-noise = SubResource( 1 )
-height = 80.0
-height_curve = ExtResource( 10 )
-island_curve = ExtResource( 11 )
 
 [node name="NetSceneSync" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -105,7 +86,58 @@ anchor_bottom = 0.0
 margin_right = 330.0
 margin_bottom = 195.0
 
+[node name="SinkMenu" type="MarginContainer" parent="GUI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -210.5
+margin_top = -133.0
+margin_right = 210.5
+margin_bottom = 133.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameMenu" parent="GUI/SinkMenu" instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 421.0
+margin_bottom = 266.0
+
+[node name="VBoxContainer" parent="GUI/SinkMenu/GameMenu/MarginContainer" index="0"]
+margin_right = 381.0
+margin_bottom = 226.0
+
+[node name="Title" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer" index="0"]
+margin_right = 381.0
+
+[node name="HSeparator" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer" index="1"]
+margin_right = 381.0
+
+[node name="Content" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer" index="2"]
+margin_right = 381.0
+margin_bottom = 192.0
+
+[node name="Label" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
+margin_right = 381.0
+margin_bottom = 140.0
+text = "Vous avez été coulé."
+
+[node name="Footer" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer" index="3"]
+margin_top = 196.0
+margin_right = 381.0
+margin_bottom = 226.0
+
+[node name="AcceptButton" parent="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer/Footer" index="0"]
+margin_left = 115.0
+margin_right = 265.0
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
-bus = "sound"
+
+[connection signal="pressed" from="GUI/SinkMenu/GameMenu/MarginContainer/VBoxContainer/Footer/AcceptButton" to="." method="_on_RestartGameButton_pressed"]
+
+[editable path="GUI/SinkMenu/GameMenu"]

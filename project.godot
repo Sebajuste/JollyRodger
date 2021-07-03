@@ -34,6 +34,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/miscs/CameraRig/CameraState.gd"
 }, {
+"base": "Area",
+"class": "DamageSource",
+"language": "GDScript",
+"path": "res://scenes/miscs/damage/DamageSource/DamageSource.gd"
+}, {
+"base": "Node",
+"class": "DamageStats",
+"language": "GDScript",
+"path": "res://scenes/miscs/damage/DamageStats/DamageStats.gd"
+}, {
+"base": "Object",
+"class": "Hit",
+"language": "GDScript",
+"path": "res://scenes/miscs/damage/DamageSource/Hit.gd"
+}, {
+"base": "Area",
+"class": "HitBox",
+"language": "GDScript",
+"path": "res://scenes/miscs/damage/HitBox/HitBox.gd"
+}, {
 "base": "Object",
 "class": "NetBitPacker",
 "language": "GDScript",
@@ -115,6 +135,10 @@ _global_script_class_icons={
 "Boat": "",
 "CameraRig": "",
 "CameraRigState": "",
+"DamageSource": "",
+"DamageStats": "",
+"Hit": "",
+"HitBox": "",
 "NetBitPacker": "",
 "NetBitPackerReader": "",
 "NetBitPackerWriter": "",
@@ -137,6 +161,7 @@ _global_script_class_icons={
 config/name="JollyRoger"
 run/main_scene="res://scenes/games/MainGame/MainGame.tscn"
 config/icon="res://icon.png"
+config/version="0.0.2"
 
 [autoload]
 
@@ -193,11 +218,22 @@ fire_order={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="environement"
+3d_physics/layer_2="object_collider"
+3d_physics/layer_3="object_selection"
+3d_physics/layer_4="hitbox"
+3d_physics/layer_5="damage_source"
+
+[locale]
+
+translations=PoolStringArray( "res://languages/default.en.translation", "res://languages/default.fr.translation" )
+
 [physics]
 
 common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_clear_color=Color( 0.0705882, 0.0980392, 0.121569, 1 )
 environment/default_environment="res://default_env.tres"

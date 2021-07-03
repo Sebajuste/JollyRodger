@@ -21,6 +21,35 @@ var sync_node : Node
 var _last_name : String
 
 
+
+static func update_vector3(from : Vector3, to: Vector3, threshold := 2.0) -> Vector3:
+	var pos_diff : Vector3 = from - to
+	var pos_length_squared := pos_diff.length_squared()
+	if pos_length_squared > threshold*threshold:
+		return to
+	elif pos_length_squared > threshold:
+		return from + pos_diff * threshold
+	return from
+
+
+static func update_quat(from : Quat, to :  Quat, threshold := 2.0) -> Quat:
+	var quat_diff : Quat = to - from
+	var quat_length_squared := quat_diff.length_squared()
+	if quat_length_squared > threshold*threshold:
+		return to
+	elif quat_length_squared > threshold: 
+		return from + quat_diff * threshold
+	return from
+
+
+static func update_transform(from : Transform, to : Transform, threshold := 2.0) -> Transform:
+	var result := Transform()
+	result.basis = Basis( update_quat(Quat(from.basis), Quat(to.basis), threshold) )
+	result.origin = update_vector3(from.origin, to.origin, threshold)
+	return result
+	
+
+
 func _init():
 	
 	add_to_group("net_sync_node")

@@ -23,10 +23,11 @@ func _ready():
 func _process(delta):
 	
 	var pos = global_transform.origin
-	var cam = get_tree().get_root().get_camera()
-	var screen_pos = cam.unproject_position(pos)
 	
-	$Control.set_position( Vector2(screen_pos.x - $Control.rect_size.x/2, screen_pos.y - $Control.rect_size.y/2) )
+	var cam = get_tree().get_root().get_camera()
+	if cam:
+		var screen_pos = cam.unproject_position(pos)
+		$Control.set_position( Vector2(screen_pos.x - $Control.rect_size.x/2, screen_pos.y - $Control.rect_size.y/2) )
 	
 
 

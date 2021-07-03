@@ -26,10 +26,6 @@ onready var camera : Camera = $Pivot/InterpolatedCamera
 onready var spring_arm : SpringArm = $Pivot/SpringArm
 
 
-
-
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_mode(mode)
