@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/objects/cannons/AbstractCannon/AbstractCannon.gd" type="Script" id=2]
+[ext_resource path="res://assets/sounds/cannon/cannon_fire.ogg" type="AudioStream" id=3]
+
+[node name="Cannon" type="Spatial"]
+script = ExtResource( 2 )
+speed = 60.0
+
+[node name="Skin" type="Spatial" parent="."]
+
+[node name="Muzzle" type="Position3D" parent="Skin"]
+
+[node name="FireDelay" type="Timer" parent="."]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="FireSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+unit_db = 1.0
+unit_size = 10.0
+max_distance = 500.0
+
+[connection signal="timeout" from="FireDelay" to="." method="_on_fire_delayed"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_ReloadTimer_timeout"]

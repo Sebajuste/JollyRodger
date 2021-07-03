@@ -2,6 +2,8 @@
 **/*.import
 **/*/.TMP
 **/*.translation
+**/*.exe
+**/*~
 *.import
 
 *.TMP

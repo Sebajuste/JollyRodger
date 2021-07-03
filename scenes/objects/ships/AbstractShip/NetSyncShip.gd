@@ -1,6 +1,14 @@
 extends NetNodeSync
 
 
+var LIMIT_TRANSFORM := NetStream.NetLimitTransform.new(
+	Vector2(-10000, 10000),
+	Vector2(-200, 50),
+	Vector2(-10000, 10000),
+	0.01
+)
+
+
 onready var ship : AbstractShip = owner
 
 
@@ -26,8 +34,8 @@ func integrate_forces(state : PhysicsDirectBodyState):
 		
 		state.linear_velocity = last_properties.linear_velocity
 		state.angular_velocity = last_properties.angular_velocity
-		state.transform.basis = last_properties.transform.basis
-		state.transform.origin = last_properties.transform.origin
+		
+		state.transform = NetNodeSync.update_transform(state.transform, last_properties.transform)
 		
 		slave_updated = true
 	
@@ -62,7 +70,7 @@ master func sync_ship():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	# print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
+	#print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
 	
 	rpc_unreliable("sync_ship_reception", byte_packet)
 	
@@ -117,11 +125,10 @@ puppet func sync_ship_reception(byte_packet : PoolByteArray):
 
 func _serialize(stream : NetStream, properties: Dictionary ):
 	
-	properties.linear_velocity = NetStream.serialize_vector3_dir(stream, properties.linear_velocity, 100.0, 0.01)
-	properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.01)
-	properties.transform = NetStream.serialize_transform(stream, properties.transform, -10000, 10000, 0.001)
+	properties.linear_velocity = NetStream.serialize_vector3_dir(stream, properties.linear_velocity, 15.0, 0.1)
+	properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.1)
+	properties.transform = NetStream.serialize_transform(stream, properties.transform, LIMIT_TRANSFORM)
 	
-	properties.rudder_position = NetStream.serialize_float(stream, properties.rudder_position, 0.0, 100.0, 0.1)
-	properties.sail_position = NetStream.serialize_float(stream, properties.sail_position, 0.0, 100.0, 0.1)
+	properties.rudder_position = NetStream.serialize_float(stream, properties.rudder_position, -1.0, 1.0, 0.01)
+	properties.sail_position = NetStream.serialize_float(stream, properties.sail_position, 0.0, 1.0, 0.01)
 	
-	pass

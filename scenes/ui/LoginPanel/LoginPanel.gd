@@ -16,6 +16,8 @@ func _ready():
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	
+	$CanvasLayer/Control/Version/Label.text = "Version " + str( Network.Settings.Version )
+	
 	pass # Replace with function body.
 
 
@@ -69,3 +71,10 @@ func _connected_fail():
 	
 	
 	pass
+
+
+func _on_ExitButton_pressed():
+	
+	get_tree().quit()
+	
+	pass # Replace with function body.

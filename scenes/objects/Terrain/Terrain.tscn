@@ -13,6 +13,7 @@ script = ExtResource( 1 )
 material = ExtResource( 2 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 shape = SubResource( 1 )

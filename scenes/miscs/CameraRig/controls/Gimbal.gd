@@ -13,7 +13,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func process(delta):
 	
-	if _parent._input_relative.length() > 0:
+	if _parent._input_relative.length_squared() > 0:
 		camera_rig.rotate_object_local(Vector3.UP, -_parent._input_relative.x * camera_rig.rotation_speed * delta)
 		camera_rig.pivot.rotate_object_local(Vector3.LEFT, _parent._input_relative.y * camera_rig.rotation_speed * delta)
 		_parent._input_relative = Vector2.ZERO
@@ -30,7 +30,14 @@ func process(delta):
 func physics_process(delta):
 	if camera_rig.target:
 		camera_rig.global_transform.origin = camera_rig.target.global_transform.origin
+
+
+
+func _input(event : InputEvent):
 	
+	_parent.input(event)
+	
+
 
 
 func unhandled_input(event):
@@ -40,6 +47,8 @@ func unhandled_input(event):
 	if event.is_action_pressed("move_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		_parent.move_camera = true
+		print("Move camera")
 	if event.is_action_released("move_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		_parent.move_camera = false
+		print("Unmove camera")

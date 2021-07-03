@@ -22,13 +22,9 @@ func integrate_forces(state : PhysicsDirectBodyState):
 	
 	if Network.enabled and not is_network_master() and not slave_updated:
 		state.linear_velocity = last_properties_received.linear_velocity
-		state.angular_velocity = last_properties_received.angular_velocity
-		state.transform.basis = last_properties_received.transform.basis
-		state.transform.origin = last_properties_received.transform.origin
-		
+		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position)
 		slave_updated = true
 	
-	pass
 
 
 master func sync_node_emission():
@@ -38,8 +34,7 @@ master func sync_node_emission():
 	
 	var properties := {
 		"linear_velocity": bullet.linear_velocity,
-		"angular_velocity": bullet.angular_velocity,
-		"transform": bullet.global_transform
+		"position": bullet.global_transform.origin
 	}
 	
 	var byte_buffer := NetByteBuffer.new(64)
@@ -85,10 +80,7 @@ puppet func sync_node_reception(byte_packet : PoolByteArray):
 	
 	var properties := {
 		"linear_velocity": Vector3(),
-		"angular_velocity": Vector3(),
-		"transform": Transform(),
-		"rudder_position": 0.0,
-		"sail_position": 0.0
+		"position": Vector3(),
 	}
 	
 	_serialize(read_stream, properties)
@@ -97,7 +89,7 @@ puppet func sync_node_reception(byte_packet : PoolByteArray):
 	
 	# Jitter correction
 	if jitter_time > 0:
-		properties.transform.origin = properties.transform.origin + properties.linear_velocity * jitter_time    # project out received position
+		properties.position = properties.position + properties.linear_velocity * jitter_time    # project out received position
 	
 	last_properties_received = properties
 	
@@ -107,7 +99,10 @@ puppet func sync_node_reception(byte_packet : PoolByteArray):
 func _serialize(stream : NetStream, properties: Dictionary):
 	
 	properties.linear_velocity = NetStream.serialize_vector3_dir(stream, properties.linear_velocity, 100.0, 0.01)
-	properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.01)
-	properties.transform = NetStream.serialize_transform(stream, properties.transform, -10000, 10000, 0.001)
+	properties.position.x = NetStream.serialize_float(stream, properties.position.x, -10000, 10000, 0.01)
+	properties.position.y = NetStream.serialize_float(stream, properties.position.y, -50, 500, 0.01)
+	properties.position.z = NetStream.serialize_float(stream, properties.position.z, -10000, 10000, 0.01)
+	#properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.01)
+	#properties.transform = NetStream.serialize_transform(stream, properties.transform, -10000, 10000, 0.001)
 	
 	pass

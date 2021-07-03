@@ -35,4 +35,12 @@ func is_in_water() -> bool:
 		return true
 	
 	return false
+
+
+func set_displacement_amount(value):
 	
+	for child in get_children():
+		if child is WaterFloater:
+			child.displacement_amount = value
+	
+

@@ -1,7 +1,7 @@
 extends Node
 
 
-var SLOOP_SCENE = preload("res://scenes/objects/ships/Sloop/Sloop.tscn")
+var SHIP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 
 onready var world := $World
@@ -10,7 +10,8 @@ onready var camera := $World/CameraRig
 
 
 
-var player
+var player : AbstractShip
+var player_ship_id := 0
 
 var target : AbstractShip
 var select_hint
@@ -22,26 +23,14 @@ func _ready():
 	
 	# If is not a dedicated server
 	if not "--server" in OS.get_cmdline_args():
-		player = SLOOP_SCENE.instance()
-		player.set_network_master( Network.get_self_peer_id() )
-		player.set_name( str(Network.get_self_peer_id()) )
 		
-		world.add_child(player)
-		
-		player.global_transform.origin = Vector3(
-			rand_range(-100, 100),
-			2.0,
-			rand_range(-100, 100)
-		)
-		
-		camera.target = player.get_node("CaptainPlace")
-		
-		$GUI/MarginContainer/BoatInfo.boat = player
-		$GUI/MarginContainer2/BoatControl.boat = player
+		create_player()
 		
 		$World/Ocean.update_shader()
 		
-		get_tree().connect("server_disconnected", self, "_server_disconnected")
+		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+		Network.connect("disconnected", self, "_on_server_disconnected")
+		
 		ObjectSelector.connect("object_selected", self, "_on_object_selected")
 		
 		print("Game ready")
@@ -49,7 +38,7 @@ func _ready():
 		
 		$GUI.queue_free()
 		$AudioStreamPlayer.queue_free()
-		
+	
 	
 	
 	$World/Ocean.set_network_master( 1 )
@@ -63,6 +52,32 @@ func _ready():
 #func _process(delta):
 #	
 #	pass
+
+
+func create_player():
+	
+	player = SHIP_SCENE.instance()
+	player.set_network_master( Network.get_self_peer_id() )
+	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
+	
+	player_ship_id += 1
+	
+	player.global_transform.origin = Vector3(
+		rand_range(-100, 100),
+		2.0,
+		rand_range(-100, 100)
+	)
+	
+	world.add_child(player)
+	
+	camera.target = player.get_node("CaptainPlace")
+	
+	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
+	
+	$GUI/MarginContainer/BoatInfo.ship = player
+	$GUI/MarginContainer2/BoatControl.boat = player
+	
+
 
 
 func _unhandled_input(event):
@@ -92,8 +107,8 @@ func _unhandled_input(event):
 			
 
 
-func _server_disconnected():
-	print("server disconnected")
+func _on_server_disconnected(a, b):
+	print("server disconnected;  a: ", a, " b: ", b)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
 	pass
@@ -109,4 +124,16 @@ func _on_object_selected(object):
 		select_hint.transform.origin.y = 15
 		
 		target = object
+
+
+func _on_ship_destroyed():
 	
+	$GUI/SinkMenu.visible = true
+	camera.target = null
+
+
+func _on_RestartGameButton_pressed():
+	$GUI/SinkMenu.visible = false
+	create_player()
+	
+	pass # Replace with function body.
