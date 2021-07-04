@@ -17,7 +17,7 @@ func _ready():
 #	pass
 
 
-master func sync_ocean():
+func sync_ocean():
 	
 	if not Network.is_enabled() or not is_network_master():
 		return
@@ -44,12 +44,12 @@ master func sync_ocean():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	rpc_unreliable("sync_ocean_reception", byte_packet)
+	rpc_unreliable("rpc_sync_ocean", byte_packet)
 	
 	pass
 
 
-puppet func sync_ocean_reception(byte_packet : PoolByteArray):
+puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	
 	var last_packet_time := packet_time
 	packet_time = current_time

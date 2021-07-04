@@ -27,15 +27,25 @@ func _ready():
 
 func _on_damaged(damage_source : DamageSource):
 	
-	if avoid_parent and (owner.is_a_parent_of(damage_source) or owner.is_a_parent_of(damage_source.source) or owner == damage_source.source ):
+	if not damage_source:
+		return
+	
+	if avoid_parent and (owner.is_a_parent_of(damage_source) or ( damage_source.source and owner.is_a_parent_of(damage_source.source) ) or owner == damage_source.source ):
+		return
+	
+	if Network.enabled and not is_network_master():
 		return
 	
 	print("[%s] damaged by %s" % [owner.name, damage_source.owner.name] )
 	
+	"""
 	if Network.enabled:
 		rpc("rpc_on_damage", damage_source.damage)
 	else:
 		rpc_on_damage(damage_source.damage)
+	"""
+	
+	rpc_on_damage(damage_source.damage)
 	
 	pass # Replace with function body.
 

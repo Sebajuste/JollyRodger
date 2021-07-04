@@ -4,20 +4,25 @@ extends VBoxContainer
 export(NodePath) var ship_path 
 
 
-onready var ship : AbstractShip = get_node(ship_path)
+onready var ship : AbstractShip setget set_ship
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	if ship:
-		ship.damage_stats.connect("health_changed", self, "_on_health_changed")
+		var err := ship.damage_stats.connect("health_changed", self, "_on_health_changed")
+		if err != OK:
+			push_error("Cannot connect event to health_changed")
 	
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
+	
+	if ship_path:
+		ship = get_node(ship_path)
 	
 	if not ship or ship == null:
 		return
@@ -40,6 +45,14 @@ func _process(delta):
 	$Health/Value.text = str(ship.damage_stats.health)
 	
 
+
+func set_ship(value):
+	
+	if ship:
+		ship.damage_stats.disconnect("health_changed", self, "_on_health_changed")
+	
+	ship = value
+	
 
 
 func _on_health_changed(value):

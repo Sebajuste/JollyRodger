@@ -70,7 +70,7 @@ master func sync_ship():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	#print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
+	print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
 	
 	rpc_unreliable("sync_ship_reception", byte_packet)
 	

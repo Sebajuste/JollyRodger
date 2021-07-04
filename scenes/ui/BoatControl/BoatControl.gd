@@ -4,7 +4,7 @@ extends Control
 export(NodePath) var boat_path
 
 
-onready var boat : RigidBody = get_node(boat_path) setget set_boat
+onready var boat : RigidBody setget set_boat
 
 onready var rudder_control = $Direction/VBoxContainer/HSlider
 
@@ -22,6 +22,10 @@ var rudder_near_zero_time := 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if boat_path:
+		boat = get_node(boat_path)
+	
 	pass # Replace with function body.
 
 
@@ -50,19 +54,16 @@ func _process(delta):
 	
 	if rudder_near_zero_time > 3.0:
 		rudder_near_zero_time = 0.0
-		print("start rudder zero")
 		$Direction/RudderZeroTween.interpolate_property(
 			rudder_control, "value",
 			rudder_control.value, 0.0, 1.0,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 		)
 		$Direction/RudderZeroTween.start()
-		
 	
-	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if boat:
 		

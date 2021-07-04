@@ -54,6 +54,11 @@ func _ready():
 	
 	update_shader()
 	
+	if is_network_master():
+		
+		$NetNodeSync/Timer.start()
+		
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -107,6 +107,7 @@ valign = 1
 margin_top = 231.0
 margin_right = 236.0
 margin_bottom = 255.0
+max_length = 32
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -22,6 +22,9 @@ func _ready():
 
 func _physics_process(delta):
 	
+	if not is_inside_tree():
+		return
+	
 	var colliding_bodies := get_colliding_bodies()
 	
 	for water_mesh in get_tree().get_nodes_in_group("water_mesh"):
@@ -32,8 +35,10 @@ func _physics_process(delta):
 			
 			if not submerded:
 				var water_splash : Spatial = WATER_SPLASH_SCENE.instance()
-				water_splash.global_transform.origin = self.global_transform.origin
-				get_parent().add_child(water_splash)
+				water_splash.transform.origin = self.global_transform.origin
+				#get_parent().add_child(water_splash)
+				
+				Spawner.spawn(water_splash)
 				
 				# TODO : ricochet
 				

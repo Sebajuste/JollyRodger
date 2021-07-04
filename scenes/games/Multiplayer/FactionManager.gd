@@ -56,7 +56,7 @@ puppet func rpc_update_faction_data(data):
 	emit_signal("faction_data_updated", faction_data)
 
 
-func _on_properties_changed(id, properties):
+func _on_properties_changed(_id, _properties):
 	
 	update_faction_info()
 	

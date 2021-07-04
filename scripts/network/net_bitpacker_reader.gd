@@ -1,6 +1,5 @@
-extends NetBitPacker
-
 class_name NetBitPackerReader
+extends NetBitPacker
 
 
 var _scratch : int = 0

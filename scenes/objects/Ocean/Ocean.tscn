@@ -76,10 +76,9 @@ material/0 = null
 
 [node name="NetNodeSync" type="Node" parent="."]
 script = ExtResource( 4 )
-enabled = false
+replication_enabled = false
 
 [node name="Timer" type="Timer" parent="NetNodeSync"]
 process_mode = 0
-autostart = true
 
 [connection signal="timeout" from="NetNodeSync/Timer" to="NetNodeSync" method="sync_ocean"]
