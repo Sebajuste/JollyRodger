@@ -125,8 +125,8 @@ puppet func sync_ship_reception(byte_packet : PoolByteArray):
 
 func _serialize(stream : NetStream, properties: Dictionary ):
 	
-	properties.linear_velocity = NetStream.serialize_vector3_dir(stream, properties.linear_velocity, 15.0, 0.1)
-	properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.1)
+	properties.linear_velocity = NetStream.serialize_vector3_dir(stream, properties.linear_velocity, 15.0, 0.01)
+	properties.angular_velocity = NetStream.serialize_vector3_dir(stream, properties.angular_velocity, 20.0, 0.01)
 	properties.transform = NetStream.serialize_transform(stream, properties.transform, LIMIT_TRANSFORM)
 	
 	properties.rudder_position = NetStream.serialize_float(stream, properties.rudder_position, -1.0, 1.0, 0.01)

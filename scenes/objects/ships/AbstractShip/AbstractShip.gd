@@ -54,7 +54,7 @@ func _physics_process(delta):
 		)
 		add_central_force( -self.transform.basis.z * sail_position * sail_force)
 	
-	if Vector3.UP.dot( global_transform.basis.y ) < 0.0:
+	if is_network_master() and Vector3.UP.dot( global_transform.basis.y ) < 0.0:
 		var hit := Hit.new($DamageStats.health)
 		$DamageStats.take_damage(hit)
 	

@@ -8,13 +8,13 @@
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=15]
 [ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=16]
 
-[sub_resource type="ProceduralSky" id=3]
+[sub_resource type="ProceduralSky" id=1]
 ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
 ground_horizon_color = Color( 0.501961, 0.6, 0.701961, 1 )
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=2]
 background_mode = 2
-background_sky = SubResource( 3 )
+background_sky = SubResource( 1 )
 fog_enabled = true
 fog_color = Color( 0.501961, 0.6, 0.701961, 1 )
 fog_depth_begin = 100.0
@@ -52,7 +52,7 @@ light_color = Color( 1, 0.913725, 0.682353, 1 )
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 4 )
+environment = SubResource( 2 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
