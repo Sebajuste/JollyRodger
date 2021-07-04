@@ -4,13 +4,20 @@ extends Control
 export(NodePath) var boat_path
 
 
-onready var boat : RigidBody = get_node(boat_path)
+onready var boat : RigidBody = get_node(boat_path) setget set_boat
+
+onready var rudder_control = $Direction/VBoxContainer/HSlider
 
 
 var move_forward := false
 var move_backward := false
 var move_right := false
 var move_left := false
+
+
+
+var rudder_near_zero := false
+var rudder_near_zero_time := 0.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,13 +35,29 @@ func _process(delta):
 		$Speed/HBoxContainer/VSlider.value -= delta
 	
 	if move_right:
-		$Direction/VBoxContainer/HSlider.value += delta
+		rudder_control.value += delta
 	
 	if move_left:
-		$Direction/VBoxContainer/HSlider.value -= delta
+		rudder_control.value -= delta
 	
 	$Speed/HBoxContainer/Label.text = str($Speed/HBoxContainer/VSlider.value)
-	$Direction/VBoxContainer/Label.text = str($Direction/VBoxContainer/HSlider.value)
+	$Direction/VBoxContainer/Label.text = str(rudder_control.value)
+	
+	if abs(rudder_control.value) < 0.15 and rudder_control.value != 0.0:
+		rudder_near_zero_time += delta
+	else:
+		rudder_near_zero_time = 0.0
+	
+	if rudder_near_zero_time > 3.0:
+		rudder_near_zero_time = 0.0
+		print("start rudder zero")
+		$Direction/RudderZeroTween.interpolate_property(
+			rudder_control, "value",
+			rudder_control.value, 0.0, 1.0,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+		)
+		$Direction/RudderZeroTween.start()
+		
 	
 	pass
 
@@ -43,19 +66,9 @@ func _physics_process(delta):
 	
 	if boat:
 		
-		#var rotation_vec = -boat.transform.basis.y * $Direction/VBoxContainer/HSlider.value * 10
-		
-		#boat.add_torque(rotation_vec * 100 * delta)
-		
 		boat.rudder_position = $Direction/VBoxContainer/HSlider.value
 		boat.sail_position = $Speed/HBoxContainer/VSlider.value
 		
-		#boat.add_central_force( -boat.transform.basis.z * 100 * $Speed/HBoxContainer/VSlider.value * delta )
-	else:
-		# print("not in water for ", boat)
-		pass
-	
-	
 
 
 func _unhandled_input(event):
@@ -88,4 +101,11 @@ func _unhandled_input(event):
 	if event.is_action_released("move_left"):
 		move_left = false
 	
+
+
+func set_boat(value):
+	
+	boat = value
+	$Direction/VBoxContainer/HSlider.value = 0
+	$Speed/HBoxContainer/VSlider.value = 0
 	

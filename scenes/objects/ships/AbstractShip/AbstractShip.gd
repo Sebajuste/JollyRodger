@@ -96,7 +96,7 @@ func _on_DamageStats_health_changed(new_value, old_value):
 
 func _on_DamageStats_health_depleted():
 	
-	print("displacement_amount: ", displacement_amount)
+	$"3DSticker".visible = false
 	
 	$SinkTween.interpolate_method($FloatManager, "set_displacement_amount",
 		displacement_amount, 0.0, 60.0,
@@ -105,10 +105,3 @@ func _on_DamageStats_health_depleted():
 	
 	alive = false
 	
-	"""
-	for child in float_manager.get_children():
-		if child is WaterFloater:
-			child.displacement_amount = 0.0
-	"""
-	
-	pass # Replace with function body.

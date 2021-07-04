@@ -81,7 +81,7 @@ group_target = "water_boat"
 shape = SubResource( 2 )
 
 [node name="3DSticker" parent="." index="8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.4028, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.6627, 0 )
 
 [node name="HitBox" parent="." index="9"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )

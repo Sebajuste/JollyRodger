@@ -92,22 +92,24 @@ valign = 1
 [node name="Control2" type="Control" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
 margin_top = 90.0
 margin_right = 236.0
-margin_bottom = 181.0
+margin_bottom = 177.0
 size_flags_vertical = 3
 
 [node name="Label2" type="Label" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
-margin_top = 201.0
+margin_top = 197.0
 margin_right = 236.0
-margin_bottom = 215.0
+margin_bottom = 211.0
 text = "label_login"
 align = 1
 valign = 1
 
-[node name="Login" type="TextEdit" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
-margin_top = 235.0
+[node name="Login" type="LineEdit" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
+margin_top = 231.0
 margin_right = 236.0
 margin_bottom = 255.0
-rect_min_size = Vector2( 0, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Control3" type="Control" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
 margin_top = 275.0
@@ -124,15 +126,15 @@ align = 1
 valign = 1
 uppercase = true
 
-[node name="Login2" type="TextEdit" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
+[node name="Password" type="LineEdit" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
 margin_top = 349.0
 margin_right = 236.0
-margin_bottom = 369.0
+margin_bottom = 373.0
 rect_min_size = Vector2( 0, 20 )
-readonly = true
+secret = true
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer"]
-margin_top = 389.0
+margin_top = 393.0
 margin_right = 236.0
 margin_bottom = 480.0
 size_flags_vertical = 3

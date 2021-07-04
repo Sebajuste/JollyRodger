@@ -34,12 +34,12 @@ func _ready():
 
 
 func load_material():
-	if flag_mesh and type != null and MATERIAL_MAP.has(type):
+	if flag_mesh and type != "None" and MATERIAL_MAP.has(type):
 		var material_path : String = MATERIAL_MAP[type]
-		if material_path != "":
-			var material : Material = load(material_path)
-			if material:
-				flag_mesh.set_surface_material(0, material)
+		var material : Material = load(material_path)
+		if material:
+			print("Load material for %s : %s" % [owner.name, type])
+			flag_mesh.set_surface_material(0, material)
 
 
 func set_type(value):
@@ -50,7 +50,19 @@ func set_type(value):
 			rpc("rpc_change_flag", value)
 
 
+func _on_Flag_tree_entered():
+	if not is_network_master():
+		rpc("rpc_request_flag", Network.get_self_peer_id())
+
+
 puppet func rpc_change_flag(value):
 	type = value
 	load_material()
+
+
+master func rpc_request_flag(peer_id):
+	
+	rpc_id(peer_id, "rpc_change_flag", type)
+	
+
 

@@ -6,7 +6,7 @@ var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 
 onready var world := $World
 onready var camera := $World/CameraRig
-
+onready var faction_manager := $FactionManager
 
 
 onready var start_position_a := $World/Island01/SpawnPositionA
@@ -138,7 +138,7 @@ func _on_object_selected(object):
 		select_hint = SELECT_HINT_SCENE.instance()
 		
 		object.add_child(select_hint)
-		select_hint.transform.origin.y = 30
+		select_hint.offset.y = 30
 		
 		target = object
 
@@ -147,19 +147,19 @@ func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
 	camera.target = null
+	
 
 
 func _on_RestartGameButton_pressed():
 	$GUI/SinkMenu.close()
 	create_player()
-	
-	pass # Replace with function body.
 
 
 func _on_JoinUnitedKingdom_pressed():
 	$GUI/FactionSelector.close()
 	start_position = start_position_a.global_transform.origin
 	player_faction = "GB"
+	Network.set_property("faction", player_faction)
 	create_player()
 
 
@@ -167,4 +167,5 @@ func _on_JoinPirate_pressed():
 	$GUI/FactionSelector.close()
 	start_position = start_position_b.global_transform.origin
 	player_faction = "Pirate"
+	Network.set_property("faction", player_faction)
 	create_player()

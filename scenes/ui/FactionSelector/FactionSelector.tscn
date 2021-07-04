@@ -6,6 +6,10 @@
 
 [node name="FactionSelector" instance=ExtResource( 1 )]
 
+[node name="HSeparator" parent="." index="0"]
+show_behind_parent = true
+rect_min_size = Vector2( 0, 5 )
+
 [node name="VBoxContainer" parent="MarginContainer" index="0"]
 custom_constants/separation = 10
 
@@ -41,7 +45,7 @@ custom_constants/separation = 10
 margin_right = 470.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
-text = "Grande Bretagne"
+text = "title_great_britain"
 align = 1
 valign = 1
 uppercase = true
@@ -53,24 +57,34 @@ margin_bottom = 185.0
 texture = ExtResource( 2 )
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="2"]
+[node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="2"]
 margin_top = 195.0
+margin_right = 470.0
+margin_bottom = 209.0
+text = "Nombre de navire : %d"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="3"]
+margin_top = 219.0
+margin_right = 470.0
+margin_bottom = 223.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="4"]
+margin_top = 233.0
 margin_right = 470.0
 margin_bottom = 396.0
 size_flags_vertical = 3
-text = "Rejoignez la flotte la pluis puissante du monde, et participez à la protection de l'empire Britannique.
-
-Votre mission est de sécuriser les flottes commerciales dans les caraibes.
-
-Pour le roi d'Angleterre !"
+text = "info_great_britain"
 autowrap = true
 
-[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="3"]
+[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="5"]
 margin_top = 406.0
 margin_right = 470.0
 margin_bottom = 446.0
 rect_min_size = Vector2( 0, 40 )
-text = "btn_join"
+text = "btn_join_great_britain"
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" index="1"]
 margin_left = 490.0
@@ -92,7 +106,7 @@ custom_constants/separation = 10
 margin_right = 470.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
-text = "Pirates"
+text = "title_pirates"
 align = 1
 valign = 1
 uppercase = true
@@ -104,24 +118,34 @@ margin_bottom = 197.0
 texture = ExtResource( 3 )
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="2"]
+[node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="2"]
 margin_top = 207.0
+margin_right = 470.0
+margin_bottom = 221.0
+text = "Nombre de navire : %d"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="3"]
+margin_top = 231.0
+margin_right = 470.0
+margin_bottom = 235.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="4"]
+margin_top = 245.0
 margin_right = 470.0
 margin_bottom = 396.0
 size_flags_vertical = 3
-text = "Personne ne rejoind la piraterie. C'est elle qui vient vous chercher.
-
-Les mauvaises conditions de vie des marins, et les aléas du destin vous pousse à chercher un moyen de survire.
-
-Même si ce n'est que pour un jour de plus."
+text = "info_pirates"
 autowrap = true
 
-[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="3"]
+[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="5"]
 margin_top = 406.0
 margin_right = 470.0
 margin_bottom = 446.0
 rect_min_size = Vector2( 0, 40 )
-text = "btn_join"
+text = "btn_join_pirates"
 
 [node name="AcceptButton" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer" index="0"]
-text = "btn_exit"
+text = "btn_quit"

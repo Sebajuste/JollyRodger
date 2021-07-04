@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/levels/Island02/Island02.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/ui/FactionSelector/FactionSelector.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/games/Multiplayer/FactionManager.gd" type="Script" id=14]
 
 [sub_resource type="ProceduralSky" id=1]
 ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
@@ -63,6 +64,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, -100 )
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573576, 0, -0.573576, -0.819152, 0, 41.5843, 0 )
 light_color = Color( 1, 0.913725, 0.682353, 1 )
 shadow_enabled = true
+
+[node name="FactionManager" type="Node" parent="."]
+script = ExtResource( 14 )
 
 [node name="NetSceneSync" type="Node" parent="."]
 script = ExtResource( 1 )
@@ -173,97 +177,111 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -393.0
-margin_top = -273.5
-margin_right = 393.0
-margin_bottom = 273.5
+margin_left = -407.5
+margin_top = -301.5
+margin_right = 407.5
+margin_bottom = 301.5
+faction_manager_path = NodePath("../../FactionManager")
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer" index="0"]
-margin_right = 746.0
-margin_bottom = 507.0
+margin_right = 775.0
+margin_bottom = 563.0
 
 [node name="Title" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="0"]
-margin_right = 746.0
+margin_right = 775.0
 
 [node name="HSeparator" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="1"]
-margin_right = 746.0
+margin_right = 775.0
 
 [node name="Content" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="2"]
-margin_right = 746.0
-margin_bottom = 457.0
+margin_right = 775.0
+margin_bottom = 513.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content" index="0"]
-margin_right = 746.0
-margin_bottom = 393.0
+margin_right = 775.0
+margin_bottom = 449.0
 
 [node name="UnitedKingdomFaction" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer" index="0"]
-margin_right = 351.0
-margin_bottom = 393.0
+margin_right = 365.0
+margin_bottom = 449.0
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction" index="0"]
-margin_right = 351.0
-margin_bottom = 393.0
+margin_right = 365.0
+margin_bottom = 449.0
 
 [node name="Title" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="0"]
-margin_right = 351.0
+margin_right = 365.0
 
 [node name="TextureRect" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="1"]
-margin_right = 351.0
+margin_right = 365.0
 
-[node name="Label" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="2"]
-margin_right = 351.0
-margin_bottom = 343.0
+[node name="ShipCount" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="2"]
+margin_right = 365.0
 
-[node name="JoinButton" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="3"]
-margin_top = 353.0
-margin_right = 351.0
-margin_bottom = 393.0
+[node name="HSeparator" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="3"]
+margin_right = 365.0
+
+[node name="Label" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="4"]
+margin_right = 365.0
+margin_bottom = 399.0
+
+[node name="JoinButton" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="5"]
+margin_top = 409.0
+margin_right = 365.0
+margin_bottom = 449.0
 
 [node name="VSeparator" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer" index="1"]
-margin_left = 371.0
-margin_right = 375.0
-margin_bottom = 393.0
+margin_left = 385.0
+margin_right = 389.0
+margin_bottom = 449.0
 
 [node name="PirateFaction" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer" index="2"]
-margin_left = 395.0
-margin_right = 746.0
-margin_bottom = 393.0
+margin_left = 409.0
+margin_right = 775.0
+margin_bottom = 449.0
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction" index="0"]
-margin_right = 351.0
-margin_bottom = 393.0
+margin_right = 366.0
+margin_bottom = 449.0
 
 [node name="Title" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="0"]
-margin_right = 351.0
+margin_right = 366.0
 
 [node name="TextureRect" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="1"]
-margin_right = 351.0
+margin_right = 366.0
 
-[node name="Label" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="2"]
-margin_right = 351.0
-margin_bottom = 343.0
+[node name="ShipCount" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="2"]
+margin_right = 366.0
 
-[node name="JoinButton" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="3"]
-margin_top = 353.0
-margin_right = 351.0
-margin_bottom = 393.0
+[node name="HSeparator" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="3"]
+margin_right = 366.0
+
+[node name="Label" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="4"]
+margin_right = 366.0
+margin_bottom = 399.0
+
+[node name="JoinButton" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="5"]
+margin_top = 409.0
+margin_right = 366.0
+margin_bottom = 449.0
 
 [node name="Footer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="3"]
-margin_top = 467.0
-margin_right = 746.0
-margin_bottom = 507.0
+margin_top = 523.0
+margin_right = 775.0
+margin_bottom = 563.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer" index="0"]
-margin_right = 746.0
+margin_right = 775.0
 
 [node name="AcceptButton" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer/HBoxContainer" index="0"]
-margin_left = 298.0
-margin_right = 448.0
+margin_left = 312.0
+margin_right = 462.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
 
+[connection signal="faction_data_updated" from="FactionManager" to="GUI/FactionSelector" method="_on_faction_data_updated"]
 [connection signal="pressed" from="GUI/SinkMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_RestartGameButton_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinButton" to="." method="_on_JoinUnitedKingdom_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer/JoinButton" to="." method="_on_JoinPirate_pressed"]

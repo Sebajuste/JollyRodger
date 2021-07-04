@@ -1,7 +1,7 @@
 extends Node
 
 signal properties_created(id, properties)
-signal properties_removed(id)
+signal properties_removed(id, properties)
 signal property_changed(id, key, value)
 
 signal disconnected(cause)
@@ -147,8 +147,9 @@ func _player_connected(id: int):
 
 func _player_disconnected(id: int):
 	print("Player disconnected [id: %d]" % id)
+	var info = player_info[id]
 	player_info.erase(id)
-	emit_signal("properties_removed", id)
+	emit_signal("properties_removed", id, info)
 
 
 func _connected_ok():

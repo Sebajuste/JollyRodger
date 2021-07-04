@@ -79,3 +79,5 @@ step = 0.01
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="RudderZeroTween" type="Tween" parent="Direction"]
