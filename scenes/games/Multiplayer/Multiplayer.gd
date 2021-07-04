@@ -45,7 +45,7 @@ func _ready():
 		print("Game ready")
 	else:
 		
-		$GUI.queue_free()
+		#$GUI.queue_free()
 		$AudioStreamPlayer.queue_free()
 	
 	
@@ -117,7 +117,7 @@ func create_player():
 	
 	world.add_child(player)
 	
-	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	#player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
 	camera.target = player.get_node("CaptainPlace")
 	
@@ -156,7 +156,8 @@ func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
 	camera.target = null
-	
+	$GUI/MarginContainer/BoatInfo.ship = null
+	$GUI/MarginContainer2/BoatControl.boat = null
 
 
 func _on_RestartGameButton_pressed():

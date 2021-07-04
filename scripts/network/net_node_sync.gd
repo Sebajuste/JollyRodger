@@ -21,6 +21,15 @@ var sync_node : Node
 var _last_name : String
 
 
+static func update_float(from : float, to : float, threshold := 2.0) -> float:
+	var diff := from - to
+	if diff > threshold:
+		return to
+	elif diff > threshold / 2.0:
+		return from + threshold / 2.0
+	return from
+	
+
 
 static func update_vector3(from : Vector3, to: Vector3, threshold := 2.0) -> Vector3:
 	var pos_diff : Vector3 = from - to
@@ -44,7 +53,8 @@ static func update_quat(from : Quat, to :  Quat, threshold := 2.0) -> Quat:
 
 static func update_transform(from : Transform, to : Transform, threshold := 2.0) -> Transform:
 	var result := Transform()
-	result.basis = Basis( update_quat(Quat(from.basis), Quat(to.basis), threshold) )
+	#result.basis = Basis( update_quat(Quat(from.basis), Quat(to.basis), threshold) )
+	result.basis = to.basis
 	result.origin = update_vector3(from.origin, to.origin, threshold)
 	return result
 	
