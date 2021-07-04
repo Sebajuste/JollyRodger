@@ -94,7 +94,7 @@ puppet func sync_ocean_reception(byte_packet : PoolByteArray):
 	if ocean.steepness != properties.steepness:
 		ocean.set_steepness(properties.steepness)
 	
-	ocean.ocean_time = float(properties.ocean_time) / 1000.0
+	ocean.ocean_time = NetNodeSync.update_float(ocean.ocean_time, float(properties.ocean_time) / 1000.0, 0.5)
 	
 
 

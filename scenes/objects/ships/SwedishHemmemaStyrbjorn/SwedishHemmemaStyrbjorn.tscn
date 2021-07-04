@@ -20,8 +20,8 @@ linear_damp = 3.0
 angular_damp = 3.0
 depth_before_submerged = 8.0
 displacement_amount = 3.0
-rudder_force = 1000.0
-sail_force = 1000.0
+rudder_force = 1400.0
+sail_force = 1400.0
 
 [node name="CollisionShape" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.459339, 1.37802 )

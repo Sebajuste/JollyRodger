@@ -43,7 +43,7 @@ func _process(delta):
 	$Speed/HBoxContainer/Label.text = str($Speed/HBoxContainer/VSlider.value)
 	$Direction/VBoxContainer/Label.text = str(rudder_control.value)
 	
-	if abs(rudder_control.value) < 0.15 and rudder_control.value != 0.0:
+	if abs(rudder_control.value) < 0.17 and rudder_control.value != 0.0:
 		rudder_near_zero_time += delta
 	else:
 		rudder_near_zero_time = 0.0

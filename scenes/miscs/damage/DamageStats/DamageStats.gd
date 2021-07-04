@@ -26,13 +26,12 @@ func _ready():
 #	pass
 
 
-
 func take_damage(hit: Hit, hit_box = null) -> void:
 	if health == 0:
 		return
 	
 	var new_health = health - hit.damage
-	print("[%s] Manage health : " % owner.name, new_health)
+	print("[%s] take damage : " % owner.name, new_health)
 	if Network.is_enabled():
 		if is_network_master():
 			rpc("set_health", new_health)

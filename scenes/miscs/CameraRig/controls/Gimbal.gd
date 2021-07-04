@@ -47,8 +47,7 @@ func unhandled_input(event):
 	if event.is_action_pressed("move_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		_parent.move_camera = true
-		print("Move camera")
+	
 	if event.is_action_released("move_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		_parent.move_camera = false
-		print("Unmove camera")

@@ -98,7 +98,13 @@ static func serialize_vector3(stream: NetStream, vector: Vector3, vmin := 0.0, v
 
 
 static func serialize_quat(stream: NetStream, quat : Quat) -> Quat:
-	
+	"""
+	quat.x = serialize_float(stream, quat.x, -1.0, 1.0, 0.001)
+	quat.y = serialize_float(stream, quat.y, -1.0, 1.0, 0.001)
+	quat.z = serialize_float(stream, quat.z, -1.0, 1.0, 0.001)
+	quat.w = serialize_float(stream, quat.w, -1.0, 1.0, 0.001)
+	return quat
+	"""
 	var abs_x := abs(quat.x)
 	var abs_y := abs(quat.y)
 	var abs_z := abs(quat.z)
@@ -121,13 +127,13 @@ static func serialize_quat(stream: NetStream, quat : Quat) -> Quat:
 	negative = stream.serialize_bool(stream, negative)
 	
 	if not drop_x:
-		quat.x = serialize_float(stream, quat.x, -1.0, 1.0, 0.01)
+		quat.x = serialize_float(stream, quat.x, -1.0, 1.0, 0.001)
 	if not drop_y:
-		quat.y = serialize_float(stream, quat.y, -1.0, 1.0, 0.01)
+		quat.y = serialize_float(stream, quat.y, -1.0, 1.0, 0.001)
 	if not drop_z:
-		quat.z = serialize_float(stream, quat.z, -1.0, 1.0, 0.01)
+		quat.z = serialize_float(stream, quat.z, -1.0, 1.0, 0.001)
 	if not drop_w:
-		quat.w = serialize_float(stream, quat.w, -1.0, 1.0, 0.01)
+		quat.w = serialize_float(stream, quat.w, -1.0, 1.0, 0.001)
 	
 	if drop_x:
 		quat.x = sqrt(1.0 - quat.y*quat.y - quat.z*quat.z - quat.w*quat.w)
@@ -153,10 +159,7 @@ static func serialize_quat(stream: NetStream, quat : Quat) -> Quat:
 
 
 static func serialize_transform(stream : NetStream, transform : Transform, limit_transform : NetLimitTransform) -> Transform:
-	transform.basis = Basis( serialize_quat(stream, Quat( transform.basis ) ) )
-	
-	
-	#transform.origin = serialize_vector3(stream, transform.origin, limit_transform.limit_x.x, limit_transform.limit_x.y, limit_transform.res)
+	transform.basis = Basis( serialize_quat(stream, transform.basis.get_rotation_quat() ) )
 	
 	transform.origin.x = serialize_float(stream, transform.origin.x, limit_transform.limit_x.x, limit_transform.limit_x.y, limit_transform.res)
 	transform.origin.y = serialize_float(stream, transform.origin.y, limit_transform.limit_y.x, limit_transform.limit_y.y, limit_transform.res)
