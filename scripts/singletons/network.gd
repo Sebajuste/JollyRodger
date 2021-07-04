@@ -217,7 +217,8 @@ remote func rpc_spawn_node(parent_path: String, name: String, filename: String):
 
 remote func rpc_despawn_node(node_path: String):
 	var node = get_tree().get_root().get_node(node_path)
-	node.queue_free()
+	if node:
+		node.queue_free()
 
 
 remote func rpc_rename_node(parent_path: String, old_name: String, name: String):

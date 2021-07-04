@@ -17,6 +17,7 @@ export var selectable := true setget set_selectable
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
+onready var flag = $Flag
 onready var sticker := $"3DSticker"
 
 var rudder_position := 0.0 setget set_rudder_position

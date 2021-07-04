@@ -7,14 +7,17 @@ signal health_changed(new_value, old_value)
 signal health_depleted()
 
 
-export var max_health: int = 3 setget set_max_health
+export var max_health: int = 10 setget set_max_health
 
 
-var health: int = max_health setget set_health
+var health: int = 0 setget set_health
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	health = max_health
+	
 	pass # Replace with function body.
 
 

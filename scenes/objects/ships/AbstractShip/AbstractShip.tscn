@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/objects/ships/AbstractShip/NetSyncShip.gd" type="Script" id=5]
 [ext_resource path="res://scenes/miscs/damage/DamageStats/DamageStats.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/miscs/damage/HitBox/HitBox.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/objects/Flag/Flag.tscn" type="PackedScene" id=8]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -25,6 +26,8 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Skin" type="Spatial" parent="."]
+
+[node name="Flag" parent="." instance=ExtResource( 8 )]
 
 [node name="FloatManager" parent="." groups=[
 "water_floater_manager",
@@ -46,7 +49,6 @@ damage_stats_path = NodePath("../DamageStats")
 avoid_parent = true
 
 [node name="DamageStats" parent="." instance=ExtResource( 6 )]
-max_health = 5
 
 [node name="NetSyncShip" type="Node" parent="."]
 script = ExtResource( 5 )

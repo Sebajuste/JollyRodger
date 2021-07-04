@@ -9,8 +9,17 @@ onready var camera := $World/CameraRig
 
 
 
+onready var start_position_a := $World/Island01/SpawnPositionA
+onready var start_position_b := $World/Island02/SpawnPositionB
+
+
+var start_position := Vector3.ZERO
+
+
+
 
 var player : AbstractShip
+var player_faction := ""
 var player_ship_id := 0
 
 var target : AbstractShip
@@ -23,8 +32,6 @@ func _ready():
 	
 	# If is not a dedicated server
 	if not "--server" in OS.get_cmdline_args():
-		
-		create_player()
 		
 		$World/Ocean.update_shader()
 		
@@ -52,31 +59,6 @@ func _ready():
 #func _process(delta):
 #	
 #	pass
-
-
-func create_player():
-	
-	player = SHIP_SCENE.instance()
-	player.set_network_master( Network.get_self_peer_id() )
-	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
-	
-	player_ship_id += 1
-	
-	player.global_transform.origin = Vector3(
-		rand_range(-100, 100),
-		2.0,
-		rand_range(-100, 100)
-	)
-	
-	world.add_child(player)
-	
-	camera.target = player.get_node("CaptainPlace")
-	
-	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	
-	$GUI/MarginContainer/BoatInfo.ship = player
-	$GUI/MarginContainer2/BoatControl.boat = player
-	
 
 
 
@@ -107,11 +89,46 @@ func _unhandled_input(event):
 			
 
 
+func create_player():
+	
+	player = SHIP_SCENE.instance()
+	player.set_network_master( Network.get_self_peer_id() )
+	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
+	
+	player_ship_id += 1
+	
+	player.global_transform.origin = start_position + Vector3(
+		rand_range(-100, 100),
+		2.0,
+		rand_range(-100, 100)
+	)
+	
+	world.add_child(player)
+	
+	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	
+	camera.target = player.get_node("CaptainPlace")
+	
+	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
+	player.flag.type = player_faction
+	
+	$GUI/MarginContainer/BoatInfo.ship = player
+	$GUI/MarginContainer2/BoatControl.boat = player
+	
+
+
+func return_login_screen():
+	
+	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
+	
+
+
 func _on_server_disconnected(a, b):
 	print("server disconnected;  a: ", a, " b: ", b)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
-	
-	pass
+
+
+
 
 
 func _on_object_selected(object):
@@ -121,19 +138,33 @@ func _on_object_selected(object):
 		select_hint = SELECT_HINT_SCENE.instance()
 		
 		object.add_child(select_hint)
-		select_hint.transform.origin.y = 15
+		select_hint.transform.origin.y = 30
 		
 		target = object
 
 
 func _on_ship_destroyed():
 	
-	$GUI/SinkMenu.visible = true
+	$GUI/SinkMenu.open()
 	camera.target = null
 
 
 func _on_RestartGameButton_pressed():
-	$GUI/SinkMenu.visible = false
+	$GUI/SinkMenu.close()
 	create_player()
 	
 	pass # Replace with function body.
+
+
+func _on_JoinUnitedKingdom_pressed():
+	$GUI/FactionSelector.close()
+	start_position = start_position_a.global_transform.origin
+	player_faction = "GB"
+	create_player()
+
+
+func _on_JoinPirate_pressed():
+	$GUI/FactionSelector.close()
+	start_position = start_position_b.global_transform.origin
+	player_faction = "Pirate"
+	create_player()

@@ -8,6 +8,10 @@ var submerded := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if is_network_master():
+		$LifeTimer.start()
+	
 	pass # Replace with function body.
 
 
