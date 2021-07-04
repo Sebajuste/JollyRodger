@@ -19,7 +19,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	if not ship:
+	if not ship or ship == null:
 		return
 	
 	$Position/Value.text = str( "x: %d, y: %d, z: %d" % [

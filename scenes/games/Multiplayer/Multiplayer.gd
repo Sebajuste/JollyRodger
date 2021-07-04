@@ -1,7 +1,8 @@
 extends Node
 
 
-var SHIP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
+var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
+var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 
 onready var world := $World
@@ -15,11 +16,10 @@ onready var start_position_b := $World/Island02/SpawnPositionB
 
 var start_position := Vector3.ZERO
 
-
+var admin_mode := false
 
 
 var player : AbstractShip
-var player_faction := ""
 var player_ship_id := 0
 
 var target : AbstractShip
@@ -39,6 +39,8 @@ func _ready():
 		Network.connect("disconnected", self, "_on_server_disconnected")
 		
 		ObjectSelector.connect("object_selected", self, "_on_object_selected")
+		
+		$GUI/FactionSelector.open()
 		
 		print("Game ready")
 	else:
@@ -73,7 +75,6 @@ func _unhandled_input(event):
 				select_hint = null
 			target = null
 	
-	
 	if event.is_action_pressed("fire_order") and target:
 		
 		for canon in player.get_node("Cannons").get_children():
@@ -86,12 +87,23 @@ func _unhandled_input(event):
 				canon.fire_delay = rand_range(0.0, 0.5)
 				
 				canon.fire(target_pos, target_velocity)
-			
+	
+	if event.is_action_pressed("ui_main_menu"):
+		
+		if not $GUI/GameMenu.visible:
+			$GUI/GameMenu.open()
+		else:
+			$GUI/GameMenu.close()
+	
+	
 
 
 func create_player():
 	
-	player = SHIP_SCENE.instance()
+	if admin_mode:
+		player = SHIP_FRIGATE_SCENE.instance()
+	else:
+		player = SHIP_SLOOP_SCENE.instance()
 	player.set_network_master( Network.get_self_peer_id() )
 	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
 	
@@ -110,7 +122,7 @@ func create_player():
 	camera.target = player.get_node("CaptainPlace")
 	
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.type = player_faction
+	player.flag.type = Network.get_self_property("faction")
 	
 	$GUI/MarginContainer/BoatInfo.ship = player
 	$GUI/MarginContainer2/BoatControl.boat = player
@@ -126,9 +138,6 @@ func return_login_screen():
 func _on_server_disconnected(a, b):
 	print("server disconnected;  a: ", a, " b: ", b)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
-
-
-
 
 
 func _on_object_selected(object):
@@ -158,14 +167,40 @@ func _on_RestartGameButton_pressed():
 func _on_JoinUnitedKingdom_pressed():
 	$GUI/FactionSelector.close()
 	start_position = start_position_a.global_transform.origin
-	player_faction = "GB"
-	Network.set_property("faction", player_faction)
+	Network.set_property("faction", "GB")
 	create_player()
 
 
 func _on_JoinPirate_pressed():
 	$GUI/FactionSelector.close()
 	start_position = start_position_b.global_transform.origin
-	player_faction = "Pirate"
-	Network.set_property("faction", player_faction)
+	Network.set_property("faction", "Pirate")
 	create_player()
+
+
+func _on_ChangeFactionButton_pressed():
+	
+	camera.target = null
+	
+	$GUI/MarginContainer/BoatInfo.ship = null
+	$GUI/MarginContainer2/BoatControl.boat = null
+	
+	if player:
+		player.queue_free()
+		player = null
+	
+	$GUI/FactionSelector.open()
+	$GUI/GameMenu.close()
+	
+
+
+func _on_QuitGameButton_pressed():
+	
+	get_tree().quit()
+	
+
+
+func _on_AcceptButton_pressed():
+	
+	$GUI/GameMenu.close()
+	

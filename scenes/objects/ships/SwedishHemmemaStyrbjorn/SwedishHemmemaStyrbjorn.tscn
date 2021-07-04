@@ -20,14 +20,17 @@ linear_damp = 3.0
 angular_damp = 3.0
 depth_before_submerged = 8.0
 displacement_amount = 3.0
-rudder_force = 100.0
-sail_force = 150.0
+rudder_force = 1000.0
+sail_force = 1000.0
 
 [node name="CollisionShape" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.459339, 1.37802 )
 shape = SubResource( 1 )
 
 [node name="SwedishHemmemaStrybjorn" parent="Skin" index="0" instance=ExtResource( 2 )]
+
+[node name="Flag" parent="." index="2"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 48.3859, 1.68577 )
 
 [node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2985, -2.9841, -20.7653 )
@@ -47,90 +50,115 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.27687, -2.9841, -0.0130248 
 [node name="Floater6" parent="FloatManager" index="5" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.28316, -2.9841, -0.0130248 )
 
-[node name="Rudder" parent="." index="3"]
+[node name="Rudder" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20.6079 )
 
-[node name="CaptainPlace" parent="." index="4"]
+[node name="CaptainPlace" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.99389, 19.0344 )
 
-[node name="Cannon" parent="Cannons" index="0" instance=ExtResource( 4 )]
+[node name="Cannon1" parent="Cannons" index="0" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.05835, 2.49093, -15.0696 )
+speed = 100.0
 
 [node name="Cannon2" parent="Cannons" index="1" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.42661, 2.34882, -11.9208 )
+speed = 100.0
 
 [node name="Cannon3" parent="Cannons" index="2" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.86945, 2.28603, -8.9498 )
+speed = 100.0
 
 [node name="Cannon4" parent="Cannons" index="3" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.86945, 2.28603, -5.79444 )
+speed = 100.0
 
 [node name="Cannon5" parent="Cannons" index="4" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.98006, 2.28603, -2.75548 )
+speed = 100.0
 
 [node name="Cannon6" parent="Cannons" index="5" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.00368, 2.28603, 0.402039 )
+speed = 100.0
 
 [node name="Cannon7" parent="Cannons" index="6" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.02978, 2.28603, 3.44277 )
+speed = 100.0
 
 [node name="Cannon8" parent="Cannons" index="7" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.02978, 2.28603, 6.50949 )
+speed = 100.0
 
 [node name="Cannon9" parent="Cannons" index="8" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.02978, 2.28603, 9.63241 )
+speed = 100.0
 
 [node name="Cannon10" parent="Cannons" index="9" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6.02978, 2.40135, 12.7691 )
+speed = 100.0
 
 [node name="Cannon11" parent="Cannons" index="10" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.49125, 2.39782, 16.0368 )
+speed = 100.0
 
 [node name="Cannon12" parent="Cannons" index="11" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.94914, 2.53216, -15.0881 )
+speed = 100.0
 
 [node name="Cannon13" parent="Cannons" index="12" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.7887, 2.32973, -12.007 )
+speed = 100.0
 
 [node name="Cannon14" parent="Cannons" index="13" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.8902, 2.29482, -8.94979 )
+speed = 100.0
 
 [node name="Cannon15" parent="Cannons" index="14" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.00289, 2.29482, -5.83549 )
+speed = 100.0
 
 [node name="Cannon16" parent="Cannons" index="15" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.00289, 2.29482, -2.71066 )
+speed = 100.0
 
 [node name="Cannon17" parent="Cannons" index="16" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.83576, 2.29482, 0.315495 )
+speed = 100.0
 
 [node name="Cannon18" parent="Cannons" index="17" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.95624, 2.33253, 3.3833 )
+speed = 100.0
 
 [node name="Cannon19" parent="Cannons" index="18" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.95624, 2.33253, 6.47099 )
+speed = 100.0
 
 [node name="Cannon20" parent="Cannons" index="19" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.66071, 2.35839, 9.57166 )
+speed = 100.0
 
 [node name="Cannon21" parent="Cannons" index="20" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -5.33875, 2.40902, 12.6444 )
+speed = 100.0
 
 [node name="Cannon22" parent="Cannons" index="21" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.95649, 2.47377, 15.9166 )
+speed = 100.0
 
-[node name="SelectArea" parent="." index="6"]
+[node name="SelectArea" parent="." index="7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.0598, 0 )
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
 shape = SubResource( 2 )
 
-[node name="3DSticker" parent="." index="7"]
+[node name="3DSticker" parent="." index="8"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 47.2827, 0 )
 
 [node name="CollisionShape" parent="HitBox" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.01934 )
 shape = SubResource( 3 )
+
+[node name="DamageStats" parent="." index="10"]
+max_health = 400
 
 [editable path="SelectArea"]
 [editable path="HitBox"]

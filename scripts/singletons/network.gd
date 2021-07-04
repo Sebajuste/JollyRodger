@@ -139,6 +139,11 @@ func get_own_properties() -> Dictionary:
 	return player_info[self_peer_id]
 
 
+func get_self_property(key : String):
+	var properties := get_own_properties()
+	return properties[key]
+
+
 func _player_connected(id: int):
 	print("New player connected [id: %d]" % id)
 	rpc_id(id, "rpc_register_player", get_own_properties() )
@@ -147,9 +152,10 @@ func _player_connected(id: int):
 
 func _player_disconnected(id: int):
 	print("Player disconnected [id: %d]" % id)
-	var info = player_info[id]
-	player_info.erase(id)
-	emit_signal("properties_removed", id, info)
+	if player_info.has(id):
+		var info = player_info[id]
+		player_info.erase(id)
+		emit_signal("properties_removed", id, info)
 
 
 func _connected_ok():

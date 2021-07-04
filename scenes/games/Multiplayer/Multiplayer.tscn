@@ -130,40 +130,45 @@ margin_bottom = 195.0
 [node name="SinkMenu" parent="GUI" instance=ExtResource( 10 )]
 visible = false
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -210.5
-margin_top = -133.0
-margin_right = 210.5
-margin_bottom = 133.0
+margin_left = -210.0
+margin_top = -244.0
+margin_right = 211.0
+margin_bottom = -34.0
 
 [node name="VBoxContainer" parent="GUI/SinkMenu/MarginContainer" index="0"]
 margin_right = 381.0
-margin_bottom = 226.0
+margin_bottom = 170.0
+custom_constants/separation = 10
 
 [node name="Title" parent="GUI/SinkMenu/MarginContainer/VBoxContainer" index="0"]
 margin_right = 381.0
+text = "Ooops"
+uppercase = false
 
 [node name="HSeparator" parent="GUI/SinkMenu/MarginContainer/VBoxContainer" index="1"]
+margin_top = 50.0
 margin_right = 381.0
+margin_bottom = 54.0
 
 [node name="Content" parent="GUI/SinkMenu/MarginContainer/VBoxContainer" index="2"]
+margin_top = 64.0
 margin_right = 381.0
-margin_bottom = 166.0
+margin_bottom = 120.0
 
 [node name="Label" type="Label" parent="GUI/SinkMenu/MarginContainer/VBoxContainer/Content" index="0"]
 margin_right = 381.0
-margin_bottom = 82.0
+margin_bottom = 56.0
 size_flags_vertical = 3
 text = "Vous avez été coulé."
 align = 1
 valign = 1
 
 [node name="Footer" parent="GUI/SinkMenu/MarginContainer/VBoxContainer" index="3"]
-margin_top = 186.0
+margin_top = 130.0
 margin_right = 381.0
-margin_bottom = 226.0
+margin_bottom = 170.0
 
 [node name="HBoxContainer" parent="GUI/SinkMenu/MarginContainer/VBoxContainer/Footer" index="0"]
 margin_right = 381.0
@@ -173,6 +178,7 @@ margin_left = 115.0
 margin_right = 265.0
 
 [node name="FactionSelector" parent="GUI" instance=ExtResource( 13 )]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -277,6 +283,58 @@ margin_right = 775.0
 margin_left = 312.0
 margin_right = 462.0
 
+[node name="GameMenu" parent="GUI" instance=ExtResource( 10 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -162.5
+margin_top = -204.5
+margin_right = 162.5
+margin_bottom = 204.5
+
+[node name="VBoxContainer" parent="GUI/GameMenu/MarginContainer" index="0"]
+margin_right = 285.0
+margin_bottom = 369.0
+
+[node name="Title" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="0"]
+margin_right = 285.0
+text = "title_main_menu"
+
+[node name="HSeparator" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="1"]
+margin_right = 285.0
+
+[node name="Content" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="2"]
+margin_right = 285.0
+margin_bottom = 309.0
+
+[node name="ChangeFactionButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
+margin_right = 285.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "btn_change_faction"
+
+[node name="QuitGameButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="1"]
+margin_top = 44.0
+margin_right = 285.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+text = "btn_quit"
+
+[node name="Footer" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="3"]
+margin_top = 329.0
+margin_right = 285.0
+margin_bottom = 369.0
+
+[node name="HBoxContainer" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Footer" index="0"]
+margin_right = 285.0
+
+[node name="AcceptButton" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer" index="0"]
+margin_left = 67.0
+margin_right = 217.0
+text = "btn_resume"
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
@@ -286,6 +344,10 @@ autoplay = true
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinButton" to="." method="_on_JoinUnitedKingdom_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer/JoinButton" to="." method="_on_JoinPirate_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="return_login_screen"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_AcceptButton_pressed"]
 
 [editable path="GUI/SinkMenu"]
 [editable path="GUI/FactionSelector"]
+[editable path="GUI/GameMenu"]

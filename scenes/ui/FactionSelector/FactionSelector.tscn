@@ -149,3 +149,5 @@ text = "btn_join_pirates"
 
 [node name="AcceptButton" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer" index="0"]
 text = "btn_quit"
+
+[connection signal="visibility_changed" from="." to="." method="_on_FactionSelector_visibility_changed"]

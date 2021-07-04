@@ -19,7 +19,7 @@ mass = 25.0
 depth_before_submerged = 6.0
 displacement_amount = 2.4
 rudder_force = 120.0
-sail_force = 100.0
+sail_force = 120.0
 
 [node name="CollisionShape" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.242932 )

@@ -47,3 +47,13 @@ func _on_faction_data_updated(faction_data):
 		pirate_ship_count.text = tr("label_ship_count") + (" : %d" % faction_data.pirate_count)
 	
 	pass # Replace with function body.
+
+
+func _on_FactionSelector_visibility_changed():
+	
+	if visible:
+		
+		Network.set_property("faction", "None")
+		
+	
+	pass # Replace with function body.
