@@ -4,7 +4,7 @@ extends Spatial
 var BULLET_SCENE = preload("res://scenes/objects/Bullet/Bullet.tscn")
 
 
-export var speed := 50.0
+export var speed := 80.0
 export var fire_rate : int = 6 setget set_fire_rate
 export var fire_delay := 0.0 setget set_fire_delay
 

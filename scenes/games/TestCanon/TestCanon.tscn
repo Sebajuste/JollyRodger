@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/objects/cannons/SimpleCannon/SimpleCanon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/games/TestCanon/TestCanon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=3]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 300, 1, 300 )
@@ -50,7 +51,7 @@ material/0 = SubResource( 3 )
 
 [node name="Canon" parent="." instance=ExtResource( 1 )]
 transform = Transform( -0.999948, 0, 0.0102448, 0, 1, 0, -0.0102448, 0, -0.999948, 0, -0.138374, 0 )
-speed = 40.0
+speed = 120.0
 fire_rate = 60
 
 [node name="Target" type="StaticBody" parent="."]
@@ -78,6 +79,13 @@ shadow_enabled = true
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -0.99826, 0, -0.0589579, 0, 1, 0, 0.0589579, 0, -0.99826, 1.38479, 1.40923, -2.41934 )
 far = 300.0
+
+[node name="Camera2" type="Camera" parent="."]
+transform = Transform( -0.697503, -0.268923, 0.664206, 0, 0.926909, 0.375286, -0.716582, 0.261763, -0.646522, 117.613, 69.0236, -35.3657 )
+current = true
+far = 300.0
+
+[node name="SceneSpawner" parent="." instance=ExtResource( 3 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

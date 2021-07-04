@@ -5,7 +5,6 @@
 
 [node name="Cannon" type="Spatial"]
 script = ExtResource( 2 )
-speed = 60.0
 
 [node name="Skin" type="Spatial" parent="."]
 
