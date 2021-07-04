@@ -1,21 +1,33 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/miscs/3DSticker/3DSticker.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/objects/Floater/FloatManager.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/NetSyncShip.gd" type="Script" id=5]
+[ext_resource path="res://scenes/miscs/damage/DamageStats/DamageStats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/miscs/damage/HitBox/HitBox.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/objects/Flag/Flag.tscn" type="PackedScene" id=8]
+
+[sub_resource type="BoxShape" id=1]
 
 [node name="AbstractShip" type="RigidBody" groups=[
 "water_boat",
 ]]
+collision_layer = 2
+collision_mask = 3
 gravity_scale = 0.0
 continuous_cd = true
 linear_damp = 0.9
 angular_damp = 0.9
 script = ExtResource( 1 )
 
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
 [node name="Skin" type="Spatial" parent="."]
+
+[node name="Flag" parent="." instance=ExtResource( 8 )]
 
 [node name="FloatManager" parent="." groups=[
 "water_floater_manager",
@@ -28,8 +40,15 @@ script = ExtResource( 1 )
 [node name="Cannons" type="Spatial" parent="."]
 
 [node name="SelectArea" parent="." instance=ExtResource( 2 )]
+collision_mask = 0
 
 [node name="3DSticker" parent="." instance=ExtResource( 3 )]
+
+[node name="HitBox" parent="." instance=ExtResource( 7 )]
+damage_stats_path = NodePath("../DamageStats")
+avoid_parent = true
+
+[node name="DamageStats" parent="." instance=ExtResource( 6 )]
 
 [node name="NetSyncShip" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -41,4 +60,8 @@ process_mode = 0
 wait_time = 0.1
 autostart = true
 
+[node name="SinkTween" type="Tween" parent="."]
+
+[connection signal="health_changed" from="DamageStats" to="." method="_on_DamageStats_health_changed"]
+[connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]

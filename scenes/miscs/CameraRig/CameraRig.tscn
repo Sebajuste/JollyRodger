@@ -26,12 +26,14 @@ speed = 10.0
 enabled = true
 
 [node name="SpringArm" type="SpringArm" parent="Pivot"]
+collision_mask = 3
 shape = SubResource( 1 )
 spring_length = 10.0
 margin = 0.5
 
 [node name="CameraTarget" type="Position3D" parent="Pivot/SpringArm"]
 script = ExtResource( 6 )
+wave_margin = 2.0
 
 [node name="ControlSM" type="Node" parent="."]
 script = ExtResource( 2 )

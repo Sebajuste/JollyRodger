@@ -2,9 +2,24 @@ class_name NetStream
 extends Object
 
 
+
+class NetLimitTransform:
+	var limit_x : Vector2
+	var limit_y : Vector2
+	var limit_z : Vector2
+	var res : float
+	
+	func _init(x: Vector2, y: Vector2, z: Vector2, r : float):
+		limit_x = x
+		limit_y = y
+		limit_z = z
+		res = r
+	
+
+
 static func serialize_bool(stream : NetStream, value: bool) -> bool:
 	
-	return stream.serialize_bits(value, 1)
+	return true if stream.serialize_bits(value, 1) > 0 else false
 	
 
 
@@ -37,15 +52,18 @@ static func serialize_float(stream : NetStream, value : float, vmin : float, vma
 
 
 static func serialize_vector2_dir(stream: NetStream, vector: Vector2, vmax := 100.0, res := 0.01) -> Vector2:
+	var normalized := 1 if vmax == 1.0 else 0
 	var magnitude = vector.length()
 	var v := vector
 	if stream.is_writing():
 		v = vector.normalized()
 	v.x = serialize_float(stream, v.x, -1.0, 1.0, res)
 	v.y = serialize_float(stream, v.y, -1.0, 1.0, res)
-	magnitude = serialize_float(stream, magnitude, 0.0, vmax, res)
-	if stream.is_reading():
-		v = v * magnitude
+	normalized = stream.serialize_bits(normalized, 1)
+	if not normalized:
+		magnitude = serialize_float(stream, magnitude, 0.0, vmax, res)
+		if stream.is_reading():
+			v = v * magnitude
 	return v
 
 
@@ -56,6 +74,7 @@ static func serialize_vector2(stream: NetStream, vector: Vector2, vmin := 0.0, v
 
 
 static func serialize_vector3_dir(stream: NetStream, vector: Vector3, vmax := 100.0, res := 0.01) -> Vector3:
+	var normalized := 1 if vmax == 1.0 else 0
 	var magnitude = vector.length()
 	var v = vector
 	if stream.is_writing():
@@ -63,9 +82,11 @@ static func serialize_vector3_dir(stream: NetStream, vector: Vector3, vmax := 10
 	v.x = serialize_float(stream, v.x, -1.0, 1.0, res)
 	v.y = serialize_float(stream, v.y, -1.0, 1.0, res)
 	v.z = serialize_float(stream, v.z, -1.0, 1.0, res)
-	magnitude = serialize_float(stream, magnitude, 0.0, vmax, res)
-	if stream.is_reading():
-		v = v * magnitude
+	normalized = stream.serialize_bits(normalized, 1)
+	if not normalized:
+		magnitude = serialize_float(stream, magnitude, 0.0, vmax, res)
+		if stream.is_reading():
+			v = v * magnitude
 	return v
 
 
@@ -77,16 +98,70 @@ static func serialize_vector3(stream: NetStream, vector: Vector3, vmin := 0.0, v
 
 
 static func serialize_quat(stream: NetStream, quat : Quat) -> Quat:
-	quat.x = serialize_float(stream, quat.x, -1.0, 1.0, 0.001)
-	quat.y = serialize_float(stream, quat.y, -1.0, 1.0, 0.001)
-	quat.z = serialize_float(stream, quat.z, -1.0, 1.0, 0.001)
-	quat.w = serialize_float(stream, quat.w, -1.0, 1.0, 0.001)
-	return quat
+	
+	var abs_x := abs(quat.x)
+	var abs_y := abs(quat.y)
+	var abs_z := abs(quat.z)
+	var abs_w := abs(quat.w)
+	
+	# select wich value will be droped
+	var drop_x := true if abs_x > abs_y and abs_x > abs_z and abs_x > abs_w else false
+	var drop_y := true if abs_y > abs_x and abs_y > abs_z and abs_y > abs_w else false
+	var drop_z := true if abs_z > abs_x and abs_z > abs_y and abs_z > abs_w else false
+	var drop_w := true if abs_w > abs_x and abs_w > abs_y and abs_w > abs_z else false
+	
+	drop_x = stream.serialize_bool(stream, drop_x)
+	drop_y = stream.serialize_bool(stream, drop_y)
+	drop_z = stream.serialize_bool(stream, drop_z)
+	drop_w = stream.serialize_bool(stream, drop_w)
+	
+	# TODO : avoid send negative bit
+	var negative := true if( (drop_x and quat.x < 0.0) or (drop_y and quat.y < 0.0) or (drop_z and quat.z < 0.0) or (drop_w and quat.w < 0.0) ) else false
+	
+	negative = stream.serialize_bool(stream, negative)
+	
+	if not drop_x:
+		quat.x = serialize_float(stream, quat.x, -1.0, 1.0, 0.01)
+	if not drop_y:
+		quat.y = serialize_float(stream, quat.y, -1.0, 1.0, 0.01)
+	if not drop_z:
+		quat.z = serialize_float(stream, quat.z, -1.0, 1.0, 0.01)
+	if not drop_w:
+		quat.w = serialize_float(stream, quat.w, -1.0, 1.0, 0.01)
+	
+	if drop_x:
+		quat.x = sqrt(1.0 - quat.y*quat.y - quat.z*quat.z - quat.w*quat.w)
+		if negative:
+			quat.x = -quat.x
+	
+	if drop_y:
+		quat.y = sqrt(1.0 - quat.x*quat.x - quat.z*quat.z - quat.w*quat.w)
+		if negative:
+			quat.y = -quat.y
+	
+	if drop_z:
+		quat.z = sqrt(1.0 - quat.x*quat.x - quat.y*quat.y - quat.w*quat.w)
+		if negative:
+			quat.z = -quat.z
+	
+	if drop_w:
+		quat.w = sqrt(1.0 - quat.x*quat.x - quat.y*quat.y - quat.z*quat.z)
+		if negative:
+			quat.w = -quat.w
+	
+	return quat.normalized()
 
 
-static func serialize_transform(stream : NetStream, transform : Transform, pmin := -1000.0, pmax := 1000.0, res := 0.001) -> Transform:
+static func serialize_transform(stream : NetStream, transform : Transform, limit_transform : NetLimitTransform) -> Transform:
 	transform.basis = Basis( serialize_quat(stream, Quat( transform.basis ) ) )
-	transform.origin = serialize_vector3(stream, transform.origin, pmin, pmax, res)
+	
+	
+	#transform.origin = serialize_vector3(stream, transform.origin, limit_transform.limit_x.x, limit_transform.limit_x.y, limit_transform.res)
+	
+	transform.origin.x = serialize_float(stream, transform.origin.x, limit_transform.limit_x.x, limit_transform.limit_x.y, limit_transform.res)
+	transform.origin.y = serialize_float(stream, transform.origin.y, limit_transform.limit_y.x, limit_transform.limit_y.y, limit_transform.res)
+	transform.origin.z = serialize_float(stream, transform.origin.z, limit_transform.limit_z.x, limit_transform.limit_z.y, limit_transform.res)
+	
 	return transform
 
 

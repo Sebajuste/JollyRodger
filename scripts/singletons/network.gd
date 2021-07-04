@@ -1,9 +1,10 @@
 extends Node
 
 signal properties_created(id, properties)
-signal properties_removed(id)
+signal properties_removed(id, properties)
 signal property_changed(id, key, value)
 
+signal disconnected(cause)
 
 var Settings = {
 	"Version": "",
@@ -52,7 +53,6 @@ func _process(_delta):
 			
 			var parent = get_node(node_sync_info.path)
 			
-			print("parent: ", parent)
 			if parent:
 				
 				var scene = load(node_sync_info.filename)
@@ -60,10 +60,8 @@ func _process(_delta):
 				instance.name = node_sync_info.name
 				instance.set_network_master( node_sync_info.id )
 				parent.add_child(instance)
-				print("instance ready ", instance.get_path() )
 				node_sync_list.remove(index)
 				return
-	
 
 
 func close_connection():
@@ -71,7 +69,6 @@ func close_connection():
 		get_tree().get_network_peer().close_connection()
 		enabled = false
 		player_info.clear()
-	
 
 
 func is_enabled() -> bool:
@@ -131,7 +128,7 @@ func despawn_node(node: Node):
 
 func rename_node(node: Node, old_name: String):
 	
-	rpc("rcp_rename_node", node.get_parent().get_path(), old_name, node.name)
+	rpc("rpc_rename_node", node.get_parent().get_path(), old_name, node.name)
 	
 
 
@@ -142,6 +139,11 @@ func get_own_properties() -> Dictionary:
 	return player_info[self_peer_id]
 
 
+func get_self_property(key : String):
+	var properties := get_own_properties()
+	return properties[key]
+
+
 func _player_connected(id: int):
 	print("New player connected [id: %d]" % id)
 	rpc_id(id, "rpc_register_player", get_own_properties() )
@@ -150,8 +152,10 @@ func _player_connected(id: int):
 
 func _player_disconnected(id: int):
 	print("Player disconnected [id: %d]" % id)
-	player_info.erase(id)
-	emit_signal("properties_removed", id)
+	if player_info.has(id):
+		var info = player_info[id]
+		player_info.erase(id)
+		emit_signal("properties_removed", id, info)
 
 
 func _connected_ok():
@@ -171,10 +175,14 @@ func _server_disconnected():
 
 
 func _check_version(id: int, key: String, value):
-	if is_server and key == "game_version":
+	if is_server and id != 1 and key == "game_version":
 		var properties := get_own_properties()
-		if value != properties.game_version:
+		if value != Settings.Version:
+			print("Invalid game version")
+			rpc_id(id, "rpc_disconnect", "Invalid Game Version")
 			get_tree().get_network_peer().disconnect_peer(id)
+		else:
+			print("Valid game version")
 
 
 remotesync func rpc_register_player(properties):
@@ -214,12 +222,19 @@ remote func rpc_spawn_node(parent_path: String, name: String, filename: String):
 	
 
 
-func rpc_despawn_node(node_path: String):
+remote func rpc_despawn_node(node_path: String):
 	var node = get_tree().get_root().get_node(node_path)
-	node.queue_free()
+	if node:
+		node.queue_free()
 
 
-func rcp_rename_node(parent_path: String, old_name: String, name: String):
+remote func rpc_rename_node(parent_path: String, old_name: String, name: String):
 	var parent = get_tree().get_root().get_node(parent_path)
 	var node = parent.get_node(old_name)
 	node.set_name(name)
+
+
+remote func rpc_disconnect(cause : String):
+	
+	emit_signal("disconnected", cause)
+	

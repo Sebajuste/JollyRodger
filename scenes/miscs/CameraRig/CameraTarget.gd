@@ -18,17 +18,14 @@ func _physics_process(delta):
 	
 	var water_meshs := get_tree().get_nodes_in_group("water_mesh")
 	
-	
-	
 	if not water_meshs.empty():
 		var water_mesh = water_meshs[0]
 		
 		var wave_height : float = water_mesh.get_wave_height(self.global_transform.origin) + wave_margin
 		
 		if wave_height > self.global_transform.origin.y:
-			
 			self.global_transform.origin.y = wave_height
-			
+			pass
 		
 		
 	

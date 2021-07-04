@@ -1,0 +1,22 @@
+{
+	"contains_albedo": true,
+	"layers": [
+		{
+			"a": "res://assets/2d/textures/terrain/Ground027_1K-JPG/Ground027_1K_Displacement.jpg",
+			"rgb": "res://assets/2d/textures/terrain/Ground027_1K-JPG/Ground027_1K_Color.jpg"
+		},
+		{
+			"a": "res://assets/2d/textures/terrain/Ground037_1K-JPG/Ground037_1K_Displacement.jpg",
+			"rgb": "res://assets/2d/textures/terrain/Ground037_1K-JPG/Ground037_1K_Color.jpg"
+		},
+		{
+			"a": "res://assets/2d/textures/terrain/Rock028_1K-JPG/Rock028_1K_Displacement.jpg",
+			"rgb": "res://assets/2d/textures/terrain/Rock028_1K-JPG/Rock028_1K_Color.jpg"
+		},
+		{
+			"a": "res://assets/2d/textures/terrain/Rocks006_1K-JPG/Rocks006_1K_Displacement.jpg",
+			"rgb": "res://assets/2d/textures/terrain/Rocks006_1K-JPG/Rocks006_1K_Color.jpg"
+		}
+	],
+	"resolution": 1024
+}

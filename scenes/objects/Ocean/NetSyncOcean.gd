@@ -4,6 +4,8 @@ extends NetNodeSync
 onready var ocean : Ocean = owner
 
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -98,7 +100,7 @@ puppet func sync_ocean_reception(byte_packet : PoolByteArray):
 
 func _serialize(stream : NetStream, properties: Dictionary ):
 	
-	properties.wave_direction = NetStream.serialize_vector2(stream, properties.wave_direction, -1.0, 1.0, 0.01)
+	properties.wave_direction = NetStream.serialize_vector2_dir(stream, properties.wave_direction, 1.0, 0.01)
 	properties.amplitude = NetStream.serialize_float(stream, properties.amplitude, 0.0, 100.0, 0.1)
 	properties.steepness = NetStream.serialize_float(stream, properties.steepness, 0.0, 1.0, 0.001)
 	properties.ocean_time = stream.serialize_bits(properties.ocean_time, 32)

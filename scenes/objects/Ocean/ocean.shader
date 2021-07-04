@@ -3,11 +3,10 @@ render_mode cull_back, diffuse_burley, specular_schlick_ggx, blend_mix;
 
 const float PI = 3.14159265358979323846;
 
-
+/*
 uniform sampler2D water_color : hint_albedo;
 uniform sampler2D vector_map : hint_black;
 uniform float water_color_depth = 1.0;
-
 
 uniform float beach_alpha_fadeout = 0.05;
 
@@ -17,6 +16,7 @@ uniform float bubble_ramp = 1.0;
 uniform float bubble_amount = 1.0;
 
 uniform float flow_blend_timing = 1.0;
+*/
 
 uniform vec2 wave_a_direction = vec2(1.0, 1.0);
 uniform float wave_a_steepness = 0.25;
@@ -36,7 +36,7 @@ uniform float wave_c_wavelength = 5.0;
 
 uniform float ocean_time = 0.0;
 
-uniform sampler2D foam_albedo;
+// uniform sampler2D foam_albedo;
 
 
 // Surface settings:

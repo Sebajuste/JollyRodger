@@ -26,6 +26,12 @@ func _ready():
 		$ControlList/BoatAngularDamp/HSlider.value = boat.angular_damp
 		$ControlList/BoatAngularDamp/Value.text = str(boat.angular_damp)
 		
+		$ControlList/BoatRudderForce/HSlider.value = boat.rudder_force
+		$ControlList/BoatRudderForce/Value.text = str(boat.rudder_force)
+		
+		$ControlList/BoatSailForce/HSlider.value = boat.sail_force
+		$ControlList/BoatSailForce/Value.text = str(boat.sail_force)
+		
 		$ControlList/FloaterWaterDrag/HSlider.value = boat.water_drag
 		$ControlList/FloaterWaterDrag/Value.text = str(boat.water_drag)
 		
@@ -67,6 +73,19 @@ func _on_BoatAngularDamp_value_changed(value):
 	$ControlList/BoatAngularDamp/Value.text = str(value)
 	for boat in get_tree().get_nodes_in_group("water_boat"):
 		boat.angular_damp = value
+
+
+func _on_BoatRudderForce_value_changed(value):
+	$ControlList/BoatRudderForce/Value.text = str(value)
+	for boat in get_tree().get_nodes_in_group("water_boat"):
+		boat.rudder_force = value
+
+
+func _on_BoatSailForce_value_changed(value):
+	$ControlList/BoatSailForce/Value.text = str(value)
+	for boat in get_tree().get_nodes_in_group("water_boat"):
+		boat.sail_force = value
+
 
 
 func _on_FloaterWaterDrag_value_changed(value):
@@ -136,4 +155,6 @@ func _on_wavelength_value_changed(value):
 	
 	for ocean in get_tree().get_nodes_in_group("water_mesh"):
 		ocean.amplitude = value
+
+
 

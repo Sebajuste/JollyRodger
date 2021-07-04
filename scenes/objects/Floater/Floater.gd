@@ -66,7 +66,7 @@ func _physics_process(delta : float):
 	
 	rigid_body.apply_impulse(
 		floater_offset,
-		(get_gravity() / float(floater_count) ) * delta
+		( (get_gravity() * rigid_body.mass) / floater_count ) * delta
 	)
 	
 	var depth := get_water_height() - self.global_transform.origin.y
@@ -75,10 +75,16 @@ func _physics_process(delta : float):
 		immerged = true
 		
 		var displacement_multiplier := get_displacement_multiplier(depth) * delta
-		
+		"""
 		rigid_body.apply_impulse(
 			floater_offset,
 			Vector3.UP * abs(get_gravity().y) * displacement_multiplier
+		)
+		"""
+		
+		rigid_body.apply_impulse(
+			floater_offset,
+			Vector3.UP * abs(get_gravity().y * rigid_body.mass) * (displacement_multiplier / floater_count)
 		)
 		
 		rigid_body.apply_impulse(

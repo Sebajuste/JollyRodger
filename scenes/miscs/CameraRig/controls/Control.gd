@@ -16,14 +16,18 @@ func _ready():
 func process(delta):
 	
 	if move_camera:
-	
 		camera_rig.camera.translation.x = lerp(
 			camera_rig.camera.translation.x,
 			camera_rig.zoom,
 			camera_rig.zoom_speed * delta
 		)
+
+
+func input(event : InputEvent):
 	
-	pass
+	if event is InputEventMouseMotion and move_camera: # and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		_input_relative += event.get_relative()
+	
 
 
 func unhandled_input(event : InputEvent):

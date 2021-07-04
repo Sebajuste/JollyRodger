@@ -3,13 +3,18 @@ extends Node
 
 const CONFIG_FILE := "res://game_config.json"
 
-const GAME_NAME := "JollyRoger"
 
+const GAME_NAME := "JollyRoger"
+const DEFAULT_GAME_PORT := 12345
+const DEFAULT_MAX_PLAYER := 16
 
 var upnp
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	# To generate real random number
+	randomize()
 	
 	
 	var fs = File.new()
@@ -22,38 +27,47 @@ func _ready():
 		
 		var config : Dictionary = parse_json(content)
 		
-		Network.Settings.Version = config.version
-		
-		Network.Settings.Host = config.server_host
-		Network.Settings.Port = config.game_port
-		Network.Settings.MaxPlayer = config.max_player
+		Network.Settings.Host = config.get("server_host", "0.0.0.0")
+		Network.Settings.Port = config.get("game_port", DEFAULT_GAME_PORT)
+		Network.Settings.MaxPlayer = config.get("max_player", DEFAULT_MAX_PLAYER)
 		
 		
 	else:
-		print("Cannot read config file")
+		Network.Settings.Host = "0.0.0.0"
+		Network.Settings.Port = DEFAULT_GAME_PORT
+		Network.Settings.MaxPlayer = DEFAULT_MAX_PLAYER
+	
+	Network.Settings.Version = ProjectSettings.get_setting("application/config/version")
 	
 	if "--server" in OS.get_cmdline_args():
 		# Run your server startup code here...
 		# Using this check, you can start a dedicated server by running
 		# a Godot binary (headless or not) with the `--server` command-line argument.
 		
+		print("Dedicated Server startup")
+		
+		# Disable Audio
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), 0)
+		
 		var game_port : int = Network.Settings.Port
 		var game_max_players : int = Network.Settings.MaxPlayer
 		
 		var game_version : String = Network.Settings.Version
 		
-		print("Mode Dedicated Server")
-		
 		var peer = NetworkedMultiplayerENet.new()
 		var result = peer.create_server(game_port, game_max_players)
 		
 		if result != OK:
+			print("Cannot start the server. Maybe, the game port is already used")
+			get_tree().exit(-1)
 			return
 		
 		get_tree().set_network_peer(peer)
 		Network.enabled = true
 		Network.is_server = true
 		Network.set_property("game_version", game_version)
+		
+		print("Game Version : ", game_version)
 		
 		upnp = UPNP.new()
 		upnp.discover()
