@@ -59,31 +59,31 @@ func _on_Gravity_value_changed(value):
 
 func _on_Mass_value_changed(value):
 	$ControlList/Mass/Value.text = str(value)
-	for boat in get_tree().get_nodes_in_group("water_boat"):
+	for boat in get_tree().get_nodes_in_group("ship"):
 		boat.mass = value
 
 
 func _on_BoatVelocityDamp_value_changed(value):
 	$ControlList/BoatVelocityDamp/Value.text = str(value)
-	for boat in get_tree().get_nodes_in_group("water_boat"):
+	for boat in get_tree().get_nodes_in_group("ship"):
 		boat.linear_damp = value
 
 
 func _on_BoatAngularDamp_value_changed(value):
 	$ControlList/BoatAngularDamp/Value.text = str(value)
-	for boat in get_tree().get_nodes_in_group("water_boat"):
+	for boat in get_tree().get_nodes_in_group("ship"):
 		boat.angular_damp = value
 
 
 func _on_BoatRudderForce_value_changed(value):
 	$ControlList/BoatRudderForce/Value.text = str(value)
-	for boat in get_tree().get_nodes_in_group("water_boat"):
+	for boat in get_tree().get_nodes_in_group("ship"):
 		boat.rudder_force = value
 
 
 func _on_BoatSailForce_value_changed(value):
 	$ControlList/BoatSailForce/Value.text = str(value)
-	for boat in get_tree().get_nodes_in_group("water_boat"):
+	for boat in get_tree().get_nodes_in_group("ship"):
 		boat.sail_force = value
 
 

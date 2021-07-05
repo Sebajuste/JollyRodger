@@ -18,7 +18,7 @@ onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
 onready var flag = $Flag
-onready var sticker := $"3DSticker"
+onready var sticker := $Sticker3D
 
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
@@ -54,9 +54,10 @@ func _physics_process(delta):
 		)
 		add_central_force( -self.transform.basis.z * sail_position * sail_force)
 	
-	if is_network_master() and Vector3.UP.dot( global_transform.basis.y ) < 0.0:
-		var hit := Hit.new($DamageStats.health)
-		$DamageStats.take_damage(hit)
+	if Vector3.UP.dot( global_transform.basis.y ) < 0.0:
+		if not Network.enabled or is_network_master():
+			var hit := Hit.new($DamageStats.health)
+			$DamageStats.take_damage(hit)
 	
 	
 	if global_transform.origin.y < -200.0:
@@ -96,7 +97,8 @@ func _on_DamageStats_health_changed(new_value, old_value):
 
 func _on_DamageStats_health_depleted():
 	
-	$"3DSticker".visible = false
+	if sticker:
+		sticker.visible = false
 	
 	$SinkTween.interpolate_method($FloatManager, "set_displacement_amount",
 		displacement_amount, 0.0, 60.0,

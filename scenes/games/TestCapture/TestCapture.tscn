@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/games/TestCapture/SelectorHandler.gd" type="Script" id=8]
+[ext_resource path="res://scenes/games/TestCapture/TestCapture.gd" type="Script" id=9]
+[ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=10]
+
+[node name="TestCapture" type="Spatial"]
+script = ExtResource( 9 )
+
+[node name="Ocean" parent="." instance=ExtResource( 3 )]
+
+[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
+
+[node name="Flag" parent="SwedishRoyalYachtAmadis" index="2"]
+type = "GB"
+
+[node name="Position3D" type="Position3D" parent="SwedishRoyalYachtAmadis"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555203, 3.19482, 3.74307 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.998193, 0, 0.0600904, 0, 1, 0, -0.0600904, 0, 0.998193, 0, 7.73084, 17.6942 )
+mode = "Gimbal"
+target_path = NodePath("../SwedishRoyalYachtAmadis/Position3D")
+
+[node name="CapureZone" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.76442, 6.73697, -195.425 )
+
+[node name="Tower" parent="CapureZone" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3178, 1.57928, -17.263 )
+
+[node name="Tower2" parent="CapureZone" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 86.8301, 19.5859, 31.2845 )
+
+[node name="SceneSpawner" parent="." instance=ExtResource( 7 )]
+
+[node name="SelectorHandler" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -236.0
+margin_top = -132.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BoatControl" parent="CanvasLayer/MarginContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 236.0
+margin_bottom = 132.0
+ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
+
+[node name="Island01" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -432.975 )
+
+[editable path="SwedishRoyalYachtAmadis"]
+[editable path="SwedishRoyalYachtAmadis/SelectArea"]
+[editable path="SwedishRoyalYachtAmadis/3DSticker"]
+[editable path="SwedishRoyalYachtAmadis/HitBox"]

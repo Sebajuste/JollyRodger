@@ -29,6 +29,4 @@ func _on_SelectArea_input_event(camera, event, click_position, click_normal, sha
 				emit_signal("object_selected", target)
 				if ObjectSelector:
 					ObjectSelector.emit_signal("object_selected", target)
-			else:
-				print("No valid object")
 	

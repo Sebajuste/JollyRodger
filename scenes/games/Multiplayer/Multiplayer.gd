@@ -16,7 +16,7 @@ onready var start_position_b := $World/Island02/SpawnPositionB
 
 var start_position := Vector3.ZERO
 
-var admin_mode := false
+var admin_mode := true
 
 
 var player : AbstractShip
@@ -142,7 +142,7 @@ func create_player():
 	player.flag.type = Network.get_self_property("faction")
 	
 	$GUI/MarginContainer/BoatInfo.ship = player
-	$GUI/MarginContainer2/BoatControl.boat = player
+	$GUI/MarginContainer2/BoatControl.ship = player
 	
 
 

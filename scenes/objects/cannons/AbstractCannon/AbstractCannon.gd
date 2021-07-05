@@ -8,6 +8,7 @@ export var speed := 80.0
 export var fire_rate : int = 6 setget set_fire_rate
 export var fire_delay := 0.0 setget set_fire_delay
 
+export var damage := 1
 
 onready var muzzle = $Skin/Muzzle
 
@@ -95,6 +96,7 @@ func _on_fire_delayed():
 	bullet.name = "%s_%d_%d" % [bullet.name, peer_id, randi()]
 	
 	bullet.get_node("DamageSource").source = owner
+	bullet.get_node("DamageSource").damage = damage
 	#var root = get_tree().get_root().get_child(0)
 	
 	Spawner.spawn(bullet)

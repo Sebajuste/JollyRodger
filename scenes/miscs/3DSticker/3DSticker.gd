@@ -1,21 +1,21 @@
 extends Spatial
 
 
-export var text := "" setget set_text
-export var use_parent_name := false
+#export var text := "" setget set_text
+#export var use_parent_name := false
 
 
-onready var parent := get_parent()
+#onready var parent := get_parent()
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	"""
 	if use_parent_name:
 		parent.connect("renamed", self, "_node_renamed")
 	
 	$Control/Username.text = parent.name
-	
+	"""
 	pass # Replace with function body.
 
 
@@ -34,7 +34,7 @@ func _process(delta):
 			$Control.visible = false
 	
 
-
+"""
 func set_text(value):
 	
 	text = value
@@ -46,3 +46,11 @@ func _node_renamed():
 	
 	$Control/Username.text = parent.name
 	
+"""
+
+
+func _on_Sticker3D_visibility_changed():
+	
+	$Control.visible = self.visible
+	
+	pass # Replace with function body.
