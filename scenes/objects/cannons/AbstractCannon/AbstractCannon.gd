@@ -97,7 +97,7 @@ func _on_fire_delayed():
 	bullet.get_node("DamageSource").source = owner
 	#var root = get_tree().get_root().get_child(0)
 	
-	Spawner.emit_signal("on_node_emitted", bullet)
+	Spawner.spawn(bullet)
 	#root.add_child(bullet)
 	
 	bullet.global_transform.origin = muzzle.global_transform.origin

@@ -21,13 +21,17 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
 	var pos = global_transform.origin
-	
 	var cam = get_tree().get_root().get_camera()
 	if cam:
-		var screen_pos = cam.unproject_position(pos)
-		$Control.set_position( Vector2(screen_pos.x - $Control.rect_size.x/2, screen_pos.y - $Control.rect_size.y/2) )
+		var cam_dir = (cam.global_transform.origin - global_transform.origin).normalized()
+		var cam_dot = cam_dir.dot( cam.global_transform.basis.z )
+		if cam_dot > 0.0:
+			var screen_pos = cam.unproject_position(pos)
+			$Control.set_position( Vector2(screen_pos.x - $Control.rect_size.x/2, screen_pos.y - $Control.rect_size.y/2) )
+			$Control.visible = true
+		else:
+			$Control.visible = false
 	
 
 

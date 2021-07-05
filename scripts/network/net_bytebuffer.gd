@@ -1,6 +1,5 @@
-extends Object
-
 class_name NetByteBuffer
+extends Reference
 
 
 var _raw_array : PoolByteArray

@@ -20,7 +20,7 @@ export var zoom_speed := 1.5
 
 export var current := false setget set_current
 
-onready var target : Spatial = get_node(target_path)
+onready var target : Spatial
 onready var pivot : Spatial = $Pivot
 onready var camera : Camera = $Pivot/InterpolatedCamera
 onready var spring_arm : SpringArm = $Pivot/SpringArm
@@ -28,6 +28,10 @@ onready var spring_arm : SpringArm = $Pivot/SpringArm
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if target_path:
+		target = get_node(target_path)
+	
 	set_mode(mode)
 	set_zoom_range(zoom_range)
 	set_zoom(zoom)

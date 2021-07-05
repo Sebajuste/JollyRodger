@@ -1,6 +1,5 @@
-extends Object
-
 class_name NetBitPacker
+extends Reference
 
 
 static func _mask(bits: int) -> int:

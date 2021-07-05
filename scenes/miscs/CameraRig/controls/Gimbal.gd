@@ -27,7 +27,7 @@ func process(delta):
 	
 
 
-func physics_process(delta):
+func physics_process(_delta):
 	if camera_rig.target:
 		camera_rig.global_transform.origin = camera_rig.target.global_transform.origin
 

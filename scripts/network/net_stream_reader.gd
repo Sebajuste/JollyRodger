@@ -1,6 +1,5 @@
-extends NetStream
-
 class_name NetStreamReader
+extends NetStream
 
 
 var _bit_packer : NetBitPackerReader
