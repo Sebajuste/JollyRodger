@@ -1,6 +1,5 @@
-extends NetStream
-
 class_name NetStreamWriter
+extends NetStream
 
 
 var _bit_packer: NetBitPackerWriter

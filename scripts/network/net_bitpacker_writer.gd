@@ -1,6 +1,5 @@
-extends NetBitPacker
-
 class_name NetBitPackerWriter
+extends NetBitPacker
 
 
 var _scratch : int

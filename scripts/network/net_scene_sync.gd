@@ -30,7 +30,7 @@ func _ready():
 remote func rpc_request_sync_nodes(id: int):
 	var nodes : Array = get_tree().get_nodes_in_group("net_sync_node")
 	for node in nodes:
-		if scene.is_a_parent_of(node) and node.is_network_master() and node.enabled:
+		if scene.is_a_parent_of(node) and node.is_network_master() and node.replication_enabled:
 			Network.spawn_node_id(id, node.sync_node.get_parent(), node.sync_node)
 
 #
@@ -39,5 +39,5 @@ remote func rpc_request_sync_nodes(id: int):
 func _player_disconnected(id: int):
 	var nodes = get_tree().get_nodes_in_group("net_sync_node")
 	for sync_node in nodes:
-		if scene.is_a_parent_of(sync_node) and sync_node.get_network_master() == id and sync_node.enabled:
+		if scene.is_a_parent_of(sync_node) and sync_node.get_network_master() == id and sync_node.replication_enabled:
 			sync_node.remove()

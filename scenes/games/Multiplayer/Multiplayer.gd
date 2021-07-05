@@ -22,9 +22,10 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
-var target : AbstractShip
-var select_hint
+var target_ref : WeakRef
+var select_hint_ref : WeakRef
 
+var select_timer := 0.0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -33,14 +34,19 @@ func _ready():
 	# If is not a dedicated server
 	if not "--server" in OS.get_cmdline_args():
 		
+		if not Network.enabled:
+			Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
+			return
+		
 		$World/Ocean.update_shader()
 		
 		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
-		Network.connect("disconnected", self, "_on_server_disconnected")
+		Network.connect("kicked", self, "_on_server_kicked")
 		
 		ObjectSelector.connect("object_selected", self, "_on_object_selected")
 		
 		$GUI/FactionSelector.open()
+		
 		
 		print("Game ready")
 	else:
@@ -58,9 +64,11 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	
-#	pass
+func _process(delta):
+	
+	select_timer += delta
+	
+	pass
 
 
 
@@ -68,25 +76,35 @@ func _unhandled_input(event):
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT:
+		if event.button_index == BUTTON_LEFT and select_timer > 0.5:
 			
-			if select_hint:
-				select_hint.queue_free()
-				select_hint = null
-			target = null
+			if select_hint_ref != null:
+				
+				var select_hint = select_hint_ref.get_ref()
+				if select_hint == null:
+					select_hint_ref = null
+				else:
+					select_hint.queue_free()
+				
+			target_ref = null
 	
-	if event.is_action_pressed("fire_order") and target:
+	if event.is_action_pressed("fire_order") and target_ref:
 		
-		for canon in player.get_node("Cannons").get_children():
-			
-			var target_pos := target.global_transform.origin + Vector3.UP*3.0
-			var target_velocity := target.linear_velocity
-			
-			if canon.fire_ready and canon.is_in_range(target_pos):
+		var target : AbstractShip = target_ref.get_ref()
+		
+		if target:
+			for canon in player.get_node("Cannons").get_children():
 				
-				canon.fire_delay = rand_range(0.0, 0.5)
+				var target_pos := target.global_transform.origin + Vector3.UP*3.0
+				var target_velocity := target.linear_velocity
 				
-				canon.fire(target_pos, target_velocity)
+				if canon.fire_ready and canon.is_in_range(target_pos):
+					
+					canon.fire_delay = rand_range(0.0, 0.5)
+					
+					canon.fire(target_pos, target_velocity)
+		else:
+			target_ref = null
 	
 	if event.is_action_pressed("ui_main_menu"):
 		
@@ -94,7 +112,6 @@ func _unhandled_input(event):
 			$GUI/GameMenu.open()
 		else:
 			$GUI/GameMenu.close()
-	
 	
 
 
@@ -109,7 +126,7 @@ func create_player():
 	
 	player_ship_id += 1
 	
-	player.global_transform.origin = start_position + Vector3(
+	player.transform.origin = start_position + Vector3(
 		rand_range(-100, 100),
 		2.0,
 		rand_range(-100, 100)
@@ -135,21 +152,34 @@ func return_login_screen():
 	
 
 
-func _on_server_disconnected(a, b):
-	print("server disconnected;  a: ", a, " b: ", b)
+func _on_server_disconnected():
+	print("server disconnected")
+	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
+
+
+func _on_server_kicked(cause):
+	print("Kicked from server. Cause : ", cause)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
 
 func _on_object_selected(object):
 	
-	if target != object and object != player:
+	if (not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object) and object != player:
 		
-		select_hint = SELECT_HINT_SCENE.instance()
+		var select_hint
+		
+		if select_hint_ref != null and select_hint_ref.get_ref() != null:
+			select_hint = select_hint_ref.get_ref()
+		else:
+			select_hint = SELECT_HINT_SCENE.instance()
 		
 		object.add_child(select_hint)
 		select_hint.offset.y = 30
 		
-		target = object
+		target_ref = weakref(object)
+		select_hint_ref = weakref(select_hint)
+		
+		select_timer = 0.0
 
 
 func _on_ship_destroyed():

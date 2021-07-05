@@ -187,7 +187,6 @@ margin_left = -407.5
 margin_top = -301.5
 margin_right = 407.5
 margin_bottom = 301.5
-faction_manager_path = NodePath("../../FactionManager")
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer" index="0"]
 margin_right = 775.0

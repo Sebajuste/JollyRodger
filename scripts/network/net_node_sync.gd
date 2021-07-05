@@ -3,8 +3,7 @@ class_name NetNodeSync
 extends Node
 
 
-export var enabled := true
-
+export var replication_enabled := true
 
 
 var packet_id := 0
@@ -85,19 +84,19 @@ func _enter_tree():
 	_last_name = sync_node.name
 	if not Network.enabled:
 		return
-	if enabled and is_network_master():
+	if replication_enabled and is_network_master():
 		Network.spawn_node(sync_node.get_parent(), sync_node)
 	sync_node.connect("renamed", self, "_node_renamed")
 
 
 func _exit_tree():
-	if Network.enabled and enabled and is_network_master():
+	if Network.enabled and replication_enabled and is_network_master():
 		Network.despawn_node(sync_node)
 
 
 func spawn(id: int):
 	
-	if enabled and is_network_master():
+	if replication_enabled and is_network_master():
 		Network.spawn_node_id(id, sync_node.get_parent(), sync_node)
 	
 
@@ -109,7 +108,7 @@ func remove():
 
 
 func _player_connected(id: int):
-	if enabled and is_network_master():
+	if replication_enabled and is_network_master():
 		Network.spawn_node_id(id, sync_node.get_parent(), sync_node)
 
 

@@ -4,7 +4,7 @@ signal properties_created(id, properties)
 signal properties_removed(id, properties)
 signal property_changed(id, key, value)
 
-signal disconnected(cause)
+signal kicked(cause)
 
 var Settings = {
 	"Version": "",
@@ -179,7 +179,7 @@ func _check_version(id: int, key: String, value):
 		var properties := get_own_properties()
 		if value != Settings.Version:
 			print("Invalid game version")
-			rpc_id(id, "rpc_disconnect", "Invalid Game Version")
+			rpc_id(id, "rpc_kicked", "Invalid Game Version")
 			get_tree().get_network_peer().disconnect_peer(id)
 		else:
 			print("Valid game version")
@@ -234,7 +234,7 @@ remote func rpc_rename_node(parent_path: String, old_name: String, name: String)
 	node.set_name(name)
 
 
-remote func rpc_disconnect(cause : String):
+remote func rpc_kicked(cause : String):
 	
-	emit_signal("disconnected", cause)
+	emit_signal("kicked", cause)
 	

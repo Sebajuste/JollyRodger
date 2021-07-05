@@ -2,9 +2,6 @@ class_name ShipFlag
 extends Spatial
 
 
-#const FLAG_MATERIAL := preload("flag.material")
-
-
 var MATERIAL_MAP := {
 	"None": "",
 	"GB": "res://scenes/objects/Flag/flag_gb.material",
@@ -20,8 +17,6 @@ onready var flag_mesh := $Pivot/MeshInstance
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	#set_network_master( owner.get_network_master() )
 	
 	set_type(type)
 	
@@ -51,8 +46,8 @@ func set_type(value):
 
 
 func _on_Flag_tree_entered():
-	if not is_network_master():
-		rpc("rpc_request_flag", Network.get_self_peer_id())
+	if Network.enabled and not is_network_master():
+		rpc("rpc_request_flag")
 
 
 puppet func rpc_change_flag(value):
@@ -60,9 +55,7 @@ puppet func rpc_change_flag(value):
 	load_material()
 
 
-master func rpc_request_flag(peer_id):
-	
+master func rpc_request_flag():
+	var peer_id := get_tree().get_rpc_sender_id()
 	rpc_id(peer_id, "rpc_change_flag", type)
 	
-
-
