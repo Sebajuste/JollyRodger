@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/objects/Terrain/Terrain.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/objects/Terrain/IslandHeightCurve.tres" type="Curve" id=2]
+[ext_resource path="res://scenes/objects/Terrain/IslandFalls01.tres" type="Curve" id=3]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+seed = 1
+
+[node name="Island" type="Node"]
+
+[node name="Terrain" parent="." instance=ExtResource( 1 )]
+noise = SubResource( 1 )
+height = 80.0
+height_curve = ExtResource( 2 )
+island_curve = ExtResource( 3 )
