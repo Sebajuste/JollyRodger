@@ -2,5 +2,7 @@
 
 [ext_resource path="res://scenes/miscs/damage/DamageStats/DamageStats.gd" type="Script" id=1]
 
-[node name="DamageStats" type="Node"]
+[node name="DamageStats" type="Node" groups=[
+"damage_stats",
+]]
 script = ExtResource( 1 )

@@ -58,10 +58,13 @@ func _process(delta):
 	var angle := rad2deg( dir.angle() )
 	if angle < 0:
 		angle = 360 - abs(angle)
-	azimut_value.text = str( angle )
+	azimut_value.text = str( round(angle) )
 	
 	var speed := Vector2(ship.linear_velocity.x, ship.linear_velocity.z)
-	speed_value.text = str( speed.length() )
+	
+	var knot := speed.length() * 1.852
+	
+	speed_value.text = str( round(knot * 10) / 10 )
 	
 	health_value.text = str(ship.damage_stats.health)
 	

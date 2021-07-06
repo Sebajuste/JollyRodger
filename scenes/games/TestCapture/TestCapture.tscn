@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
@@ -10,16 +10,17 @@
 [ext_resource path="res://scenes/games/TestCapture/SelectorHandler.gd" type="Script" id=8]
 [ext_resource path="res://scenes/games/TestCapture/TestCapture.gd" type="Script" id=9]
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=12]
 
 [node name="TestCapture" type="Spatial"]
 script = ExtResource( 9 )
 
 [node name="Ocean" parent="." instance=ExtResource( 3 )]
 
-[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
+[node name="Island01" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -432.975 )
 
-[node name="Flag" parent="SwedishRoyalYachtAmadis" index="2"]
-type = "GB"
+[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
 
 [node name="Position3D" type="Position3D" parent="SwedishRoyalYachtAmadis"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.555203, 3.19482, 3.74307 )
@@ -33,10 +34,13 @@ target_path = NodePath("../SwedishRoyalYachtAmadis/Position3D")
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.76442, 6.73697, -195.425 )
 
 [node name="Tower" parent="CapureZone" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3178, 1.57928, -17.263 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.4865, 0.850673, -14.8544 )
 
 [node name="Tower2" parent="CapureZone" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 86.8301, 19.5859, 31.2845 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 86.8301, 18.3991, 31.2845 )
+
+[node name="GroundFlag" parent="CapureZone" instance=ExtResource( 12 )]
+transform = Transform( 0.226736, 0, -0.973956, 0, 1, 0, 0.973956, 0, 0.226736, 50.8537, -3.65801, 19.6377 )
 
 [node name="SceneSpawner" parent="." instance=ExtResource( 7 )]
 
@@ -62,9 +66,6 @@ anchor_bottom = 0.0
 margin_right = 236.0
 margin_bottom = 132.0
 ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
-
-[node name="Island01" parent="." instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -432.975 )
 
 [editable path="SwedishRoyalYachtAmadis"]
 [editable path="SwedishRoyalYachtAmadis/SelectArea"]

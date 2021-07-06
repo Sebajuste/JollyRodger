@@ -139,7 +139,7 @@ func create_player():
 	camera.target = player.get_node("CaptainPlace")
 	
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.type = Network.get_self_property("faction")
+	player.flag.faction = Network.get_self_property("faction")
 	
 	$GUI/MarginContainer/BoatInfo.ship = player
 	$GUI/MarginContainer2/BoatControl.ship = player

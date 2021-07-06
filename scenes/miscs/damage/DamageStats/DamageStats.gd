@@ -3,14 +3,19 @@ extends Node
 
 
 signal damage_taken(damage)
+signal heal_received(heal)
 signal health_changed(new_value, old_value)
 signal health_depleted()
+signal health_undepleted()
 
 
 export var max_health: int = 10 setget set_max_health
 
 
 var health: int = 0 setget set_health
+
+
+var alive := true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,18 +31,27 @@ func _ready():
 #	pass
 
 
+func is_alive() -> bool:
+	
+	return health > 0
+	
+
+
 func take_damage(hit: Hit, hit_box = null) -> void:
 	if health == 0:
 		return
 	
 	var new_health = health - hit.damage
 	print("[%s] take damage : " % owner.name, new_health)
+	set_health(new_health)
+	"""
 	if Network.is_enabled():
 		if is_network_master():
 			rpc("set_health", new_health)
 			set_health(new_health)
 	else:
 		set_health(new_health)
+	"""
 
 
 func set_max_health(value: int) -> void:
@@ -46,11 +60,26 @@ func set_max_health(value: int) -> void:
 	max_health = max(1, value)
 
 
-puppet func set_health(value: int):
+func set_health(value: int):
+	if Network.enabled:
+		if is_network_master():
+			rpc("rpc_set_health", value)
+			rpc_set_health(value)
+	else:
+		rpc_set_health(value)
+
+
+puppet func rpc_set_health(value: int):
 	var old_health = health
-	health = value
-	emit_signal("damage_taken", old_health - health)
-	health = max(0, health)
+	health = max(0, value)
+	if old_health > health:
+		emit_signal("damage_taken", old_health - health)
+	else:
+		emit_signal("heal_received", health - old_health)
 	emit_signal("health_changed", health, old_health)
 	if health == 0:
+		alive = false
 		emit_signal("health_depleted")
+	elif old_health == 0:
+		alive = true
+		emit_signal("health_undepleted")

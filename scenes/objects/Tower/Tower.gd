@@ -6,6 +6,7 @@ onready var search_await_timer : Timer = $SearchAwaitTimer
 
 onready var capturable := $Capturable
 
+onready var damage_stats := $DamageStats
 
 var ships := []
 
@@ -20,6 +21,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	if not damage_stats.is_alive():
+		return
+	
 	var target = target_ref.get_ref()
 	if target == null and ready_to_target and not ships.empty():
 		var t = get_nearest_target()
@@ -35,6 +40,10 @@ func _process(delta):
 
 
 func _physics_process(delta):
+	
+	if not damage_stats.is_alive():
+		return
+	
 	var target = target_ref.get_ref()
 	if target:
 		cannon.look_at(
@@ -50,7 +59,7 @@ func get_nearest_target() -> Spatial:
 	
 	for ship in ships:
 		
-		if ship.flag.type != capturable.faction and ship.alive:
+		if ship.flag.faction != capturable.faction and ship.alive:
 			
 			var distance_squared := self.global_transform.origin.distance_squared_to(ship.global_transform.origin)
 			
@@ -76,4 +85,17 @@ func _on_DetectionArea_body_exited(body):
 func _on_SearchAwaitTimer_timeout():
 	
 	ready_to_target = true
+	
+
+
+func _on_DamageStats_health_depleted():
+	
+	$Smoke.visible = true
+	$Smoke.emitting = true
+	
+
+
+func _on_DamageStats_health_undepleted():
+	
+	$Smoke.emitting = false
 	

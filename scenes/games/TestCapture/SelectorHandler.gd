@@ -51,7 +51,7 @@ func get_target():
 	return null
 
 
-func _on_object_selected(object):
+func _on_object_selected(object, area):
 	
 	if not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object:
 		
@@ -62,8 +62,8 @@ func _on_object_selected(object):
 		else:
 			select_hint = SELECT_HINT_SCENE.instance()
 		
-		object.add_child(select_hint)
-		select_hint.offset.y = 30
+		area.add_child(select_hint)
+		#select_hint.offset.y = area
 		
 		target_ref = weakref(object)
 		select_hint_ref = weakref(select_hint)

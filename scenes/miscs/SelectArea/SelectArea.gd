@@ -21,12 +21,12 @@ func _on_SelectArea_input_event(camera, event, click_position, click_normal, sha
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT:
-			
-			var target := get_parent()
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			print("event in selector")
+			var target := owner
 			
 			if group_target == "" or target.is_in_group(group_target):
 				emit_signal("object_selected", target)
 				if ObjectSelector:
-					ObjectSelector.emit_signal("object_selected", target)
+					ObjectSelector.emit_signal("object_selected", target, self)
 	

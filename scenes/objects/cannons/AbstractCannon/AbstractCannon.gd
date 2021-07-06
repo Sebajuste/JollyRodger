@@ -95,15 +95,13 @@ func _on_fire_delayed():
 	bullet.set_network_master( peer_id )
 	bullet.name = "%s_%d_%d" % [bullet.name, peer_id, randi()]
 	
-	bullet.get_node("DamageSource").source = owner
+	bullet.get_node("DamageSource").source = self
 	bullet.get_node("DamageSource").damage = damage
-	#var root = get_tree().get_root().get_child(0)
+	
+	bullet.transform.origin = muzzle.global_transform.origin
+	bullet.apply_central_impulse(proj_velocity)
 	
 	Spawner.spawn(bullet)
-	#root.add_child(bullet)
-	
-	bullet.global_transform.origin = muzzle.global_transform.origin
-	bullet.apply_central_impulse(proj_velocity)
 	
 	if Network.enabled:
 		rpc("rpc_fire")
@@ -135,4 +133,3 @@ remotesync func rpc_fire():
 	$FireSound.pitch_scale = rand_range(0.8, 1.2)
 	$FireSound.play()
 	
-	pass

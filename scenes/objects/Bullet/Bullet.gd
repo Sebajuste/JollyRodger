@@ -3,6 +3,9 @@ extends RigidBody
 var WATER_SPLASH_SCENE = preload("res://scenes/miscs/WaterSplash/WaterSplash.tscn")
 
 
+onready var damage_source := $DamageSource
+
+
 var submerded := false
 
 

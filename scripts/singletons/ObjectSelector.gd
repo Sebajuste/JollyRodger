@@ -1,7 +1,7 @@
 extends Node
 
 
-signal object_selected(object)
+signal object_selected(object, select_area)
 
 
 # Declare member variables here. Examples:
