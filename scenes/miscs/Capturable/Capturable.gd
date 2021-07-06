@@ -6,6 +6,8 @@ signal faction_changed(new_faction, old_faction)
 
 var faction : String = "" setget set_faction
 
+var contested := false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

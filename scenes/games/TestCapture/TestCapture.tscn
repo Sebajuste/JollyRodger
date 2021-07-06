@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/games/TestCapture/SelectorHandler.gd" type="Script" id=8]
 [ext_resource path="res://scenes/games/TestCapture/TestCapture.gd" type="Script" id=9]
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=12]
 
 [node name="TestCapture" type="Spatial"]
@@ -41,6 +42,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 86.8301, 18.3991, 31.2845 )
 
 [node name="GroundFlag" parent="CapureZone" instance=ExtResource( 12 )]
 transform = Transform( 0.226736, 0, -0.973956, 0, 1, 0, 0.973956, 0, 0.226736, 50.8537, -3.65801, 19.6377 )
+
+[node name="RepairDock" parent="CapureZone" instance=ExtResource( 11 )]
+transform = Transform( 0.721132, 0, 0.692798, 0, 1, 0, -0.692798, 0, 0.721132, 109.946, -5.45377, -57.3908 )
 
 [node name="SceneSpawner" parent="." instance=ExtResource( 7 )]
 

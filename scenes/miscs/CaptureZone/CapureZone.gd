@@ -6,6 +6,9 @@ const FACTION_NULL := ""
 signal faction_changed(new_faction, old_faction)
 
 
+export var capture_repair := true
+
+
 onready var sticker_2d := $Sticker3D/Control
 onready var capture_status := $Sticker3D/Control/CaptureStatus
 
@@ -51,9 +54,7 @@ func _update_capture():
 	var faction_capture := get_faction_capture()
 	print("faction_capture : ", faction_capture )
 	if faction_capture != FACTION_NULL and faction != faction_capture and not capturing:
-		#capturing = true
-		#capture_status.set_process(true)
-		#$CaptureTimer.start()
+		
 		print("Capturing")
 		if Network.enabled and is_network_master():
 			rpc("rpc_capture_status", true, self.faction)
@@ -61,9 +62,7 @@ func _update_capture():
 			rpc_capture_status(true, self.faction)
 	elif faction == faction_capture and capturing:
 		
-		#capturing = false
-		#capture_status.set_process(false)
-		#$CaptureTimer.stop()
+		
 		print("No capture")
 		if Network.enabled and is_network_master():
 			rpc("rpc_capture_status", false, self.faction)
@@ -75,10 +74,12 @@ func _update_faction():
 	for node in get_tree().get_nodes_in_group("faction_capturable"):
 		if self.is_a_parent_of(node):
 			node.faction = faction
+			node.contested = capturing
 	
-	for node in get_tree().get_nodes_in_group("damage_stats"):
-		if self.is_a_parent_of(node):
-			node.health = node.max_health
+	if capture_repair:
+		for node in get_tree().get_nodes_in_group("damage_stats"):
+			if self.is_a_parent_of(node):
+				node.health = node.max_health
 	
 	
 

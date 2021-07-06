@@ -92,6 +92,7 @@ transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0 )
 
 [node name="Cannon" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.78069, 0 )
+speed = 80.0
 damage = 5
 
 [node name="Smoke" type="Particles" parent="."]
