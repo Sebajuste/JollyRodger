@@ -1,16 +1,86 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/objects/Terrain/Terrain.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/objects/Terrain/IslandHeightCurve.tres" type="Curve" id=2]
-[ext_resource path="res://scenes/objects/Terrain/IslandFalls01.tres" type="Curve" id=3]
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/games/Island/Island.gd" type="Script" id=4]
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=6]
+[ext_resource path="res://scenes/games/Island/IslandHeightCurve.tres" type="Curve" id=7]
 
-[sub_resource type="OpenSimplexNoise" id=1]
-seed = 1
+[sub_resource type="ProceduralSky" id=1]
+ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
+ground_horizon_color = Color( 0.501961, 0.6, 0.701961, 1 )
 
-[node name="Island" type="Node"]
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+fog_enabled = true
+fog_color = Color( 0.501961, 0.6, 0.701961, 1 )
+fog_depth_begin = 100.0
+fog_depth_end = 976.7
+fog_depth_curve = 0.901249
+fog_height_enabled = true
+fog_height_min = 20.0
+fog_height_max = -100.0
+tonemap_mode = 3
+ssao_enabled = true
 
-[node name="Terrain" parent="." instance=ExtResource( 1 )]
-noise = SubResource( 1 )
-height = 80.0
-height_curve = ExtResource( 2 )
-island_curve = ExtResource( 3 )
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="OpenSimplexNoise" id=4]
+
+[node name="TestIsland" type="Spatial"]
+
+[node name="Ocean" parent="." instance=ExtResource( 1 )]
+steepness = 0.1
+
+[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 138.493, 0, 186.233 )
+
+[node name="CaptainPosition" type="Position3D" parent="SwedishRoyalYachtAmadis"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08677, 3.20557, 3.92905 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 5 )]
+mode = "Gimbal"
+target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPosition")
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.819152, 0.573576, 0, -0.573576, -0.819152, 0, 41.5843, 0 )
+light_color = Color( 1, 0.913725, 0.682353, 1 )
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+autoplay = true
+bus = "SoundEffect"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -172.0
+margin_top = -109.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BoatControl" parent="CanvasLayer/MarginContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 172.0
+margin_bottom = 109.0
+boat_path = NodePath("../../../SwedishRoyalYachtAmadis")
+
+[node name="Island" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, -10, 150 )
+script = ExtResource( 4 )
+noise = SubResource( 3 )
+flower_noise = SubResource( 4 )
+height_curve = ExtResource( 7 )
