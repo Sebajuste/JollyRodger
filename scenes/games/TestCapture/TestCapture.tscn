@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/games/TestCapture/SelectorHandler.gd" type="Script" id=8]
+[ext_resource path="res://scenes/miscs/SelectorHandler/SelectorHandler.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/games/TestCapture/TestCapture.gd" type="Script" id=9]
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=11]
@@ -48,8 +48,7 @@ transform = Transform( 0.721132, 0, 0.692798, 0, 1, 0, -0.692798, 0, 0.721132, 1
 
 [node name="SceneSpawner" parent="." instance=ExtResource( 7 )]
 
-[node name="SelectorHandler" type="Node" parent="."]
-script = ExtResource( 8 )
+[node name="SelectorHandler" parent="." instance=ExtResource( 8 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

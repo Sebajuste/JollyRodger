@@ -13,8 +13,6 @@ export var max_health: int = 10 setget set_max_health
 
 
 var health: int = 0 setget set_health
-
-
 var alive := true
 
 
@@ -41,7 +39,10 @@ func heal(value):
 	if not is_alive():
 		return
 	var new_health = health + value
-	set_health(new_health)
+	if not Network.enabled or is_network_master():
+		set_health(new_health)
+	else:
+		rpc("rpc_heal", new_health)
 
 
 func take_damage(hit: Hit, hit_box = null) -> void:
@@ -60,12 +61,18 @@ func set_max_health(value: int) -> void:
 
 
 func set_health(value: int):
+	value = clamp(value, 0, max_health)
 	if Network.enabled:
 		if is_network_master():
 			rpc("rpc_set_health", value)
 			rpc_set_health(value)
 	else:
 		rpc_set_health(value)
+
+
+master func rpc_heal(value):
+	if health < value:
+		set_health(value)
 
 
 puppet func rpc_set_health(value: int):

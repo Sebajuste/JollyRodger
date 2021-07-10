@@ -42,5 +42,17 @@ func _on_RepairTimer_timeout():
 				print("object found : ", object)
 				
 				if object.flag.faction == faction_handler.faction:
-					damage_stats.heal(heal_value)
-	
+					if damage_stats.has_method("heal"):
+						damage_stats.heal(heal_value)
+
+
+func _on_Capturable_contested():
+	print("Repair dock contested")
+	if not Network.enabled or is_network_master():
+		$RepairTimer.stop()
+
+
+func _on_Capturable_uncontested():
+	print("Repair dock cleared")
+	if not Network.enabled or is_network_master():
+		$RepairTimer.start()

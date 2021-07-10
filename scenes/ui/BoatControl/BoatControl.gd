@@ -54,7 +54,7 @@ func _process(delta):
 		ship.global_transform.origin.z
 	] )
 	
-	var dir := Vector2(ship.global_transform.basis.z.x, ship.global_transform.basis.z.z)
+	var dir := Vector2(-ship.global_transform.basis.z.x, -ship.global_transform.basis.z.z)
 	var angle := rad2deg( dir.angle() )
 	if angle < 0:
 		angle = 360 - abs(angle)

@@ -5,10 +5,10 @@
 [ext_resource path="res://scenes/objects/RepairDock/RepairDock.gd" type="Script" id=4]
 [ext_resource path="res://scenes/miscs/DetectionArea/DetectionArea.tscn" type="PackedScene" id=5]
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=1]
 extents = Vector3( 2.8156, 4.19753, 30.0216 )
 
-[sub_resource type="CylinderShape" id=1]
+[sub_resource type="CylinderShape" id=2]
 radius = 101.215
 height = 16.7897
 
@@ -17,7 +17,7 @@ script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.27272, 11.6614 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Skin" type="Spatial" parent="."]
 
@@ -31,13 +31,15 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 29.9899 )
 group_name = "ship"
 
 [node name="CollisionShape" parent="DetectionArea" index="0"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Capturable" parent="." instance=ExtResource( 3 )]
 
 [node name="RepairTimer" type="Timer" parent="."]
 wait_time = 5.0
 
+[connection signal="contested" from="Capturable" to="." method="_on_Capturable_contested"]
+[connection signal="uncontested" from="Capturable" to="." method="_on_Capturable_uncontested"]
 [connection signal="timeout" from="RepairTimer" to="." method="_on_RepairTimer_timeout"]
 
 [editable path="DetectionArea"]

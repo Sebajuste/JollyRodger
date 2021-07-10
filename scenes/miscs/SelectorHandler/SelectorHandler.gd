@@ -63,7 +63,6 @@ func _on_object_selected(object, area):
 			select_hint = SELECT_HINT_SCENE.instance()
 		
 		area.add_child(select_hint)
-		#select_hint.offset.y = area
 		
 		target_ref = weakref(object)
 		select_hint_ref = weakref(select_hint)

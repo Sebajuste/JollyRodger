@@ -20,7 +20,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	var pos = global_transform.origin
 	var cam = get_tree().get_root().get_camera()
 	if cam:

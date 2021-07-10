@@ -17,7 +17,7 @@ func _ready():
 #	pass
 
 
-func _on_SelectArea_input_event(camera, event, click_position, click_normal, shape_idx):
+func _on_SelectArea_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
 	
 	if event is InputEventMouseButton:
 		

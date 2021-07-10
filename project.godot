@@ -197,7 +197,7 @@ _global_script_class_icons={
 config/name="JollyRoger"
 run/main_scene="res://scenes/games/MainGame/MainGame.tscn"
 config/icon="res://icon.png"
-config/version="0.0.4"
+config/version="0.0.5"
 
 [autoload]
 

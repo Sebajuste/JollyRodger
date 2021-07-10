@@ -20,7 +20,10 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
+	
+	if Network.enabled and not is_network_master():
+		return
 	
 	if not damage_stats.is_alive():
 		return
@@ -39,7 +42,7 @@ func _process(delta):
 		
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if not damage_stats.is_alive():
 		return
@@ -98,4 +101,10 @@ func _on_DamageStats_health_depleted():
 func _on_DamageStats_health_undepleted():
 	
 	$Smoke.emitting = false
+	
+
+
+func _on_Capturable_faction_changed(new_faction, old_faction):
+	
+	damage_stats.heal( damage_stats.max_health )
 	

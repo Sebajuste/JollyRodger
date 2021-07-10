@@ -46,7 +46,7 @@ func _ready():
 #	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if float_manager.is_in_water() and alive:
 		add_torque(
@@ -91,7 +91,7 @@ func set_selectable(value):
 
 
 
-func _on_DamageStats_health_changed(new_value, old_value):
+func _on_DamageStats_health_changed(_new_value, _old_value):
 	pass # Replace with function body.
 
 

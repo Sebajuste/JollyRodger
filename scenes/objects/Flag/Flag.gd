@@ -61,7 +61,7 @@ master func rpc_request_flag():
 	
 
 
-func _on_Capturable_faction_changed(new_faction, old_faction):
+func _on_Capturable_faction_changed(new_faction, _old_faction):
 	
 	set_faction(new_faction)
 	
