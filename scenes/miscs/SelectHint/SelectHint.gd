@@ -15,7 +15,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	self.global_transform.origin = get_parent().global_transform.origin + offset
 	

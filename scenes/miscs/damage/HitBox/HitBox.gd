@@ -8,7 +8,7 @@ signal hit
 
 export(NodePath) var damage_stats_path
 
-export var avoid_parent := false
+export var avoid_parent := true
 
 
 onready var damage_stats : DamageStats = get_node(damage_stats_path)
@@ -30,7 +30,11 @@ func _on_damaged(damage_source : DamageSource):
 	if not damage_source:
 		return
 	
-	if avoid_parent and (owner.is_a_parent_of(damage_source) or ( damage_source.source and owner.is_a_parent_of(damage_source.source) ) or owner == damage_source.source ):
+	if avoid_parent and (
+		owner.is_a_parent_of(damage_source)
+		or ( damage_source.source and owner.is_a_parent_of(damage_source.source) )
+		or owner == damage_source.source
+	):
 		return
 	
 	if Network.enabled and not is_network_master():
@@ -75,5 +79,5 @@ puppet func rpc_on_hit():
 
 func _get_configuration_warning() -> String:
 	
-	return "Missing CombatStats node" if not damage_stats_path else ""
+	return "Missing Damage Stats node" if not damage_stats_path else ""
 	

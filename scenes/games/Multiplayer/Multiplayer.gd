@@ -9,6 +9,7 @@ onready var world := $World
 onready var camera := $World/CameraRig
 onready var faction_manager := $FactionManager
 
+onready var selector_handler := $SelectorHandler
 
 onready var start_position_a := $World/Island01/SpawnPositionA
 onready var start_position_b := $World/Island02/SpawnPositionB
@@ -22,11 +23,12 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
+"""
 var target_ref : WeakRef
 var select_hint_ref : WeakRef
 
 var select_timer := 0.0
-
+"""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,8 +44,6 @@ func _ready():
 		
 		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 		Network.connect("kicked", self, "_on_server_kicked")
-		
-		ObjectSelector.connect("object_selected", self, "_on_object_selected")
 		
 		$GUI/FactionSelector.open()
 		
@@ -64,39 +64,27 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	select_timer += delta
-	
-	pass
-
+#func _process(delta):
+#	
+#	select_timer += delta
+#	
+#	pass
 
 
 func _unhandled_input(event):
 	
-	if event is InputEventMouseButton:
+	if event.is_action_pressed("fire_order"):
 		
-		if event.button_index == BUTTON_LEFT and select_timer > 0.5:
-			
-			if select_hint_ref != null:
-				
-				var select_hint = select_hint_ref.get_ref()
-				if select_hint == null:
-					select_hint_ref = null
-				else:
-					select_hint.queue_free()
-				
-			target_ref = null
-	
-	if event.is_action_pressed("fire_order") and target_ref:
-		
-		var target : AbstractShip = target_ref.get_ref()
+		var target : Spatial = $SelectorHandler.get_target()
 		
 		if target:
 			for canon in player.get_node("Cannons").get_children():
 				
 				var target_pos := target.global_transform.origin + Vector3.UP*3.0
-				var target_velocity := target.linear_velocity
+				
+				var target_velocity := Vector3.ZERO
+				if target.has_meta("linear_velocity"):
+					target_velocity = target.linear_velocity
 				
 				if canon.fire_ready and canon.is_in_range(target_pos):
 					
@@ -104,7 +92,8 @@ func _unhandled_input(event):
 					
 					canon.fire(target_pos, target_velocity)
 		else:
-			target_ref = null
+			#target_ref = null
+			pass
 	
 	if event.is_action_pressed("ui_main_menu"):
 		
@@ -134,15 +123,17 @@ func create_player():
 	
 	world.add_child(player)
 	
-	#player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
-	camera.target = player.get_node("CaptainPlace")
+	camera.set_target( player.get_node("CaptainPlace") )
 	
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.type = Network.get_self_property("faction")
+	player.flag.faction = Network.get_self_property("faction")
 	
-	$GUI/MarginContainer/BoatInfo.ship = player
-	$GUI/MarginContainer2/BoatControl.boat = player
+	selector_handler.exclude_select.clear()
+	selector_handler.exclude_select.append(player)
+	
+	$GUI/MarginContainer2/BoatControl.set_ship( player )
 	
 
 
@@ -162,32 +153,12 @@ func _on_server_kicked(cause):
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
 
-func _on_object_selected(object):
-	
-	if (not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object) and object != player:
-		
-		var select_hint
-		
-		if select_hint_ref != null and select_hint_ref.get_ref() != null:
-			select_hint = select_hint_ref.get_ref()
-		else:
-			select_hint = SELECT_HINT_SCENE.instance()
-		
-		object.add_child(select_hint)
-		select_hint.offset.y = 30
-		
-		target_ref = weakref(object)
-		select_hint_ref = weakref(select_hint)
-		
-		select_timer = 0.0
-
-
 func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
-	camera.target = null
-	$GUI/MarginContainer/BoatInfo.ship = null
-	$GUI/MarginContainer2/BoatControl.boat = null
+	camera.set_target( null )
+	
+	$GUI/MarginContainer2/BoatControl.set_ship( null )
 
 
 func _on_RestartGameButton_pressed():
@@ -211,10 +182,9 @@ func _on_JoinPirate_pressed():
 
 func _on_ChangeFactionButton_pressed():
 	
-	camera.target = null
+	camera.set_target( null )
 	
-	$GUI/MarginContainer/BoatInfo.ship = null
-	$GUI/MarginContainer2/BoatControl.boat = null
+	$GUI/MarginContainer2/BoatControl.set_ship( null )
 	
 	if player:
 		player.queue_free()

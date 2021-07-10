@@ -3,6 +3,9 @@ extends RigidBody
 var WATER_SPLASH_SCENE = preload("res://scenes/miscs/WaterSplash/WaterSplash.tscn")
 
 
+onready var damage_source := $DamageSource
+
+
 var submerded := false
 
 
@@ -20,7 +23,7 @@ func _ready():
 #	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if not is_inside_tree():
 		return

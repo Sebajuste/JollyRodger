@@ -28,8 +28,9 @@ func process(delta):
 
 
 func physics_process(_delta):
-	if camera_rig.target:
-		camera_rig.global_transform.origin = camera_rig.target.global_transform.origin
+	var target = camera_rig.target_ref.get_ref()
+	if target:
+		camera_rig.global_transform.origin = target.global_transform.origin
 
 
 

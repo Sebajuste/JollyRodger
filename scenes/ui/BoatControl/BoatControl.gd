@@ -1,12 +1,20 @@
 extends Control
 
 
-export(NodePath) var boat_path
+export(NodePath) var ship_path
 
 
-onready var boat : RigidBody setget set_boat
+onready var ship_ref
 
-onready var rudder_control = $Direction/VBoxContainer/HSlider
+onready var sails_label = $VBoxContainer/HBoxContainer/SailsControl/Label
+onready var sails_control = $VBoxContainer/HBoxContainer/SailsControl/VSlider
+onready var rudder_label = $VBoxContainer/RudderControl/Label
+onready var rudder_control = $VBoxContainer/RudderControl/HSlider
+
+onready var position_value = $VBoxContainer/HBoxContainer/VBoxContainer/Position/Value
+onready var azimut_value = $VBoxContainer/HBoxContainer/VBoxContainer/Direction/Value
+onready var speed_value = $VBoxContainer/HBoxContainer/VBoxContainer/Speed/Value
+onready var health_value = $VBoxContainer/HBoxContainer/VBoxContainer/Health/Value
 
 
 var move_forward := false
@@ -23,8 +31,8 @@ var rudder_near_zero_time := 0.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	if boat_path:
-		boat = get_node(boat_path)
+	if ship_path:
+		ship_ref = weakref(get_node(ship_path))
 	
 	pass # Replace with function body.
 
@@ -32,11 +40,39 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	if not ship_ref:
+		return
+	
+	var ship = ship_ref.get_ref()
+	
+	if not ship:
+		return
+	
+	position_value.text = str( "x: %d, y: %d, z: %d" % [
+		ship.global_transform.origin.x,
+		ship.global_transform.origin.y,
+		ship.global_transform.origin.z
+	] )
+	
+	var dir := Vector2(-ship.global_transform.basis.z.x, -ship.global_transform.basis.z.z)
+	var angle := rad2deg( dir.angle() )
+	if angle < 0:
+		angle = 360 - abs(angle)
+	azimut_value.text = str( round(angle) )
+	
+	var speed := Vector2(ship.linear_velocity.x, ship.linear_velocity.z)
+	
+	var knot := speed.length() * 1.852
+	
+	speed_value.text = str( round(knot * 10) / 10 )
+	
+	health_value.text = str(ship.damage_stats.health)
+	
 	if move_forward:
-		$Speed/HBoxContainer/VSlider.value += delta
+		sails_control.value += delta
 	
 	if move_backward:
-		$Speed/HBoxContainer/VSlider.value -= delta
+		sails_control.value -= delta
 	
 	if move_right:
 		rudder_control.value += delta
@@ -44,8 +80,8 @@ func _process(delta):
 	if move_left:
 		rudder_control.value -= delta
 	
-	$Speed/HBoxContainer/Label.text = str($Speed/HBoxContainer/VSlider.value)
-	$Direction/VBoxContainer/Label.text = str(rudder_control.value)
+	sails_label.text = str(sails_control.value)
+	rudder_label.text = str(rudder_control.value)
 	
 	if abs(rudder_control.value) < 0.17 and rudder_control.value != 0.0:
 		rudder_near_zero_time += delta
@@ -54,22 +90,21 @@ func _process(delta):
 	
 	if rudder_near_zero_time > 3.0:
 		rudder_near_zero_time = 0.0
-		$Direction/RudderZeroTween.interpolate_property(
+		$RudderZeroTween.interpolate_property(
 			rudder_control, "value",
 			rudder_control.value, 0.0, 1.0,
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 		)
-		$Direction/RudderZeroTween.start()
+		$RudderZeroTween.start()
 	
 
 
 func _physics_process(_delta):
-	
-	if boat:
-		
-		boat.rudder_position = $Direction/VBoxContainer/HSlider.value
-		boat.sail_position = $Speed/HBoxContainer/VSlider.value
-		
+	if ship_ref:
+		var ship = ship_ref.get_ref()
+		if ship:
+			ship.rudder_position = rudder_control.value
+			ship.sail_position = sails_control.value
 
 
 func _unhandled_input(event):
@@ -104,9 +139,8 @@ func _unhandled_input(event):
 	
 
 
-func set_boat(value):
-	
-	boat = value
-	$Direction/VBoxContainer/HSlider.value = 0
-	$Speed/HBoxContainer/VSlider.value = 0
-	
+func set_ship(value):
+	if value:
+		ship_ref = weakref(value)
+	rudder_control.value = 0
+	sails_control.value = 0
