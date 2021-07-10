@@ -43,9 +43,9 @@ shape = SubResource( 1 )
 
 [node name="SelectArea" parent="." instance=ExtResource( 2 )]
 
-[node name="3DSticker" parent="." instance=ExtResource( 3 )]
+[node name="Sticker3D" parent="." instance=ExtResource( 3 )]
 
-[node name="StickerUsername" type="Label" parent="3DSticker/Control" index="0"]
+[node name="StickerUsername" type="Label" parent="Sticker3D/Control" index="0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_fonts/font = ExtResource( 10 )
@@ -78,4 +78,4 @@ autostart = true
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]
 
-[editable path="3DSticker"]
+[editable path="Sticker3D"]

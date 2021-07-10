@@ -11,6 +11,8 @@ var target_ref : WeakRef
 var select_hint_ref : WeakRef
 var select_timer := 0.0
 
+var exclude_select := []
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,7 +34,7 @@ func _input(event):
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT:
+		if event.button_index == BUTTON_LEFT and event.pressed:
 			
 			var mouse_pos := get_viewport().get_mouse_position()
 			
@@ -42,12 +44,16 @@ func _input(event):
 			var to := from + camera.project_ray_normal(mouse_pos) * 5000
 			
 			var space_state := camera.get_world().direct_space_state
-			var result := space_state.intersect_ray(from, to, [], 0x0400, false, true)
+			var result := space_state.intersect_ray(from, to, exclude_select, 0x0400, false, true)
 			
 			if result and result.has("collider"):
 				
 				var select_area : Area = result.collider
 				var object : Spatial = select_area.object
+				
+				for exclude_object in exclude_select:
+					if exclude_object == object or exclude_object.is_a_parent_of(object):
+						return
 				
 				if not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object:
 					
@@ -55,6 +61,11 @@ func _input(event):
 					
 					if select_hint_ref != null and select_hint_ref.get_ref() != null:
 						select_hint = select_hint_ref.get_ref()
+						
+						var select_hint_parent : Node = select_hint.get_parent()
+						if select_hint_parent:
+							select_hint_parent.remove_child(select_hint)
+						
 					else:
 						select_hint = SELECT_HINT_SCENE.instance()
 					
@@ -104,7 +115,7 @@ func get_target():
 		return target_ref.get_ref()
 	return null
 
-
+"""
 func _on_object_selected(object, area):
 	
 	if not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object:
@@ -122,3 +133,4 @@ func _on_object_selected(object, area):
 		select_hint_ref = weakref(select_hint)
 		
 		select_timer = 0.0
+"""

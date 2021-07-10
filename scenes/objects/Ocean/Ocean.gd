@@ -54,7 +54,7 @@ func _ready():
 	
 	update_shader()
 	
-	if is_network_master():
+	if not Network.enabled or is_network_master():
 		
 		$NetNodeSync/Timer.start()
 		

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/3DSticker/3DSticker.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/miscs/CaptureZone/CaptureStatus.gd" type="Script" id=3]
+[ext_resource path="res://assets/fonts/treasureMapDeadhand-yLA3.tres" type="DynamicFont" id=4]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 150.0
@@ -21,6 +22,7 @@ shape = SubResource( 1 )
 [node name="CaptureStatus" type="Label" parent="Sticker3D/Control" index="0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 4 )
 align = 1
 valign = 1
 script = ExtResource( 3 )
