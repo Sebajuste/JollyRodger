@@ -75,13 +75,12 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.7035,
 
 [node name="SelectArea" parent="." index="7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.32715, -0.943612 )
-group_target = "ship"
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
 shape = SubResource( 2 )
 
-[node name="3DSticker" parent="." index="8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.6627, 0 )
+[node name="Sticker3D" parent="." index="8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.6567, 0 )
 
 [node name="HitBox" parent="." index="9"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )
@@ -93,5 +92,5 @@ shape = SubResource( 3 )
 max_health = 40
 
 [editable path="SelectArea"]
-[editable path="3DSticker"]
+[editable path="Sticker3D"]
 [editable path="HitBox"]

@@ -72,5 +72,5 @@ ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
 
 [editable path="SwedishRoyalYachtAmadis"]
 [editable path="SwedishRoyalYachtAmadis/SelectArea"]
-[editable path="SwedishRoyalYachtAmadis/3DSticker"]
+[editable path="SwedishRoyalYachtAmadis/Sticker3D"]
 [editable path="SwedishRoyalYachtAmadis/HitBox"]

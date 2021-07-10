@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/miscs/damage/HitBox/HitBox.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/objects/Flag/Flag.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/StickerUsername.gd" type="Script" id=9]
+[ext_resource path="res://assets/fonts/treasureMapDeadhand-yLA3.tres" type="DynamicFont" id=10]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -41,15 +42,19 @@ shape = SubResource( 1 )
 [node name="Cannons" type="Spatial" parent="."]
 
 [node name="SelectArea" parent="." instance=ExtResource( 2 )]
-collision_mask = 0
-group_target = "ship"
 
-[node name="3DSticker" parent="." instance=ExtResource( 3 )]
+[node name="Sticker3D" parent="." instance=ExtResource( 3 )]
 
-[node name="StickerUsername" type="Label" parent="3DSticker/Control" index="0"]
+[node name="StickerUsername" type="Label" parent="Sticker3D/Control" index="0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 10 )
+align = 1
+valign = 1
 script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HitBox" parent="." instance=ExtResource( 7 )]
 damage_stats_path = NodePath("../DamageStats")
@@ -73,4 +78,4 @@ autostart = true
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]
 
-[editable path="3DSticker"]
+[editable path="Sticker3D"]

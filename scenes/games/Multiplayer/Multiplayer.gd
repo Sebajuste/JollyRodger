@@ -9,6 +9,7 @@ onready var world := $World
 onready var camera := $World/CameraRig
 onready var faction_manager := $FactionManager
 
+onready var selector_handler := $SelectorHandler
 
 onready var start_position_a := $World/Island01/SpawnPositionA
 onready var start_position_b := $World/Island02/SpawnPositionB
@@ -44,8 +45,6 @@ func _ready():
 		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 		Network.connect("kicked", self, "_on_server_kicked")
 		
-		#ObjectSelector.connect("object_selected", self, "_on_object_selected")
-		
 		$GUI/FactionSelector.open()
 		
 		
@@ -72,23 +71,8 @@ func _ready():
 #	pass
 
 
-
 func _unhandled_input(event):
-	"""
-	if event is InputEventMouseButton:
-		
-		if event.button_index == BUTTON_LEFT and select_timer > 0.5:
-			
-			if select_hint_ref != null:
-				
-				var select_hint = select_hint_ref.get_ref()
-				if select_hint == null:
-					select_hint_ref = null
-				else:
-					select_hint.queue_free()
-				
-			target_ref = null
-	"""
+	
 	if event.is_action_pressed("fire_order"):
 		
 		var target : Spatial = $SelectorHandler.get_target()
@@ -139,12 +123,15 @@ func create_player():
 	
 	world.add_child(player)
 	
-	#player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
 	camera.set_target( player.get_node("CaptainPlace") )
 	
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
 	player.flag.faction = Network.get_self_property("faction")
+	
+	selector_handler.exclude_select.clear()
+	selector_handler.exclude_select.append(player)
 	
 	$GUI/MarginContainer2/BoatControl.set_ship( player )
 	
@@ -165,26 +152,6 @@ func _on_server_kicked(cause):
 	print("Kicked from server. Cause : ", cause)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
-"""
-func _on_object_selected(object):
-	
-	if (not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object) and object != player:
-		
-		var select_hint
-		
-		if select_hint_ref != null and select_hint_ref.get_ref() != null:
-			select_hint = select_hint_ref.get_ref()
-		else:
-			select_hint = SELECT_HINT_SCENE.instance()
-		
-		object.add_child(select_hint)
-		select_hint.offset.y = 30
-		
-		target_ref = weakref(object)
-		select_hint_ref = weakref(select_hint)
-		
-		select_timer = 0.0
-"""
 
 func _on_ship_destroyed():
 	

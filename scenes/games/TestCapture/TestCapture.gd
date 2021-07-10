@@ -11,6 +11,8 @@ func _ready():
 	
 	$CapureZone.faction = "Pirate"
 	
+	$SelectorHandler.exclude_select.append( player )
+	
 	pass # Replace with function body.
 
 

@@ -203,7 +203,6 @@ config/version="0.0.5"
 
 Network="*res://scripts/singletons/network.gd"
 Loading="*res://scripts/singletons/loading.gd"
-ObjectSelector="*res://scripts/singletons/ObjectSelector.gd"
 Spawner="*res://scripts/singletons/Spawner.gd"
 Configuration="*res://scripts/singletons/configuration.gd"
 

@@ -18,6 +18,8 @@ func _ready():
 	
 	$CanvasLayer/Control/Version/Label.text = "Version " + str( Network.Settings.Version )
 	
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
 	pass # Replace with function body.
 
 
