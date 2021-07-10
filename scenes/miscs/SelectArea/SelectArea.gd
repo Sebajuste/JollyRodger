@@ -17,18 +17,16 @@ func _ready():
 #	pass
 
 
-func _on_SelectArea_input_event(camera, event, click_position, click_normal, shape_idx):
+func _on_SelectArea_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT:
-			
-			var target := get_parent()
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			print("event in selector")
+			var target := owner
 			
 			if group_target == "" or target.is_in_group(group_target):
 				emit_signal("object_selected", target)
 				if ObjectSelector:
-					ObjectSelector.emit_signal("object_selected", target)
-			else:
-				print("No valid object")
+					ObjectSelector.emit_signal("object_selected", target, self)
 	

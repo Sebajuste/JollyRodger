@@ -31,7 +31,7 @@ func is_in_water() -> bool:
 			if child.immerged:
 				floater_submerged_count += 1
 	
-	if floater_submerged_count > floater_count / 2:
+	if floater_submerged_count > floater_count / 2.0:
 		return true
 	
 	return false

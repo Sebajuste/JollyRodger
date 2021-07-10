@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/objects/Flag/Flag.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/3d/FlagSupport/FlagSupport.dae" type="PackedScene" id=2]
+
+[node name="GroundFlag" type="Spatial"]
+
+[node name="Skin" type="Spatial" parent="."]
+
+[node name="FlagSupport" parent="Skin" instance=ExtResource( 2 )]
+transform = Transform( 15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0 )
+
+[node name="Flag" parent="." instance=ExtResource( 1 )]
+transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 18.3508, 0 )

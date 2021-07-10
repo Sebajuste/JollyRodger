@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.gd" type="Script" id=1]
+[ext_resource path="res://scenes/miscs/3DSticker/3DSticker.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/miscs/CaptureZone/CaptureStatus.gd" type="Script" id=3]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 150.0
+height = 15.0
+
+[node name="CaptureZone" type="Area"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sticker3D" parent="." instance=ExtResource( 2 )]
+
+[node name="CaptureStatus" type="Label" parent="Sticker3D/Control" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+align = 1
+valign = 1
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CaptureTimer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_CapureZone_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_CapureZone_body_exited"]
+[connection signal="tree_entered" from="." to="." method="_on_CaptureZone_tree_entered"]
+[connection signal="timeout" from="CaptureTimer" to="." method="_on_CaptureTimer_timeout"]
+
+[editable path="Sticker3D"]

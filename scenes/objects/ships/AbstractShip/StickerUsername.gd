@@ -22,7 +22,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	var peer_id := get_network_master()
 	var username = Network.get_property( peer_id, "username")
 	if username:

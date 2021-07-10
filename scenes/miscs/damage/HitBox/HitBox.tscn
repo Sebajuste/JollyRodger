@@ -9,6 +9,7 @@ extents = Vector3( 5.04731, 3.21295, 10.0573 )
 collision_layer = 8
 collision_mask = 0
 script = ExtResource( 1 )
+avoid_parent = false
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
