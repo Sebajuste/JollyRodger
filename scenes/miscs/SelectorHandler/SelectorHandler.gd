@@ -39,12 +39,10 @@ func _input(event):
 			var camera := get_tree().get_root().get_camera()
 			
 			var from := camera.project_ray_origin(mouse_pos)
-			var to := from + camera.project_ray_normal(mouse_pos) * 1000
+			var to := from + camera.project_ray_normal(mouse_pos) * 5000
 			
 			var space_state := camera.get_world().direct_space_state
 			var result := space_state.intersect_ray(from, to, [], 0x0400, false, true)
-			
-			print("pick result : ", result)
 			
 			if result and result.has("collider"):
 				
