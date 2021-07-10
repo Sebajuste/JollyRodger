@@ -6,7 +6,7 @@ const FACTION_NULL := ""
 signal faction_changed(new_faction, old_faction)
 
 
-export var capture_repair := true
+# export var capture_repair := true
 export(String, "", "GB", "Pirate") var faction := FACTION_NULL setget set_faction
 
 onready var sticker_2d := $Sticker3D/Control
@@ -17,6 +17,7 @@ onready var capture_status := $Sticker3D/Control/CaptureStatus
 
 var ship_list := []
 var capturing := false
+var contested := false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -32,9 +33,16 @@ func _ready():
 #	pass
 
 
-func get_faction_capture() -> String:
+func get_faction_capture() -> Dictionary:
 	
 	var search_faction = FACTION_NULL
+	
+	var faction_info := {
+		"faction": self.faction,
+		"current_capturing_faction": FACTION_NULL,
+		"capturing": false,
+		"contested": false
+	}
 	
 	for ship in ship_list:
 		
@@ -44,15 +52,38 @@ func get_faction_capture() -> String:
 		print("search_faction: ", search_faction, ", ship.flag.faction: ", ship.flag.faction)
 		
 		if search_faction != ship.flag.faction:
-			return self.faction
+			faction_info.contested = true
+			faction_info.capturing = false
+			#faction_info.current_capturing_faction = self.faction
+			
+			#return self.faction
+			return faction_info
 	
-	return search_faction if search_faction != FACTION_NULL else self.faction
+	#return search_faction if search_faction != FACTION_NULL else self.faction
+	
+	if search_faction != FACTION_NULL:
+		faction_info.contested = true if search_faction != self.faction else false
+		faction_info.capturing = true if search_faction != self.faction else false
+		if search_faction != self.faction:
+			faction_info.current_capturing_faction = search_faction
+	else:
+		faction_info.contested = false
+		faction_info.capturing = false
+		#faction_info.current_capturing_faction = self.faction
+	
+	return faction_info
 
 
 func _update_capture():
 	print("_update_capture, current : ", self.faction)
-	var faction_capture := get_faction_capture()
-	print("faction_capture : ", faction_capture )
+	var faction_info := get_faction_capture()
+	print("faction_info : ", faction_info )
+	
+	if Network.enabled and is_network_master():
+		rpc("rpc_capture_status", faction_info)
+	rpc_capture_status(faction_info)
+	
+	"""
 	if faction_capture != FACTION_NULL and faction != faction_capture and not capturing:
 		
 		print("Capturing")
@@ -63,15 +94,16 @@ func _update_capture():
 		
 		print("No capture")
 		if Network.enabled and is_network_master():
-			rpc("rpc_capture_status", self.faction, true)
+			rpc("rpc_capture_status", self.faction, false)
 		rpc_capture_status(self.faction, false)
+	"""
 
 
 func _update_faction():
 	for node in get_tree().get_nodes_in_group("faction_capturable"):
 		if self.is_a_parent_of(node):
 			node.faction = faction
-			node.contested = capturing
+			node.contested = contested
 	
 	"""
 	if capture_repair:
@@ -90,18 +122,25 @@ master func rpc_request_faction():
 	if capturing:
 		capture_time = $CaptureTimer.wait_time - $CaptureTimer.time_left
 	
-	rpc_id(peer_id, "rpc_capture_status", faction, capturing, capture_time)
+	var faction_info := {
+		"faction": self.faction,
+		"capturing": self.capturing,
+		"contested": self.contested
+	}
+	
+	rpc_id(peer_id, "rpc_capture_status", faction_info, capture_time)
 	
 
 
-puppet func rpc_capture_status(arg_faction : String, arg_capturing : bool, capture_time := -1):
+puppet func rpc_capture_status(capture_info : Dictionary, capture_time := -1.0):
 	
-	print("rpc_capture_status")
+	print("rpc_capture_status : ", capture_info)
 	
 	var old_faction = self.faction
 	
-	self.faction = arg_faction
-	self.capturing = arg_capturing
+	self.faction = capture_info.faction
+	self.capturing = capture_info.capturing
+	self.contested = capture_info.contested
 	
 	if capturing:
 		capture_status.visible = true
@@ -145,19 +184,24 @@ func _on_CapureZone_body_exited(body : Spatial):
 
 func _on_CaptureTimer_timeout():
 	
-	if not is_network_master():
+	if Network.enabled and not is_network_master():
 		return
 	
-	var new_faction = get_faction_capture()
-	if not new_faction:
+	var capture_info := get_faction_capture()
+	if capture_info.current_capturing_faction == FACTION_NULL:
 		print("no new faction ?")
 		return
 	
-	print("New faction : ", new_faction)
+	print("Capture timeout : ", capture_info)
+	
+	if capture_info.capturing:
+		capture_info.faction = capture_info.current_capturing_faction
+		capture_info.capturing = false
+		capture_info.contested = false
 	
 	if Network.enabled and is_network_master():
-		rpc("rpc_capture_status", self.faction, false)
-	rpc_capture_status(new_faction, false)
+		rpc("rpc_capture_status", capture_info)
+	rpc_capture_status(capture_info)
 
 
 func _on_CaptureZone_tree_entered():

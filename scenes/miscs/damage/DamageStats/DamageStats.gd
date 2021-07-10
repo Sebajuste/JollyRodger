@@ -35,6 +35,15 @@ func is_alive() -> bool:
 	
 
 
+func revive(value):
+	if is_alive():
+		return
+	if not Network.enabled or is_network_master():
+		set_health(value)
+	else:
+		rpc("rpc_heal", value)
+
+
 func heal(value):
 	if not is_alive():
 		return

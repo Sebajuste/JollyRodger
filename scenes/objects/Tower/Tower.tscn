@@ -140,7 +140,7 @@ wait_time = 5.0
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="health_undepleted" from="DamageStats" to="." method="_on_DamageStats_health_undepleted"]
-[connection signal="faction_changed" from="Capturable" to="." method="_on_Capturable_faction_changed"]
+[connection signal="uncontested" from="Capturable" to="." method="_on_Capturable_uncontested"]
 [connection signal="timeout" from="SearchAwaitTimer" to="." method="_on_SearchAwaitTimer_timeout"]
 
 [editable path="HitBox"]

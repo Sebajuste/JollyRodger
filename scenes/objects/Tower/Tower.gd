@@ -104,7 +104,13 @@ func _on_DamageStats_health_undepleted():
 	
 
 
-func _on_Capturable_faction_changed(new_faction, old_faction):
+func _on_Capturable_uncontested():
 	
-	damage_stats.heal( damage_stats.max_health )
+	if Network.enabled and not is_network_master():
+		return
+	
+	if not damage_stats.is_alive():
+		damage_stats.revive( damage_stats.max_health )
+	else:
+		damage_stats.heal( damage_stats.max_health )
 	

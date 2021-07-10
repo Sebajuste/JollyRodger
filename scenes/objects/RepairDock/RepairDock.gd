@@ -39,8 +39,6 @@ func _on_RepairTimer_timeout():
 		for object in detection_area.detected_objects:
 			if object.is_a_parent_of(damage_stats):
 				
-				print("object found : ", object)
-				
 				if object.flag.faction == faction_handler.faction:
 					if damage_stats.has_method("heal"):
 						damage_stats.heal(heal_value)
