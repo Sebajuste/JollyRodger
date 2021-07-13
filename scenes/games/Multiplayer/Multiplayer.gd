@@ -94,7 +94,9 @@ func _unhandled_input(event):
 		else:
 			#target_ref = null
 			pass
-	
+
+
+func _input(event):
 	if event.is_action_pressed("ui_main_menu"):
 		
 		if not $GUI/GameMenu.visible:
