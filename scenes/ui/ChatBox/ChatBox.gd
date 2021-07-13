@@ -1,6 +1,10 @@
 extends Control
 
 
+export var draggable := false
+
+
+
 var channels := [
 	{"name": "Local", "color": "#ffffff"},
 	{"name": "Faction", "color": "#34c5f5"},
@@ -11,6 +15,9 @@ var channels := [
 onready var channel_selector := $VBoxContainer/HBoxContainer/ChannelSelector
 onready var input_field := $VBoxContainer/HBoxContainer/MessageLineEdit
 onready var chat_log := $VBoxContainer/RichTextLabel
+
+
+var drag_position = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -129,5 +136,24 @@ func _on_MessageLineEdit_text_entered(text):
 func _on_SendButton_pressed():
 	
 	_on_MessageLineEdit_text_entered(input_field.text)
+	
+	pass # Replace with function body.
+
+
+func _on_ChatBox_gui_input(event):
+	
+	if event is InputEventMouseButton:
+		
+		if event.pressed:
+			print("start drag")
+			drag_position = get_global_mouse_position() - rect_global_position
+		else:
+			print("end drag")
+			drag_position = null
+	
+	if event is InputEventMouseMotion and drag_position:
+		
+		rect_global_position = get_global_mouse_position() - drag_position
+		
 	
 	pass # Replace with function body.
