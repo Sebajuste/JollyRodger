@@ -8,28 +8,28 @@ const HTerrain = preload("res://addons/zylann.hterrain/hterrain.gd")
 const HTerrainData = preload("res://addons/zylann.hterrain/hterrain_data.gd")
 const HTerrainTextureSet = preload("res://addons/zylann.hterrain/hterrain_texture_set.gd")
 const HTerrainDetailLayer = preload("res://addons/zylann.hterrain/hterrain_detail_layer.gd")
+const IslandDetailLayer = preload("res://scenes/games/Island/IslandDetailLayer.gd")
 
 export(float, 0.0, 1.0) var ambient_wind := 0.4
 export(int, 2, 5) var lod_scale := 2.0
-export(Shader) var detail_shader
-export(Shader) var palm_shader
-export(OpenSimplexNoise) var noise
-export(OpenSimplexNoise) var models_noise
+#export(Shader) var detail_shader
+#export(Shader) var palm_shader
+export(OpenSimplexNoise) var noise :OpenSimplexNoise
 export(Curve) var height_curve : Curve
 export(Curve) var island_curve : Curve
-export(float) var grass_density = 4
-export(float) var flower_density = 1
-export(float) var palm_density = 0.04
-export(float, 0, 1) var grass_on_sand = 0.6
-export(float, 0, 1) var grass_on_rock = 0.5
+#export(float) var grass_density = 4
+#export(float) var flower_density = 1
+#export(float) var palm_density = 0.04
+#export(float, 0, 1) var grass_on_sand = 0.6
+#export(float, 0, 1) var grass_on_rock = 0.5
 export(float) var island_height = 150
 export(float) var sand_level = 5
-export(float) var palms_height_threshold = 2
-export(float) var terrain_size = 257
-export(int) var chunk_width = 2
+#export(float) var palms_height_threshold = 2
+export(float) var terrain_size = 64
+export(int) var chunk_width = 3
 
-var island_size : float = terrain_size * chunk_width / 2.4
-var beach_size : float = terrain_size * chunk_width / 2
+var island_size : float = terrain_size * chunk_width / 2.8
+var beach_size : float = terrain_size * chunk_width / 2.5
 
 var grass_texture = load("res://assets/2d/textures/terrain/TexturesCom_Grass0157_1_seamless_S.jpg")
 var sand_texture = load("res://assets/2d/textures/terrain/Sand_007_basecolor.jpg")
@@ -41,8 +41,9 @@ var _custom_shader : Shader = null
 var _custom_globalmap_shader : Shader = null
 var _texture_set := HTerrainTextureSet.new()
 
-
 func _ready():
+#func _process(delta):
+	print("starting generation")
 	# Create terrain resource and give it a size.
 	# It must be either 513, 1025, 2049 or 4097.
 	var space : float = (terrain_size - chunk_width - 1)
@@ -59,35 +60,33 @@ func _ready():
 		
 		var terrain_childs := Array()
 		
-		# Generate grass, flower and palms detail layer
-		terrain_childs.append(generate_detail_layer_texture(terrain_data, grass_detail, grass_density, detail_shader, 0))
-		terrain_childs.append(generate_detail_layer_texture(terrain_data, flower_detail, flower_density, detail_shader, 1))
-		terrain_childs.append(generate_detail_layer_mesh(terrain_data, get_palm(), palm_density, palm_shader, 2))
+		for child in get_children():
+			if child is IslandDetailLayer:
+				terrain_childs.append(child.generate_detail_layer(terrain_data))
+				pass
 		
-		# Commit modifications so they get uploaded to the graphics card
 		generate_map(terrain_data, offset)
 		generate_terrain(terrain_data, terrain_childs, offset)
 		pass
+	print("ending generation")
 
 
 func generate_map(terrain_data : HTerrainData, offset : Vector2 = Vector2.ZERO):
 	var heightMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_HEIGHT)
 	var normalMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_NORMAL)
 	var splatMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_SPLAT)
-	var grassMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_DETAIL, 0)
-	var flowerMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_DETAIL, 1)
-	var palmMap: Image = terrain_data.get_image(HTerrainData.CHANNEL_DETAIL, 2)
 	
 	var center = Vector2((terrain_size  * chunk_width) / 2, (terrain_size  * chunk_width) / 2)
-	var grass_prct_sand = 1 - grass_on_sand
-	var grass_prct_rock = 1 - grass_on_rock
+#	var grass_prct_sand = 1 - grass_on_sand
+#	var grass_prct_rock = 1 - grass_on_rock
 	
 	heightMap.lock()
 	normalMap.lock()
 	splatMap.lock()
-	grassMap.lock()
-	flowerMap.lock()
-	palmMap.lock()
+	for child in get_children():
+		if child is IslandDetailLayer:
+			child.lock_map(terrain_data)
+			pass
 	
 	for z in terrain_size + 1:
 		for x in terrain_size + 1:
@@ -102,32 +101,35 @@ func generate_map(terrain_data : HTerrainData, offset : Vector2 = Vector2.ZERO):
 			
 			# Generate texture amounts
 			var splat : Color = splatMap.get_pixel(x, z)
+			
 			var slope = 5.0 * normal.dot(Vector3.UP) - 2.0
 			
 			var sand_amount : float = clamp(1 - slope + sand_level - h, 0.0, 1.0)
 			var rock_amount : float = clamp(1.0 - slope, 0.0, 1.0)
-			var grass_amount : float = clamp(1 - rock_amount * grass_prct_rock - sand_amount * grass_prct_sand, 0, 1)
-			var flower_amount : float = clamp(1 - rock_amount - sand_amount, 0, 1)
-			var palm_amount : float = clamp(h - palms_height_threshold, 0, 1)
-			palm_amount = clamp(palm_amount - rock_amount, 0, 1)
 			
-			splat = splat.linear_interpolate(Color(1,0,0,0), clamp(1 - sand_amount - rock_amount, 0, 1))
+#			var grass_amount : float = clamp(1 - rock_amount * grass_prct_rock - sand_amount * grass_prct_sand, 0, 1)
+#			var flower_amount : float = clamp(1 - rock_amount - sand_amount, 0, 1)
+#			var palm_amount : float = clamp(h - palms_height_threshold, 0, 1)
+#			palm_amount = clamp(palm_amount - rock_amount, 0, 1)
+			
 			splat = splat.linear_interpolate(Color(0,1,0,0), sand_amount)
 			splat = splat.linear_interpolate(Color(0,0,1,0), rock_amount)
 			
 			heightMap.set_pixel(x, z, Color(h, 0, 0))
 			normalMap.set_pixel(x, z, HTerrainData.encode_normal(normal))
 			splatMap.set_pixel(x, z, splat)
-			grassMap.set_pixel(x, z, Color(grass_amount,0,0,0))
-			flowerMap.set_pixel(x, z, Color(flower_amount,0,0,0))
-			palmMap.set_pixel(x, z, Color(palm_amount,0,0,0))
+			for child in get_children():
+				if child is IslandDetailLayer:
+					child.set_on_map(x, z, slope, h)
+					pass
 
 	heightMap.unlock()
 	normalMap.unlock()
 	splatMap.unlock()
-	grassMap.unlock()
-	flowerMap.unlock()
-	palmMap.unlock()
+	for child in get_children():
+		if child is IslandDetailLayer:
+			child.unlock_map()
+			pass
 	
 	var modified_region = Rect2(Vector2.ZERO, heightMap.get_size())
 	terrain_data.notify_region_change(modified_region, HTerrainData.CHANNEL_HEIGHT)
@@ -136,13 +138,16 @@ func generate_map(terrain_data : HTerrainData, offset : Vector2 = Vector2.ZERO):
 	terrain_data.notify_region_change(modified_region, HTerrainData.CHANNEL_DETAIL)
 	pass
 
+func shift_right(c : Color) -> Color:
+	return Color(0, c.r, c.g, c.b)
 
 func generate_terrain(terrain_data : HTerrainData, childs : Array, offset : Vector2 = Vector2.ZERO):
 	var terrain = HTerrain.new()
 	for c in childs:
 		terrain.add_child(c)
 	
-	terrain.ambient_wind = ambient_wind
+	terrain.set_ambient_wind(ambient_wind)
+	terrain.set_lod_scale(lod_scale)
 	terrain.set_shader_type(HTerrain.SHADER_CLASSIC4_LITE)
 	terrain.set_data(terrain_data)
 	generate_texture_set()
