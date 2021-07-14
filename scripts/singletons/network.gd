@@ -81,6 +81,13 @@ func set_property(key: String, value):
 	
 
 
+func has_property(peer_id: int, key: String) -> bool:
+	if player_info.has(peer_id):
+		var info = player_info[peer_id]
+		return info.has(key)
+	return false
+
+
 func get_property(peer_id: int, key: String):
 	if player_info.has(peer_id):
 		var info = player_info[peer_id]

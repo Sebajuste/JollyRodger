@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=18]
 [ext_resource path="res://scenes/levels/Island03/Island03.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scenes/ui/ChatBox/ChatBox.tscn" type="PackedScene" id=20]
 
 [sub_resource type="ProceduralSky" id=1]
 ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
@@ -145,6 +146,23 @@ script = ExtResource( 1 )
 environment = SubResource( 2 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -185.0
+margin_right = 314.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChatBox" parent="GUI/MarginContainer" instance=ExtResource( 20 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 304.0
+margin_bottom = 175.0
 
 [node name="MarginContainer2" type="MarginContainer" parent="GUI"]
 anchor_left = 1.0
