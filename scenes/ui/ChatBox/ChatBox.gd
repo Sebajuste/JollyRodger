@@ -12,12 +12,9 @@ var channels := [
 ]
 
 
-onready var channel_selector := $VBoxContainer/HBoxContainer/ChannelSelector
-onready var input_field := $VBoxContainer/HBoxContainer/MessageLineEdit
-onready var chat_log := $VBoxContainer/RichTextLabel
-
-
-var drag_position = null
+onready var channel_selector := $MarginContainer/VBoxContainer/HBoxContainer/ChannelSelector
+onready var input_field := $MarginContainer/VBoxContainer/HBoxContainer/MessageLineEdit
+onready var chat_log := $MarginContainer/VBoxContainer/RichTextLabel
 
 
 # Called when the node enters the scene tree for the first time.
@@ -68,8 +65,6 @@ func get_channel(name : String) -> Dictionary:
 
 remotesync func rpc_add_message(username, text, channel_name := "Local"):
 	
-	print("rpc_add_message")
-	
 	var channel := get_channel(channel_name)
 	
 	if not channel.has("color"):
@@ -114,8 +109,6 @@ func _get_peer_ids(channel_name) -> Array:
 
 func _on_MessageLineEdit_text_entered(text):
 	
-	print("text_entered: ", text)
-	
 	input_field.text = ""
 	input_field.release_focus()
 	
@@ -136,24 +129,5 @@ func _on_MessageLineEdit_text_entered(text):
 func _on_SendButton_pressed():
 	
 	_on_MessageLineEdit_text_entered(input_field.text)
-	
-	pass # Replace with function body.
-
-
-func _on_ChatBox_gui_input(event):
-	
-	if event is InputEventMouseButton:
-		
-		if event.pressed:
-			print("start drag")
-			drag_position = get_global_mouse_position() - rect_global_position
-		else:
-			print("end drag")
-			drag_position = null
-	
-	if event is InputEventMouseMotion and drag_position:
-		
-		rect_global_position = get_global_mouse_position() - drag_position
-		
 	
 	pass # Replace with function body.
