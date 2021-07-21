@@ -1,6 +1,10 @@
 extends Node
 
 
+signal selected(target)
+signal unselected(target)
+
+
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 
 
@@ -55,6 +59,11 @@ func _input(event):
 					if exclude_object == object or exclude_object.is_a_parent_of(object):
 						return
 				
+				if has_select():
+					
+					var select = get_select()
+					emit_signal("unselected", select)
+				
 				if not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object:
 					
 					var select_hint
@@ -75,12 +84,15 @@ func _input(event):
 					select_hint_ref = weakref(select_hint)
 					
 					select_timer = 0.0
+					
+					emit_signal("selected", object)
+					
 				
 			elif not result or not result.has("collider"):
 				
-				if select_timer > select_await:
+				if has_select():
 					
-					if select_hint_ref != null:
+					if select_timer > select_await and select_hint_ref != null:
 						
 						var select_hint = select_hint_ref.get_ref()
 						if select_hint == null:
@@ -88,49 +100,19 @@ func _input(event):
 						else:
 							select_hint.queue_free()
 						
+						var target = get_select()
 						target_ref = null
-				
+						
+						emit_signal("unselected", target)
+
+
+func has_select() -> bool:
+	
+	return true if target_ref and target_ref.get_ref() != null else false
 	
 
-"""
-func _unhandled_input(event):
-	
-	if event is InputEventMouseButton:
-		
-		if event.button_index == BUTTON_LEFT and select_timer > select_await:
-			
-			if select_hint_ref != null:
-				
-				var select_hint = select_hint_ref.get_ref()
-				if select_hint == null:
-					select_hint_ref = null
-				else:
-					select_hint.queue_free()
-				
-			target_ref = null
-"""
 
-func get_target():
+func get_select():
 	if target_ref:
 		return target_ref.get_ref()
 	return null
-
-"""
-func _on_object_selected(object, area):
-	
-	if not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object:
-		
-		var select_hint
-		
-		if select_hint_ref != null and select_hint_ref.get_ref() != null:
-			select_hint = select_hint_ref.get_ref()
-		else:
-			select_hint = SELECT_HINT_SCENE.instance()
-		
-		area.add_child(select_hint)
-		
-		target_ref = weakref(object)
-		select_hint_ref = weakref(select_hint)
-		
-		select_timer = 0.0
-"""

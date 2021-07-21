@@ -1,17 +1,13 @@
-class_name SimpleWindow
-extends Control
+extends MarginContainer
 
 
-
-export(NodePath) var ship_path
-
-
-onready var ship : AbstractShip = get_node(ship_path)
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
 	pass # Replace with function body.
 
 
@@ -20,13 +16,8 @@ func _ready():
 #	pass
 
 
-func open():
+func _on_Window_gui_input(event):
 	
-	$AnimationPlayer.play("fade_in")
+	print("_on_Window_gui_input: ", event)
 	
-
-
-func close():
-	
-	$AnimationPlayer.play("fade_out")
-	
+	pass # Replace with function body.

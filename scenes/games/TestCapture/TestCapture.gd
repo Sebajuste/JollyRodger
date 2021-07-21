@@ -25,7 +25,7 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("fire_order"):
 		
-		var target : Spatial = $SelectorHandler.get_target()
+		var target : Spatial = $SelectorHandler.get_select()
 		
 		if target:
 			for canon in player.get_node("Cannons").get_children():
