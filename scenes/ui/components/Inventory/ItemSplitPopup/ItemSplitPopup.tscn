@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/themes/new_theme.theme" type="Theme" id=1]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=1]
 [ext_resource path="res://scenes/ui/components/Inventory/ItemSplitPopup/ItemSplitPopup.gd" type="Script" id=2]
 [ext_resource path="res://scenes/ui/animations/fade_in.anim" type="Animation" id=3]
 [ext_resource path="res://scenes/ui/animations/fade_out.anim" type="Animation" id=4]

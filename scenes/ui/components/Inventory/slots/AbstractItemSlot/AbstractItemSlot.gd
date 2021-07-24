@@ -17,7 +17,7 @@ export var max_quantity := 250 setget set_max_quantity
 onready var stack_label = $StackLabel
 
 
-var item_handler : ItemHandler
+var item_handler : ItemHandler setget set_item_handler
 
 
 # Called when the node enters the scene tree for the first time.
@@ -47,7 +47,7 @@ func get_drag_data(_pos):
 		
 		return self
 	
-	return false
+	return null
 	
 
 
@@ -132,11 +132,7 @@ func pick(amount : int = -1) -> ItemHandler:
 	# Take all stack
 	if has_item() and (amount == -1 or amount == item_handler.quantity):
 		var result := item_handler
-		remove_child( item_handler )
-		item_handler = null
-		stack_label.visible = false
-		emit_signal("item_unequiped", result)
-		result.disconnect("quantity_changed", self, "_on_quantity_changed")
+		remove_item_handler()
 		return result
 	
 	# Split stack
@@ -168,22 +164,39 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 		new_item.quantity -= amount
 		
 	else:
-		item_handler = new_item
-		item_handler.rect_position = Vector2.ZERO
-		
-		if item_handler.get_parent():
-			item_handler.get_parent().remove_child(item_handler)
-		
-		add_child(item_handler)
-		if max_quantity > 1:
-			stack_label.visible = true
-			stack_label.text = str(new_item.quantity)
-			
-		
-		item_handler.connect("quantity_changed", self, "_on_quantity_changed")
-		emit_signal("item_equiped", item_handler)
+		set_item_handler(new_item)
 	
 	return true
+
+
+func set_item_handler(new_item : ItemHandler):
+	
+	if new_item == null:
+		remove_item_handler()
+	
+	item_handler = new_item
+	item_handler.rect_position = Vector2.ZERO
+	
+	if item_handler.get_parent():
+		item_handler.get_parent().remove_child(item_handler)
+	
+	add_child(item_handler)
+	if max_quantity > 1:
+		stack_label.visible = true
+		stack_label.text = str(new_item.quantity)
+	
+	item_handler.connect("quantity_changed", self, "_on_quantity_changed")
+	emit_signal("item_equiped", item_handler)
+
+
+func remove_item_handler():
+	if item_handler:
+		var item := item_handler
+		remove_child( item_handler )
+		item_handler = null
+		stack_label.visible = false
+		emit_signal("item_unequiped", item)
+		item.disconnect("quantity_changed", self, "_on_quantity_changed")
 
 
 func set_max_quantity(value):
@@ -200,14 +213,13 @@ func _on_quantity_changed(quantity : int):
 
 func _on_mouse_entered():
 	
-	
 	if has_item():
 		
 		var tooltip = TOOLTIP_SCENE.instance()
 		
 		add_child(tooltip)
 		
-		tooltip.rect_position = owner.get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
+		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
 		
 		tooltip.item = item_handler.item
 		

@@ -2,10 +2,10 @@
 
 [ext_resource path="res://scenes/ui/components/ShipEquipment/ShipEquipment.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/components/ShipEquipment/Draw.gd" type="Script" id=2]
-[ext_resource path="res://scenes/ui/components/Inventory/slots/InventoryItemSlot/InventortItemSlot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/components/Inventory/slots/InventoryItemSlot/InventoryItemSlot.tscn" type="PackedScene" id=3]
 
 [node name="ShipEquipment" type="Control" groups=[
-"inventory",
+"gui_inventory",
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0

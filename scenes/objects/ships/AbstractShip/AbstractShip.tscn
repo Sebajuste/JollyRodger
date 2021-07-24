@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -9,7 +9,8 @@
 [ext_resource path="res://scenes/miscs/damage/HitBox/HitBox.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/objects/Flag/Flag.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/StickerUsername.gd" type="Script" id=9]
-[ext_resource path="res://assets/fonts/treasureMapDeadhand-yLA3.tres" type="DynamicFont" id=10]
+[ext_resource path="res://assets/fonts/TreasureMapDeadhand_32.tres" type="DynamicFont" id=10]
+[ext_resource path="res://scenes/miscs/Inventory/Inventory.tscn" type="PackedScene" id=11]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -59,6 +60,10 @@ __meta__ = {
 [node name="HitBox" parent="." instance=ExtResource( 7 )]
 damage_stats_path = NodePath("../DamageStats")
 avoid_parent = true
+
+[node name="Inventory" parent="." instance=ExtResource( 11 )]
+
+[node name="Equipement" parent="." instance=ExtResource( 11 )]
 
 [node name="DamageStats" parent="." instance=ExtResource( 6 )]
 

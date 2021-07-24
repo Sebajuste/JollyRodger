@@ -1,4 +1,4 @@
-extends SimpleWindow
+extends WindowDialog
 
 
 onready var ship_equipment := $MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer/ShipEquipment
@@ -14,8 +14,19 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func set_inventory(inventory : Inventory):
+
+func _on_visibility_changed():
 	
-	ship_inventory.inventory = inventory
+	if visible:
+		$AnimationPlayer.play("fade_in")
+		ship_equipment.update_inventory()
+		ship_inventory.update_inventory()
+		
+	else:
+		queue_free()
+
+
+func _on_popup_hide():
 	
-	pass
+	queue_free()
+	
