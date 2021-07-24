@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/ui/components/ShipEquipment/ShipEquipment.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/components/ShipEquipment/Draw.gd" type="Script" id=2]
-[ext_resource path="res://scenes/ui/components/Inventory/InventortItemSlot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/components/Inventory/slots/InventoryItemSlot/InventortItemSlot.tscn" type="PackedScene" id=3]
 
 [node name="ShipEquipment" type="Control" groups=[
 "inventory",
@@ -41,7 +41,7 @@ margin_right = -31.6218
 margin_bottom = -24.7353
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
-max_quantity = 1
+max_quantity = 2
 
 [node name="CannonItemSlot2" parent="Ship" instance=ExtResource( 3 )]
 anchor_left = 0.5
@@ -54,7 +54,7 @@ margin_right = 67.9677
 margin_bottom = -24.7353
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
-max_quantity = 1
+max_quantity = 2
 
 [node name="CannonItemSlot3" parent="Ship" instance=ExtResource( 3 )]
 anchor_left = 0.5
@@ -67,7 +67,7 @@ margin_right = -32.1516
 margin_bottom = 75.3839
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
-max_quantity = 1
+max_quantity = 2
 
 [node name="CannonItemSlot4" parent="Ship" instance=ExtResource( 3 )]
 anchor_left = 0.5
@@ -80,4 +80,4 @@ margin_right = 68.4974
 margin_bottom = 73.7947
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
-max_quantity = 1
+max_quantity = 2

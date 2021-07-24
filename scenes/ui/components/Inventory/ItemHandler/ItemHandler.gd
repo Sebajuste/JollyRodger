@@ -1,4 +1,4 @@
-class_name ItemControl
+class_name ItemHandler
 extends Control
 
 

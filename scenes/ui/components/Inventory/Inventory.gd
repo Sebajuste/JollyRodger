@@ -2,7 +2,7 @@ class_name GUIInventory
 extends Control
 
 
-var ITEM_CONTROL = preload("res://scenes/ui/tools/items/ItemControl.tscn")
+var ITEM_HANDLER_SCENE = preload("ItemHandler/ItemHandler.tscn")
 
 
 export(NodePath) var inventory_path
@@ -46,11 +46,11 @@ func update_inventory():
 		
 		var item := GameTable.get_item(item_id)
 		
-		var gui_item : ItemControl = ITEM_CONTROL.instance()
+		var gui_item = ITEM_HANDLER_SCENE.instance()
 		gui_item.item = item
 		gui_item.quantity = quantity
 		
-		var slot : InventoryItemSlot = $GridContainer.get_child(slot_index)
+		var slot = $GridContainer.get_child(slot_index)
 		
 		slot.put(gui_item)
 		

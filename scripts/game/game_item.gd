@@ -8,12 +8,15 @@ var type : String
 var name : String
 var description : String
 var icon : Texture
+var max_stack : int
 var attributes : Dictionary = {}
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _init( item : Dictionary ):
+	
+	self.max_stack = 1
 	
 	for key in item:
 		
@@ -31,13 +34,14 @@ func _init( item : Dictionary ):
 					self.name = item.name
 				"description":
 					self.description = item.description
+				"max_stack":
+					self.max_stack = item.max_stack.to_int()
 				_:
 					var value = item[key]
 					if self.has_meta(key):
 						self.set_meta(key, value)
 					else:
 						attributes[key] = value
-	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
