@@ -13,7 +13,10 @@ onready var grid_container := $GridContainer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	pass # Replace with function body.
+	for slot in grid_container.get_children():
+		
+		slot.connect("slot_action", self, "_on_slot_action", [slot])
+		
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,3 +44,24 @@ func get_container() -> Node:
 	
 	return grid_container
 	
+
+
+func get_first_empty_slot(item_id : int = -1) -> InventoryItemSlot:
+	# Search first same items
+	if item_id > 0:
+		for slot in grid_container.get_children():
+			if slot.has_item() and slot.item_handler.item.id == item_id:
+				return slot
+	
+	# Search empty slot
+	for slot in grid_container.get_children():
+		if not slot.has_item():
+			return slot
+	return null
+
+
+func _on_slot_action(type, slot):
+	
+	emit_signal("slot_action", type, slot)
+	
+	pass

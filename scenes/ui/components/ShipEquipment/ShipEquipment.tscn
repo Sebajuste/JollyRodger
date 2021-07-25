@@ -16,7 +16,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ship" type="Control" parent="."]
+[node name="ShipDraw" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -30,7 +30,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CannonItemSlot1" parent="Ship" instance=ExtResource( 3 )]
+[node name="CannonItemSlot1" parent="ShipDraw" instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -43,7 +43,7 @@ filter_category = "Weapon"
 filter_type = "Cannon_1lb"
 max_quantity = 2
 
-[node name="CannonItemSlot2" parent="Ship" instance=ExtResource( 3 )]
+[node name="CannonItemSlot2" parent="ShipDraw" instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -56,7 +56,7 @@ filter_category = "Weapon"
 filter_type = "Cannon_1lb"
 max_quantity = 2
 
-[node name="CannonItemSlot3" parent="Ship" instance=ExtResource( 3 )]
+[node name="CannonItemSlot3" parent="ShipDraw" instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -69,7 +69,7 @@ filter_category = "Weapon"
 filter_type = "Cannon_1lb"
 max_quantity = 2
 
-[node name="CannonItemSlot4" parent="Ship" instance=ExtResource( 3 )]
+[node name="CannonItemSlot4" parent="ShipDraw" instance=ExtResource( 3 )]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

@@ -1,6 +1,10 @@
 class_name AbstractItemSlot
 extends Panel
 
+
+signal slot_action(type)
+
+
 var TOOLTIP_SCENE = preload("res://scenes/ui/components/Inventory/ItemTooltip/ItemTooltip.tscn")
 var ITEM_HANDLER_SCENE = preload("res://scenes/ui/components/Inventory/ItemHandler/ItemHandler.tscn")
 var SPLIT_POPUP_SCENE = preload("res://scenes/ui/components/Inventory/ItemSplitPopup/ItemSplitPopup.tscn")
@@ -14,7 +18,8 @@ export var filter_type := ""
 export var max_quantity := 250 setget set_max_quantity
 
 
-onready var stack_label = $StackLabel
+onready var stack_label := $StackLabel
+onready var hover := $HoverColorRect
 
 
 var item_handler : ItemHandler setget set_item_handler
@@ -68,6 +73,7 @@ func can_drop_data(_pos, slot):
 
 func drop_data(_pos, source_slot):
 	
+	#Open Split Screen
 	if Input.is_action_pressed("secondary"):
 		
 		var split_popup : Control = SPLIT_POPUP_SCENE.instance()
@@ -84,29 +90,34 @@ func drop_data(_pos, source_slot):
 	
 	if has_item():
 		
+		# Transfer to same item type
 		if item_handler.item.id == source_slot.item_handler.item.id:
-			
-			var amount := min(max_quantity - item_handler.quantity, source_slot.item_handler.quantity)
-			
-			var item : ItemHandler = source_slot.pick(amount)
-			
-			put(item, amount)
-			
-		else:
-			
-			var item_a : ItemHandler = source_slot.pick()
-			var item_b : ItemHandler = pick()
-			
-			put(item_a)
-			source_slot.put(item_b)
+			item_transfer(source_slot)
+		else: # Swap items
+			item_swap(source_slot)
 		
-	else:
+	else: # Transfert to empty slot
+		item_give(source_slot)
 		
-		var amount := min(max_quantity, source_slot.item_handler.quantity)
-		
-		var item : ItemHandler = source_slot.pick(amount)
-		put(item, amount)
-		
+
+
+func item_transfer(source_slot):
+	var amount := min(max_quantity - item_handler.quantity, source_slot.item_handler.quantity)
+	var item : ItemHandler = source_slot.pick(amount)
+	put(item, amount)
+
+
+func item_swap(source_slot):
+	var item_a : ItemHandler = source_slot.pick()
+	var item_b : ItemHandler = pick()
+	put(item_a)
+	source_slot.put(item_b)
+
+
+func item_give(source_slot):
+	var amount := min(max_quantity, source_slot.item_handler.quantity)
+	var item : ItemHandler = source_slot.pick(amount)
+	put(item, amount)
 
 
 func has_item() -> bool:
@@ -215,6 +226,8 @@ func _on_mouse_entered():
 	
 	if has_item():
 		
+		hover.visible = true
+		
 		var tooltip = TOOLTIP_SCENE.instance()
 		
 		add_child(tooltip)
@@ -237,4 +250,13 @@ func _on_mouse_exited():
 	if tooltip:
 		tooltip.queue_free()
 	
-	pass # Replace with function body.
+	hover.visible = false
+
+
+func _on_gui_input(event):
+	
+	if has_item():
+		if event is InputEventMouseButton and event.pressed:
+			if event.button_index == BUTTON_RIGHT:
+				emit_signal("slot_action", "secondary")
+	

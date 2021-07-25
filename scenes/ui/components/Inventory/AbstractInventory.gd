@@ -2,6 +2,9 @@ class_name GUIAbstractInventory
 extends Control
 
 
+signal slot_action(type, slot)
+
+
 var INVENTORY_SLOT_SCENE = preload("slots/InventoryItemSlot/InventoryItemSlot.tscn")
 var ITEM_HANDLER_SCENE = preload("ItemHandler/ItemHandler.tscn")
 
@@ -13,9 +16,6 @@ export var slot_count := 24
 var inventory : Inventory 
 
 
-#var holding_item : Control
-#var last_slot_used : InventoryItemSlot
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,7 +26,6 @@ func _ready():
 	if inventory:
 		update_inventory()
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,10 +65,3 @@ func get_container() -> Node:
 	
 	return null
 	
-
-"""
-func set_inventory(value):
-	inventory = value
-	if inventory:
-		update_inventory()
-"""

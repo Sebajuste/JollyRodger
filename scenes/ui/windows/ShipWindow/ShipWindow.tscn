@@ -157,3 +157,5 @@ anims/fade_out = ExtResource( 7 )
 
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer/ShipEquipment" to="." method="_on_ShipEquipment_slot_action"]
+[connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/ShipInventory" to="." method="_on_ShipInventory_slot_action"]

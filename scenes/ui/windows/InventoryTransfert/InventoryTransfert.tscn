@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/ui/components/Inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/themes/default.theme" type="Theme" id=2]
 [ext_resource path="res://assets/fonts/TreasureMapDeadhand_32.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.gd" type="Script" id=4]
+[ext_resource path="res://scenes/ui/animations/fade_in.anim" type="Animation" id=5]
 
 [node name="InventoryTransfert" type="WindowDialog"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -15,7 +17,7 @@ margin_top = -151.0
 margin_right = 454.5
 margin_bottom = 151.0
 theme = ExtResource( 2 )
-window_title = "Inventory Transfert"
+window_title = "title_transfert"
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -100,3 +102,11 @@ margin_top = 37.0
 margin_right = 429.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fade_in = ExtResource( 5 )
+
+[connection signal="about_to_show" from="." to="." method="_on_about_to_show"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="slot_action" from="MarginContainer/HBoxContainer/From/VBoxContainer/Inventory" to="." method="_on_InventoryA_slot_action"]
+[connection signal="slot_action" from="MarginContainer/HBoxContainer/To/VBoxContainer/Inventory" to="." method="_on_InventoryB_slot_action"]
