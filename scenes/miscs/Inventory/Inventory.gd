@@ -5,13 +5,16 @@ extends Node
 
 export var max_slot := 24
 
-export  var items := {}
+var items : Dictionary = {}
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	
+	if items.empty():
+		items = Dictionary()
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,7 +36,7 @@ func add_item(slot_id : int, item : Dictionary):
 			change_quantity(slot_id, items[slot_id].quantity + item.quantity)
 	else:
 		items[slot_id] = item
-		print("Add item [%d]" % slot_id, item)
+		print("[%s] Add item [%d]" % [name, slot_id], item)
 
 
 func get_item(slot_id : int) -> Dictionary:
@@ -45,7 +48,7 @@ func get_item(slot_id : int) -> Dictionary:
 func remove_item(slot_id : int):
 	
 	items.erase(slot_id)
-	print("Remove item [%d]" % slot_id)
+	print("[%s] Remove item [%d]" % [name, slot_id])
 
 
 func get_quantity(slot_id : int) -> int:
@@ -57,4 +60,4 @@ func get_quantity(slot_id : int) -> int:
 func change_quantity(slot_id : int, quantity : int):
 	if items.has(slot_id):
 		items[slot_id].quantity = quantity
-		print("Change quantity [%d] : " % slot_id, quantity)
+		print("[%s] Change quantity [%d] : " % [name, slot_id], quantity)
