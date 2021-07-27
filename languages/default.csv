@@ -11,6 +11,8 @@
 "title_select_faction","Select Faction","Sélectionnez une faction"
 "title_great_britain","Great Britain","Grande Bretagne"
 "title_pirates","Pirates","Pirates"
+"title_inventory","Inventory","Inventaire"
+"title_transfert","Transfert","Transfert"
 "label_login","Username / Email","Login / Email"
 "label_password","Password","Mot de passe"
 "label_great_britain","Great Britain","Grande Bretagne"
@@ -34,3 +36,7 @@ Pour le roi d'Angleterre !","Rejoignez la flotte la plus puissante du monde, et 
 Votre mission est de sécuriser les flottes commerciales dans les caraibes.
 
 Pour le roi d'Angleterre !"
+,,
+"range","Range","Portée"
+"damage","Damage","Dégats"
+"firerate","Fire Rate","Cadence de tir"

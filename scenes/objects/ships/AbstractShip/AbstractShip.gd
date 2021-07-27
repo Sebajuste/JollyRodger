@@ -20,6 +20,9 @@ onready var rudder : Position3D = $Rudder
 onready var flag = $Flag
 onready var sticker := $Sticker3D
 
+onready var inventory := $Inventory
+onready var equipement := $Equipement
+
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
 

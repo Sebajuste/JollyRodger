@@ -1,0 +1,112 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/ui/components/Inventory/Inventory.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=2]
+[ext_resource path="res://assets/fonts/TreasureMapDeadhand_32.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.gd" type="Script" id=4]
+[ext_resource path="res://scenes/ui/animations/fade_in.anim" type="Animation" id=5]
+
+[node name="InventoryTransfert" type="WindowDialog"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -454.5
+margin_top = -151.0
+margin_right = 454.5
+margin_bottom = 151.0
+theme = ExtResource( 2 )
+window_title = "title_transfert"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_right = 869.0
+margin_bottom = 262.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="From" type="Control" parent="MarginContainer/HBoxContainer"]
+margin_right = 428.0
+margin_bottom = 262.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/From"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/From/VBoxContainer"]
+margin_right = 428.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 3 )
+text = "test"
+align = 1
+valign = 1
+
+[node name="Inventory" parent="MarginContainer/HBoxContainer/From/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 37.0
+margin_right = 428.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer"]
+margin_left = 432.0
+margin_right = 436.0
+margin_bottom = 262.0
+
+[node name="To" type="Control" parent="MarginContainer/HBoxContainer"]
+margin_left = 440.0
+margin_right = 869.0
+margin_bottom = 262.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/To"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/To/VBoxContainer"]
+margin_right = 429.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 3 )
+text = "test"
+align = 1
+valign = 1
+
+[node name="Inventory" parent="MarginContainer/HBoxContainer/To/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 37.0
+margin_right = 429.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fade_in = ExtResource( 5 )
+
+[connection signal="about_to_show" from="." to="." method="_on_about_to_show"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="slot_action" from="MarginContainer/HBoxContainer/From/VBoxContainer/Inventory" to="." method="_on_InventoryA_slot_action"]
+[connection signal="slot_action" from="MarginContainer/HBoxContainer/To/VBoxContainer/Inventory" to="." method="_on_InventoryB_slot_action"]

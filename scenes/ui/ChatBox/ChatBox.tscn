@@ -1,16 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://assets/themes/new_theme.theme" type="Theme" id=1]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=1]
+[ext_resource path="res://assets/themes/window_background2.tres" type="Texture" id=2]
 [ext_resource path="res://scenes/ui/ChatBox/ChatBox.gd" type="Script" id=3]
 [ext_resource path="res://scenes/ui/ChatBox/ChannelSelector.gd" type="Script" id=4]
 [ext_resource path="res://scenes/ui/components/Draggable/Draggable.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/ui/components/Resizeable/Resizeable.tscn" type="PackedScene" id=6]
-
-[sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 0.0705882, 0.0980392, 0.121569, 0.572549, 0.0705882, 0.0980392, 0.121569, 0.180392 )
-
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
 
 [node name="ChatBox" type="Control"]
 anchor_right = 1.0
@@ -26,7 +21,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = SubResource( 2 )
+texture = ExtResource( 2 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false

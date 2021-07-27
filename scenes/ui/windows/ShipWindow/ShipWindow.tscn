@@ -1,0 +1,161 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/ui/animations/fade_in.anim" type="Animation" id=1]
+[ext_resource path="res://scenes/ui/components/ShipEquipment/ShipEquipment.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/components/Inventory/Inventory.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/components/ShipStatus/ShipStatus.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/windows/ShipWindow/ShipWindow.gd" type="Script" id=5]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=6]
+[ext_resource path="res://scenes/ui/animations/fade_out.anim" type="Animation" id=7]
+[ext_resource path="res://assets/themes/window_background.tres" type="Texture" id=8]
+
+[node name="ShipWindow" type="WindowDialog"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -462.0
+margin_top = -233.5
+margin_right = 462.0
+margin_bottom = 233.5
+theme = ExtResource( 6 )
+window_title = "title_inventory"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="."]
+self_modulate = Color( 1, 0.654902, 0, 1 )
+anchor_right = 1.0
+margin_bottom = 4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 884.0
+margin_bottom = 427.0
+custom_constants/separation = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+visible = false
+margin_right = 984.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "title_inventory"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+visible = false
+margin_right = 984.0
+margin_bottom = 5.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Content" type="Control" parent="MarginContainer/VBoxContainer"]
+margin_right = 884.0
+margin_bottom = 385.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer"]
+margin_right = 436.0
+margin_bottom = 385.0
+size_flags_horizontal = 3
+
+[node name="ShipEquipment" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 0.0
+margin_right = 436.0
+margin_bottom = 186.0
+size_flags_vertical = 3
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer"]
+margin_top = 190.0
+margin_right = 436.0
+margin_bottom = 194.0
+
+[node name="ShipStatus" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 198.0
+margin_right = 436.0
+margin_bottom = 385.0
+size_flags_vertical = 3
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer"]
+margin_left = 440.0
+margin_right = 444.0
+margin_bottom = 385.0
+
+[node name="ShipInventory" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 448.0
+margin_right = 884.0
+margin_bottom = 385.0
+size_flags_horizontal = 3
+
+[node name="Footer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 387.0
+margin_right = 884.0
+margin_bottom = 427.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Footer"]
+margin_right = 884.0
+margin_bottom = 40.0
+alignment = 1
+
+[node name="AcceptButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer"]
+margin_left = 367.0
+margin_right = 517.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_close"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fade_in = ExtResource( 1 )
+anims/fade_out = ExtResource( 7 )
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer/ShipEquipment" to="." method="_on_ShipEquipment_slot_action"]
+[connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/ShipInventory" to="." method="_on_ShipInventory_slot_action"]

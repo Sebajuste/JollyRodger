@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/fonts/Arial_12.tres" type="DynamicFont" id=1]
+
+[node name="Stat" type="HBoxContainer"]
+margin_right = 190.0
+margin_bottom = 14.0
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="."]
+margin_right = 35.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "<Stat>"
+
+[node name="Difference" type="Label" parent="."]
+margin_left = 39.0
+margin_right = 71.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "<Diff>"
