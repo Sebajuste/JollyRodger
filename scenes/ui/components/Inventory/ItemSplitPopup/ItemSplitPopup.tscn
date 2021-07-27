@@ -6,7 +6,6 @@
 [ext_resource path="res://scenes/ui/animations/fade_out.anim" type="Animation" id=4]
 
 [node name="ItemSplitPopup" type="Popup"]
-visible = true
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 250.0
 margin_bottom = 60.0
@@ -25,13 +24,13 @@ __meta__ = {
 }
 
 [node name="Amount" type="LineEdit" parent="HBoxContainer"]
-margin_right = 58.0
+margin_right = 106.0
 margin_bottom = 60.0
 text = "999"
 align = 1
 
 [node name="Confirm" type="Button" parent="HBoxContainer"]
-margin_left = 62.0
+margin_left = 110.0
 margin_right = 250.0
 margin_bottom = 60.0
 size_flags_horizontal = 3

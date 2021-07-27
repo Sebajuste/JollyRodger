@@ -13,7 +13,7 @@ export(NodePath) var inventory_path
 export var slot_count := 24
 
 
-var inventory : Inventory 
+var inventory : Inventory setget set_inventory
 
 
 
@@ -21,10 +21,7 @@ var inventory : Inventory
 func _ready():
 	
 	if not inventory and inventory_path:
-		inventory = get_node(inventory_path)
-	
-	if inventory:
-		update_inventory()
+		set_inventory( get_node(inventory_path) )
 	
 
 
@@ -44,6 +41,8 @@ func update_inventory():
 	for slot_id in range(container.get_child_count()):
 		var slot = container.get_child(slot_id)
 		slot.slot_id = slot_id
+		slot.remove_item_handler()
+			
 	
 	# Add items
 	for slot_id in inventory.items:
@@ -64,4 +63,19 @@ func update_inventory():
 func get_container() -> Node:
 	
 	return null
+	
+
+
+func set_inventory(value):
+	if inventory:
+		inventory.disconnect("inventory_updated", self, "_on_inventory_updated")
+	inventory = value
+	if inventory:
+		update_inventory()
+		inventory.connect("inventory_updated", self, "_on_inventory_updated")
+
+
+func _on_inventory_updated(items):
+	
+	update_inventory()
 	

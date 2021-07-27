@@ -84,6 +84,10 @@ func drop_data(_pos, source_slot):
 		split_popup.to_slot = self
 		
 		add_child(split_popup)
+		
+		var amount := min(max_quantity, source_slot.item_handler.quantity)
+		split_popup.amount_label.text = str(amount / 2)
+		
 		split_popup.show()
 		return 
 	
@@ -136,31 +140,6 @@ func can_equipe(item : ItemHandler) -> bool:
 	return true
 
 
-func pick(amount : int = -1) -> ItemHandler:
-	
-	amount = min(amount, item_handler.quantity)
-	
-	# Take all stack
-	if has_item() and (amount == -1 or amount == item_handler.quantity):
-		var result := item_handler
-		remove_item_handler()
-		return result
-	
-	# Split stack
-	elif has_item():
-		
-		var result = ITEM_HANDLER_SCENE.instance()
-		
-		result.item = item_handler.item
-		result.quantity = amount
-		
-		item_handler.set_quantity( item_handler.quantity - amount)
-		
-		return result
-	
-	return null
-
-
 func put(new_item : ItemHandler, amount : int = -1) -> bool:
 	
 	if has_item():
@@ -180,10 +159,39 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 	return true
 
 
+func pick(amount : int = -1) -> ItemHandler:
+	
+	amount = min(amount, item_handler.quantity)
+	
+	# Take all stack
+	if has_item() and (amount == -1 or amount == item_handler.quantity):
+		var result := item_handler
+		remove_item_handler()
+		return result
+	
+	# Split stack
+	elif has_item():
+		
+		print("Create NEW item handler")
+		
+		var result = ITEM_HANDLER_SCENE.instance()
+		
+		result.item = item_handler.item
+		result.quantity = amount
+		
+		item_handler.set_quantity( item_handler.quantity - amount)
+		
+		return result
+	
+	return null
+
+
 func set_item_handler(new_item : ItemHandler):
 	
 	if new_item == null:
+		var old_item_hander = item_handler
 		remove_item_handler()
+		old_item_hander.queue_free()
 	
 	item_handler = new_item
 	item_handler.rect_position = Vector2.ZERO
@@ -201,13 +209,14 @@ func set_item_handler(new_item : ItemHandler):
 
 
 func remove_item_handler():
-	if item_handler:
-		var item := item_handler
+	if has_item():
+		var old_item := item_handler
 		remove_child( item_handler )
 		item_handler = null
 		stack_label.visible = false
-		emit_signal("item_unequiped", item)
-		item.disconnect("quantity_changed", self, "_on_quantity_changed")
+		emit_signal("item_unequiped", old_item)
+		old_item.disconnect("quantity_changed", self, "_on_quantity_changed")
+		old_item.queue_free()
 
 
 func set_max_quantity(value):
@@ -231,7 +240,7 @@ func _on_mouse_entered():
 		var tooltip = TOOLTIP_SCENE.instance()
 		
 		add_child(tooltip)
-		
+		tooltip.name = "ItemTooltip"
 		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
 		
 		tooltip.item = item_handler.item
@@ -244,12 +253,9 @@ func _on_mouse_entered():
 
 
 func _on_mouse_exited():
-	
-	var tooltip = get_node("ItemTooltip")
-	
-	if tooltip:
+	if has_node("ItemTooltip"):
+		var tooltip = get_node("ItemTooltip")
 		tooltip.queue_free()
-	
 	hover.visible = false
 
 
