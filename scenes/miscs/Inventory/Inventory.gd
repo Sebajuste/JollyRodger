@@ -4,6 +4,10 @@ extends Node
 
 signal inventory_updated(items)
 
+signal item_added(slot_id, item)
+signal item_removed(slot_id, item)
+signal item_quantity_changed(slot_id, item, old_quantity)
+
 
 export var max_slot := 24
 
@@ -69,22 +73,28 @@ mastersync func rpc_add_item(slot_id : int, item : Dictionary):
 		if items[slot_id].item_id == item.item_id:
 			change_quantity(slot_id, items[slot_id].quantity + item.quantity)
 			emit_signal("inventory_updated", items)
+			emit_signal("item_added", slot_id, item)
 	else:
 		items[slot_id] = item
 		emit_signal("inventory_updated", items)
+		emit_signal("item_added", slot_id, item)
 		print("[%s] Add item [%d]" % [name, slot_id], item)
 
 
 mastersync func rpc_change_quantity(slot_id : int, quantity : int):
 	if items.has(slot_id):
+		var old_quantity : int = items[slot_id].quantity
 		items[slot_id].quantity = quantity
 		emit_signal("inventory_updated", items)
+		emit_signal("item_quantity_changed", slot_id, items[slot_id], old_quantity)
 		print("[%s] Change quantity [%d] : " % [name, slot_id], quantity)
 
 
 mastersync func rpc_remove_item(slot_id : int):
+	var item = items[slot_id]
 	items.erase(slot_id)
 	emit_signal("inventory_updated", items)
+	emit_signal("item_removed", slot_id, item)
 	print("[%s] Remove item [%d]" % [name, slot_id])
 
 

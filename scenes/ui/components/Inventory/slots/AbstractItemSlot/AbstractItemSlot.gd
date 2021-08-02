@@ -91,7 +91,6 @@ func drop_data(_pos, source_slot):
 		split_popup.show()
 		return 
 	
-	
 	if has_item():
 		
 		# Transfer to same item type
@@ -171,14 +170,10 @@ func pick(amount : int = -1) -> ItemHandler:
 	
 	# Split stack
 	elif has_item():
-		
-		print("Create NEW item handler")
-		
 		var result = ITEM_HANDLER_SCENE.instance()
-		
 		result.item = item_handler.item
+		result.attributes = item_handler.attributes
 		result.quantity = amount
-		
 		item_handler.set_quantity( item_handler.quantity - amount)
 		
 		return result
@@ -242,7 +237,6 @@ func _on_mouse_entered():
 		add_child(tooltip)
 		tooltip.name = "ItemTooltip"
 		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
-		
 		tooltip.item = item_handler.item
 		
 		yield(get_tree().create_timer(0.35), "timeout")
@@ -265,4 +259,3 @@ func _on_gui_input(event):
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == BUTTON_RIGHT:
 				emit_signal("slot_action", "secondary")
-	

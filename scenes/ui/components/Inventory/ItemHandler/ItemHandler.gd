@@ -5,8 +5,9 @@ extends Control
 signal quantity_changed(quantity)
 
 
-export(Resource) var item setget set_item
-export var quantity : int = 0 setget set_quantity
+var item setget set_item
+var quantity : int = 0 setget set_quantity
+var attributes := {}
 
 
 # Called when the node enters the scene tree for the first time.

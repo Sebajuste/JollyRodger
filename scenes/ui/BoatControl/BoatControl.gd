@@ -2,9 +2,7 @@ extends Control
 
 
 export(NodePath) var ship_path
-
-
-onready var ship_ref
+export(NodePath) var selector_path
 
 onready var sails_label = $VBoxContainer/HBoxContainer/SailsControl/Label
 onready var sails_control = $VBoxContainer/HBoxContainer/SailsControl/VSlider
@@ -16,6 +14,10 @@ onready var azimut_value = $VBoxContainer/HBoxContainer/VBoxContainer/Direction/
 onready var speed_value = $VBoxContainer/HBoxContainer/VBoxContainer/Speed/Value
 onready var health_value = $VBoxContainer/HBoxContainer/VBoxContainer/Health/Value
 
+onready var selector_handler = get_node(selector_path)
+
+
+var ship_ref
 
 var move_forward := false
 var move_backward := false
@@ -136,6 +138,26 @@ func _unhandled_input(event):
 	
 	if event.is_action_released("move_left"):
 		move_left = false
+	
+	if event.is_action_pressed("fire_order") and selector_handler:
+		
+		var ship = ship_ref.get_ref()
+		
+		if not ship:
+			return
+		
+		var target : Spatial = selector_handler.get_select()
+		
+		if target:
+			
+			var target_pos := target.global_transform.origin + Vector3.UP*3.0
+			
+			var target_velocity := Vector3.ZERO
+			if target.has_meta("linear_velocity"):
+				target_velocity = target.linear_velocity
+			
+			ship.cannons.fire(target_pos, target_velocity)
+		
 	
 
 

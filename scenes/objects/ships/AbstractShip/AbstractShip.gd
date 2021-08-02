@@ -17,6 +17,7 @@ export var selectable := true setget set_selectable
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
+onready var cannons = $Cannons
 onready var flag = $Flag
 onready var sticker := $Sticker3D
 
@@ -91,7 +92,6 @@ func set_selectable(value):
 	selectable = value
 	$SelectArea.input_ray_pickable = value
 	
-
 
 
 func _on_DamageStats_health_changed(_new_value, _old_value):
