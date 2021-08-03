@@ -6,6 +6,7 @@ var INVENTORY_TRANSFERT_SCENE = preload("res://scenes/ui/windows/InventoryTransf
 
 
 onready var ship := $SwedishRoyalYachtAmadis
+onready var ship_ai = $ShipAI
 onready var gui_canvas_layer := $CanvasLayer
 onready var crate = $Crate
 
@@ -17,25 +18,63 @@ var ship_windows
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var item := GameTable.get_item(100001)
+	var coins := GameTable.get_item(1)
+	var cannon := GameTable.get_item(100001)
+	var sail := GameTable.get_item(100200)
 	
-	ship.inventory.add_item(1, {
-			"item_id": item.id,
+	#Player inventory
+	ship.inventory.add_item_in_free_slot({
+			"item_id": cannon.id,
 			"quantity": 8,
-			"attributes": item.attributes
+			"attributes": cannon.attributes
 		}
 	)
 	
-	crate.get_node("Inventory").add_item(1, {
+	ship.inventory.add_item_in_free_slot({
+			"item_id": sail.id,
+			"quantity": 2,
+			"attributes": sail.attributes
+		}
+	)
+	
+	ship.inventory.add_item_in_free_slot({
+			"item_id": coins.id,
+			"quantity": 1000
+		}
+	)
+	
+	"""
+	ship.equipment.add_item(1, {
+		"item_id": cannon.id,
+		"quantity": 2,
+		"attributes": cannon.attributes
+	})
+	"""
+	#  Create Inventory
+	crate.get_node("Inventory").add_item_in_free_slot({
 		"item_id": 101000,
 		"quantity": 20
 	})
 	
-	crate.get_node("Inventory").add_item(2, {
-		"item_id": item.id,
+	crate.get_node("Inventory").add_item_in_free_slot({
+		"item_id": cannon.id,
 		"quantity": 5,
-		"attributes": item.attributes
+		"attributes": cannon.attributes
 	})
+	
+	#AI Inventory
+	
+	ship_ai.inventory.add_item_in_free_slot( {
+		"item_id": 101000,
+		"quantity": 20
+	})
+	
+	ship_ai.equipment.add_item(1, {
+		"item_id": cannon.id,
+		"quantity": 2,
+		"attributes": cannon.attributes
+	})
+	
 	
 	pass # Replace with function body.
 
@@ -80,7 +119,7 @@ func _on_InventoryButton_pressed():
 		gui_canvas_layer.add_child( ship_windows )
 		#gui_canvas_layer.add_child( gui_ship_inventory )
 		
-		ship_windows.ship_equipment.inventory = ship.equipement
+		ship_windows.ship_equipment.inventory = ship.equipment
 		ship_windows.ship_inventory.inventory = ship.inventory
 		
 		ship_windows.show()
@@ -88,3 +127,10 @@ func _on_InventoryButton_pressed():
 		ship_windows.queue_free()
 		ship_windows = null
 	
+
+
+func _on_DropAll_pressed():
+	
+	ship._drop()
+	
+	pass # Replace with function body.

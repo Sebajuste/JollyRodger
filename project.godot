@@ -70,7 +70,7 @@ _global_script_classes=[ {
 "path": "res://scenes/ui/components/Inventory/AbstractInventory.gd"
 }, {
 "base": "GUIAbstractInventory",
-"class": "GUIEquipement",
+"class": "GUIEquipment",
 "language": "GDScript",
 "path": "res://scenes/ui/components/ShipEquipment/ShipEquipment.gd"
 }, {
@@ -217,7 +217,7 @@ _global_script_class_icons={
 "DetectionArea": "",
 "FactionManager": "",
 "GUIAbstractInventory": "",
-"GUIEquipement": "",
+"GUIEquipment": "",
 "GUIInventory": "",
 "GameItem": "",
 "HTerrainDataLoader": "",

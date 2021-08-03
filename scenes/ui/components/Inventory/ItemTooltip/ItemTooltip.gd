@@ -39,7 +39,7 @@ func update_item_info():
 		var stat_node = STAT_SCENE.instance()
 		
 		stat_node.get_node("Name").text = stat_name
-		stat_node.get_node("Difference").text = stat_value
+		stat_node.get_node("Difference").text = str(stat_value)
 		
 		stats_list.add_child(stat_node)
 		

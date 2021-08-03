@@ -1,4 +1,4 @@
-class_name GUIEquipement
+class_name GUIEquipment
 extends GUIAbstractInventory
 
 
@@ -33,7 +33,7 @@ func get_container() -> Node:
 	
 
 
-func get_same_equipement_slot(item : GameItem) -> InventoryItemSlot:
+func get_same_equipment_slot(item : GameItem) -> InventoryItemSlot:
 	for slot in ship_draw.get_children():
 		if not slot.has_item() and slot.filter_category == item.category and slot.filter_type == item.type:
 			return slot

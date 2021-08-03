@@ -28,10 +28,24 @@ func _ready():
 #	pass
 
 
-func has_item(slot_id : int):
+func has_items() -> bool:
+	
+	return not items.empty()
+	
+
+
+func has_item(slot_id : int) -> bool:
 	
 	return items.has(slot_id)
 	
+
+
+func get_free_slot() -> int:
+	if items.size() < max_slot:
+		for slot_id in range(max_slot):
+			if not items.has( slot_id ):
+				return slot_id
+	return -1
 
 
 func get_item(slot_id : int) -> Dictionary:
@@ -51,6 +65,12 @@ func add_item(slot_id : int, item : Dictionary):
 		rpc("rpc_add_item", slot_id, item)
 	else:
 		rpc_add_item(slot_id, item)
+
+
+func add_item_in_free_slot(item : Dictionary):
+	var slot_id := get_free_slot()
+	if slot_id != -1:
+		add_item(slot_id, item)
 
 
 func change_quantity(slot_id : int, quantity : int):

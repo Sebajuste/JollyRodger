@@ -1,4 +1,5 @@
 "ID","Name","Category","Type","Description","Icon","Damage","Range","FireRate","RotationSpeed","Speed"
+000001,"Doublons","Money","Coins","Des pièces de monaies","res://assets/2d/items/coins.png",,,,,
 100001,"Canon 1lb de mauvaise qualité","Weapon","Cannon_1lb","Un petit canon d'une livre","res://assets/2d/items/cannon.png",1,80,6,,
 ,,,,,,,,,,
 ,,,,,,,,,,
@@ -13,7 +14,7 @@
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,
-100200,"Voiles de mauvaises qualité","Sail","Sail","Des voiles grossières",,,,,,"0,8"
+100200,"Voiles de mauvaises qualité","Sail","Sail","Des voiles grossières","res://assets/2d/items/sail.png",,,,,"85,0"
 ,,,,,,,,,,
 ,,,,,,,,,,
 ,,,,,,,,,,

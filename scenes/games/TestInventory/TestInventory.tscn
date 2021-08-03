@@ -21,6 +21,9 @@ script = ExtResource( 9 )
 
 [node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 4 )]
 
+[node name="ShipAI" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
+
 [node name="Crate" parent="." instance=ExtResource( 10 )]
 
 [node name="Tower" parent="." instance=ExtResource( 11 )]
@@ -74,4 +77,21 @@ margin_right = 73.0
 margin_bottom = 41.0
 text = "Inventory"
 
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -168.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 55.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DropAll" type="Button" parent="CanvasLayer/MarginContainer3"]
+margin_right = 148.0
+margin_bottom = 35.0
+text = "Drop All"
+
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/GameMenu/InventoryButton" to="." method="_on_InventoryButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer3/DropAll" to="." method="_on_DropAll_pressed"]

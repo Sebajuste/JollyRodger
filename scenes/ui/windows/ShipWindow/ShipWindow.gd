@@ -1,7 +1,7 @@
 extends WindowDialog
 
 
-onready var ship_equipment : GUIEquipement = $MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer/ShipEquipment
+onready var ship_equipment : GUIEquipment = $MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainer/ShipEquipment
 onready var ship_inventory : GUIInventory = $MarginContainer/VBoxContainer/Content/HBoxContainer/ShipInventory
 
 
@@ -56,7 +56,7 @@ func _on_ShipInventory_slot_action(type, slot):
 	
 	if type == "secondary":
 		
-		var empty_slot := ship_equipment.get_same_equipement_slot(slot.item_handler.item)
+		var empty_slot := ship_equipment.get_same_equipment_slot(slot.item_handler.item)
 		
 		if empty_slot:
 			
