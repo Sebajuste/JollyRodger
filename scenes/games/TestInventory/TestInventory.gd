@@ -20,13 +20,22 @@ func _ready():
 	
 	var coins := GameTable.get_item(1)
 	var cannon := GameTable.get_item(100001)
+	var rudder := GameTable.get_item(100100)
 	var sail := GameTable.get_item(100200)
+	
 	
 	#Player inventory
 	ship.inventory.add_item_in_free_slot({
 			"item_id": cannon.id,
 			"quantity": 8,
 			"attributes": cannon.attributes
+		}
+	)
+	
+	ship.inventory.add_item_in_free_slot({
+			"item_id": rudder.id,
+			"quantity": 1,
+			"attributes": rudder.attributes
 		}
 	)
 	

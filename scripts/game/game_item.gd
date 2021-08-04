@@ -5,7 +5,8 @@ enum ATTRIBUT_TYPE {FLOAT, INTEGER, STRING}
 
 const ATTRIBUTS_TYPE := {
 	"speed": ATTRIBUT_TYPE.FLOAT,
-	"damage": ATTRIBUT_TYPE.INTEGER
+	"damage": ATTRIBUT_TYPE.INTEGER,
+	"rotation_speed": ATTRIBUT_TYPE.FLOAT
 }
 
 var id : int = 0

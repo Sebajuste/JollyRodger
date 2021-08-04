@@ -46,8 +46,6 @@ func _on_ShipEquipment_slot_action(type, slot):
 			else:
 				empty_slot.item_give(slot)
 			
-		
-		print("_on_item_equiped")
 	
 	pass # Replace with function body.
 

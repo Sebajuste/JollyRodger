@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/ui/components/ShipEquipment/ShipEquipment.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/components/ShipEquipment/Draw.gd" type="Script" id=2]
 [ext_resource path="res://scenes/ui/components/Inventory/slots/InventoryItemSlot/InventoryItemSlot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/2d/items/cannon.png" type="Texture" id=4]
 [ext_resource path="res://assets/2d/items/sail.png" type="Texture" id=5]
+[ext_resource path="res://assets/2d/items/rudder.png" type="Texture" id=6]
 
 [node name="ShipEquipment" type="Control" groups=[
 "gui_inventory",
@@ -43,6 +44,7 @@ margin_right = -34.5
 margin_bottom = -43.5
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
+unlimited_quantity = false
 max_quantity = 2
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/CannonItemSlot1"]
@@ -63,6 +65,7 @@ margin_right = 75.5
 margin_bottom = -43.5
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
+unlimited_quantity = false
 max_quantity = 2
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/CannonItemSlot2"]
@@ -86,6 +89,7 @@ margin_right = -34.5
 margin_bottom = 91.5
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
+unlimited_quantity = false
 max_quantity = 2
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/CannonItemSlot3"]
@@ -109,6 +113,7 @@ margin_right = 75.5
 margin_bottom = 91.5
 filter_category = "Weapon"
 filter_type = "Cannon_1lb"
+unlimited_quantity = false
 max_quantity = 2
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/CannonItemSlot4"]
@@ -122,7 +127,6 @@ __meta__ = {
 }
 
 [node name="RudderItemSlot" parent="ShipDraw" instance=ExtResource( 3 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -133,7 +137,18 @@ margin_right = -127.73
 margin_bottom = 22.6516
 filter_category = "Rudder"
 filter_type = "Rudder"
+unlimited_quantity = false
 max_quantity = 2
+
+[node name="TextureRect" type="TextureRect" parent="ShipDraw/RudderItemSlot"]
+modulate = Color( 1, 1, 1, 0.290196 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SailItemSlot1" parent="ShipDraw" instance=ExtResource( 3 )]
 anchor_left = 0.5
@@ -146,7 +161,7 @@ margin_right = -18.2734
 margin_bottom = 24.6538
 filter_category = "Sail"
 filter_type = "Sail"
-max_quantity = 1
+unlimited_quantity = false
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/SailItemSlot1"]
 modulate = Color( 1, 1, 1, 0.290196 )
@@ -169,7 +184,7 @@ margin_right = 118.548
 margin_bottom = 25.3212
 filter_category = "Sail"
 filter_type = "Sail"
-max_quantity = 1
+unlimited_quantity = false
 
 [node name="TextureRect" type="TextureRect" parent="ShipDraw/SailItemSlot2"]
 modulate = Color( 1, 1, 1, 0.290196 )

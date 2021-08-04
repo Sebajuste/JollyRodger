@@ -26,13 +26,19 @@ func add_cannon(slot_id : int, cannon_info):
 			cannon.speed = cannon_info.attributes.range
 			cannon.fire_rate = cannon_info.attributes.firerate
 			cannons.append(cannon)
+			print("Cannon added %d" % slot_id)
 
 
 func remove_cannon(slot_id : int, cannon_info):
-	for child_index in range(slot_id, slot_id+2):
+	var start_cannon_index := slot_id*2
+	for child_index in range(start_cannon_index, start_cannon_index+2):
 		var cannon := get_child(child_index)
 		var index := find_cannon(cannon)
-		cannons.remove( index )
+		if index != -1:
+			cannons.remove( index )
+			print("Cannon removed %d" % slot_id)
+		else:
+			push_error("Invalid index for cannon")
 
 
 func fire(target_position : Vector3, target_velocity := Vector3.ZERO):
