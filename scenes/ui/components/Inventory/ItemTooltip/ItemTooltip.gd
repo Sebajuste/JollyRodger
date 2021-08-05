@@ -11,10 +11,13 @@ onready var stats_list = $MarginContainer/VBoxContainer/Statistics
 
 var item : GameItem setget set_item
 
+var attributes : Dictionary = {} setget set_attributes
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	
+	update_item_info()
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,17 +27,17 @@ func _ready():
 
 func update_item_info():
 	
-	name_label.text = item.name
-	description_label.text = item.description
+	if item:
+		name_label.text = item.name
+		description_label.text = item.description
 	
-	
+	# Clear olf attributes info
 	for child in stats_list.get_children():
 		child.queue_free()
 	
-	for stat_name in item.attributes:
-		var stat_value = item.attributes[stat_name]
-		
-		#print("stat : ", stat_name, " -> ", stat_value)
+	# Add new attributes info
+	for stat_name in attributes:
+		var stat_value = attributes[stat_name]
 		
 		var stat_node = STAT_SCENE.instance()
 		
@@ -43,14 +46,17 @@ func update_item_info():
 		
 		stats_list.add_child(stat_node)
 		
-		pass
-	# STAT_SCENE
 	
-	pass
 
 
 func set_item(value):
 	item = value
+	update_item_info()
+
+
+func set_attributes(value : Dictionary):
+	
+	attributes = value
 	update_item_info()
 
 

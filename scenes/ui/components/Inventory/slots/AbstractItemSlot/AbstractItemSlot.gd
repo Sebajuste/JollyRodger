@@ -281,6 +281,7 @@ func _on_mouse_entered():
 		tooltip.name = "ItemTooltip"
 		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
 		tooltip.item = item_handler.item
+		tooltip.attributes = item_handler.attributes
 		
 		yield(get_tree().create_timer(0.35), "timeout")
 		if has_node("ItemTooltip"):

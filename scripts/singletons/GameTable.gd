@@ -1,6 +1,15 @@
 extends Node
 
 
+var item_rarity_distribution := {
+	"Common": 60,
+	"Uncommon": 27,
+	"Rare": 9,
+	"Epic": 3,
+	"Legendary": 1
+}
+
+
 var items := []
 
 
@@ -50,8 +59,7 @@ func load_csv(file_path):
 					var column_name := headers[column_index].to_lower()
 					item[column_name] = csv_line[column_index]
 				
-				if item.id != "":
-					
+				if item.has("id") and item.id != "":
 					var game_item := GameItem.new(item)
 					items.append(game_item)
 				

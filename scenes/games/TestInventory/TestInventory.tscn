@@ -24,6 +24,9 @@ script = ExtResource( 9 )
 [node name="ShipAI" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
 
+[node name="DamageStats" parent="ShipAI" index="13"]
+max_health = 5
+
 [node name="Crate" parent="." instance=ExtResource( 10 )]
 
 [node name="Tower" parent="." instance=ExtResource( 11 )]
@@ -95,3 +98,8 @@ text = "Drop All"
 
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/GameMenu/InventoryButton" to="." method="_on_InventoryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer3/DropAll" to="." method="_on_DropAll_pressed"]
+
+[editable path="ShipAI"]
+[editable path="ShipAI/SelectArea"]
+[editable path="ShipAI/Sticker3D"]
+[editable path="ShipAI/HitBox"]
