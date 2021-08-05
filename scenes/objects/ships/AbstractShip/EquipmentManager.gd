@@ -27,8 +27,8 @@ func _ready():
 
 func update_stats():
 	
-	owner.rudder_force = rudder_force_bonus
-	owner.sail_force = sail_force_bonus
+	owner.rudder_force = base_rudder_force + rudder_force_bonus
+	owner.sail_force = base_sail_force + sail_force_bonus
 	
 	pass
 

@@ -7,14 +7,14 @@
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
-100100,"Gouvernail de mauvaise qualité","Rudder","Rudder",10,,"res://assets/2d/items/rudder.png",,,,"120",
+100100,"Gouvernail de mauvaise qualité","Rudder","Rudder",10,,"res://assets/2d/items/rudder.png",,,,"10",
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
-100200,"Voiles de mauvaises qualité","Sail","Sail",10,"Des voiles grossières","res://assets/2d/items/sail.png",,,,,"85,0"
+100200,"Voiles de mauvaises qualité","Sail","Sail",10,"Des voiles grossières","res://assets/2d/items/sail.png",,,,,"5,0"
 ,,,,,,,,,,,
 ,,,,,,,,,,,
 ,,,,,,,,,,,
