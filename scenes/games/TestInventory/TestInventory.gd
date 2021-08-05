@@ -2,14 +2,13 @@ extends Spatial
 
 
 var SHIP_WINDOW_SCENE = preload("res://scenes/ui/windows/ShipWindow/ShipWindow.tscn")
-
 var INVENTORY_TRANSFERT_SCENE = preload("res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.tscn")
 
 
 onready var ship := $SwedishRoyalYachtAmadis
-
-#onready var ship_inventory := $SwedishRoyalYachtAmadis/Inventory
+onready var ship_ai = $ShipAI
 onready var gui_canvas_layer := $CanvasLayer
+onready var crate = $Crate
 
 
 var gui_ship_inventory
@@ -19,13 +18,71 @@ var ship_windows
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	var coins := GameTable.get_item(1)
+	var cannon := GameTable.get_item(100001)
+	var rudder := GameTable.get_item(100100)
+	var sail := GameTable.get_item(100200)
 	
-	ship.inventory.add_item(1, {
-			"item_id": 100001,
+	
+	#Player inventory
+	ship.inventory.add_item_in_free_slot({
+			"item_id": cannon.id,
 			"quantity": 8,
-			"test": "toto"
+			"attributes": cannon.attributes
 		}
 	)
+	
+	ship.inventory.add_item_in_free_slot({
+			"item_id": rudder.id,
+			"quantity": 1,
+			"attributes": rudder.attributes
+		}
+	)
+	
+	ship.inventory.add_item_in_free_slot({
+			"item_id": sail.id,
+			"quantity": 2,
+			"attributes": sail.attributes
+		}
+	)
+	
+	ship.inventory.add_item_in_free_slot({
+			"item_id": coins.id,
+			"quantity": 1000
+		}
+	)
+	
+	"""
+	ship.equipment.add_item(1, {
+		"item_id": cannon.id,
+		"quantity": 2,
+		"attributes": cannon.attributes
+	})
+	"""
+	#  Create Inventory
+	crate.get_node("Inventory").add_item_in_free_slot({
+		"item_id": 101000,
+		"quantity": 20
+	})
+	
+	crate.get_node("Inventory").add_item_in_free_slot({
+		"item_id": cannon.id,
+		"quantity": 5,
+		"attributes": cannon.attributes
+	})
+	
+	#AI Inventory
+	
+	ship_ai.inventory.add_item_in_free_slot( {
+		"item_id": 101000,
+		"quantity": 20
+	})
+	
+	ship_ai.equipment.add_item(1, {
+		"item_id": cannon.id,
+		"quantity": 2,
+		"attributes": cannon.attributes
+	})
 	
 	
 	pass # Replace with function body.
@@ -56,33 +113,14 @@ func _input(event):
 			gui_transfert.set_inventory_b(object.inventory)
 			
 			gui_transfert.show()
-			
-			
-			pass
 		
-		pass
-	
-
 
 
 func _on_InventoryButton_pressed():
 	
 	#if not gui_ship_inventory:
 	if not ship_windows:
-		"""
-		gui_ship_inventory = MarginContainer.new()
-		gui_ship_inventory.anchor_top = 0.5
-		gui_ship_inventory.anchor_right = 0.5
-		gui_ship_inventory.anchor_bottom = 0.5
-		gui_ship_inventory.anchor_left = 0.5
 		
-		gui_ship_inventory.rect_min_size = Vector2(1000, 600)
-		
-		gui_ship_inventory.margin_left = -gui_ship_inventory.rect_min_size.x / 2
-		gui_ship_inventory.margin_right = gui_ship_inventory.rect_min_size.x / 2
-		gui_ship_inventory.margin_top = -gui_ship_inventory.rect_min_size.y / 2
-		gui_ship_inventory.margin_bottom = -gui_ship_inventory.rect_min_size.y / 2
-		"""
 		ship_windows = SHIP_WINDOW_SCENE.instance()
 		
 		#gui_ship_inventory.add_child( ship_windows )
@@ -90,15 +128,18 @@ func _on_InventoryButton_pressed():
 		gui_canvas_layer.add_child( ship_windows )
 		#gui_canvas_layer.add_child( gui_ship_inventory )
 		
-		ship_windows.ship_equipment.inventory = ship.equipement
+		ship_windows.ship_equipment.inventory = ship.equipment
 		ship_windows.ship_inventory.inventory = ship.inventory
 		
 		ship_windows.show()
 	else:
 		ship_windows.queue_free()
 		ship_windows = null
-		"""
-		gui_ship_inventory.queue_free()
-		gui_ship_inventory = null
-		"""
 	
+
+
+func _on_DropAll_pressed():
+	
+	ship._drop()
+	
+	pass # Replace with function body.

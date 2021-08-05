@@ -18,8 +18,8 @@ extents = Vector3( 3.00194, 2.06492, 9.17935 )
 mass = 25.0
 depth_before_submerged = 6.0
 displacement_amount = 2.4
-rudder_force = 120.0
-sail_force = 170.0
+rudder_force = 110.0
+sail_force = 160.0
 
 [node name="CollisionShape" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.242932 )
@@ -88,7 +88,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )
 [node name="CollisionShape" parent="HitBox" index="0"]
 shape = SubResource( 3 )
 
-[node name="DamageStats" parent="." index="10"]
+[node name="DamageStats" parent="." index="13"]
 max_health = 40
 
 [editable path="SelectArea"]

@@ -1,6 +1,13 @@
 class_name GameItem
 extends Resource
 
+enum ATTRIBUT_TYPE {FLOAT, INTEGER, STRING}
+
+const ATTRIBUTS_TYPE := {
+	"speed": ATTRIBUT_TYPE.FLOAT,
+	"damage": ATTRIBUT_TYPE.INTEGER,
+	"rotation_speed": ATTRIBUT_TYPE.FLOAT
+}
 
 var id : int = 0
 var category : String
@@ -41,13 +48,31 @@ func _init( item : Dictionary ):
 					if self.has_meta(key):
 						self.set_meta(key, value)
 					else:
-						attributes[key] = value
+						attributes[key] = get_attribute(key, value)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
+
+func get_attribute(key, value):
+	
+	if ATTRIBUTS_TYPE.has(key):
+		
+		match ATTRIBUTS_TYPE[key]:
+			ATTRIBUT_TYPE.FLOAT:
+				return value.to_float()
+			ATTRIBUT_TYPE.INTEGER:
+				return value.to_int()
+			ATTRIBUT_TYPE.STRING:
+				return str(value)
+			_:
+				return value
+		
+	else:
+		return value
+	
 
 
 func to_json() -> String:

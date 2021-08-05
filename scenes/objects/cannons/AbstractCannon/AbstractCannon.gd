@@ -8,7 +8,7 @@ export var speed := 80.0
 export var fire_rate : int = 6 setget set_fire_rate
 export var fire_delay := 0.0 setget set_fire_delay
 
-export var damage := 1
+export var damage := 1 setget set_damage
 
 onready var muzzle = $Skin/Muzzle
 
@@ -41,17 +41,19 @@ func is_in_range(target_position : Vector3, target_velocity := Vector3.ZERO) -> 
 	var target_dir := (self.global_transform.origin - target_position).normalized()
 	
 	if target_dir.dot( self.global_transform.basis.z ) < 0.8:
+		print("> not aligned")
 		return false
 	
-	if self.global_transform.origin.distance_squared_to(target_position) < max_range * max_range:
-		return true
-	
-	return false
+	if self.global_transform.origin.distance_squared_to(target_position) > max_range * max_range:
+		print("> too far")
+		return false
+	print("> ok")
+	return true
 	
 
 
 func fire(target_position : Vector3, target_velocity := Vector3.ZERO) -> bool:
-	
+	print("fire ", self.name)
 	if not fire_ready:
 		return false
 	
@@ -107,19 +109,31 @@ func _on_fire_delayed():
 		rpc("rpc_fire")
 	else:
 		rpc_fire()
-	
-	
+
 
 
 func set_fire_rate(value):
-	fire_rate = value
-	$ReloadTimer.wait_time = 60.0 / fire_rate
+	
+	if value:
+		if value is String:
+			fire_rate = value.to_int()
+		else:
+			fire_rate = value
+		$ReloadTimer.wait_time = 60.0 / fire_rate
 
 
 func set_fire_delay(value):
 	fire_delay = value
 	if fire_delay > 0.0:
 		$FireDelay.wait_time = fire_delay
+
+
+func set_damage(value):
+	if value:
+		if value is String:
+			damage = value.to_int()
+		else:
+			damage = value
 
 
 func _on_ReloadTimer_timeout():

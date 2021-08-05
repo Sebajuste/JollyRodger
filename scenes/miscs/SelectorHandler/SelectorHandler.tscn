@@ -4,3 +4,7 @@
 
 [node name="SelectorHandler" type="Node"]
 script = ExtResource( 1 )
+
+[node name="SelectTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="SelectTimer" to="." method="_on_SelectTimer_timeout"]

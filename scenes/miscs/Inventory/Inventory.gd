@@ -4,6 +4,10 @@ extends Node
 
 signal inventory_updated(items)
 
+signal item_added(slot_id, item)
+signal item_removed(slot_id, item)
+signal item_quantity_changed(slot_id, item, old_quantity)
+
 
 export var max_slot := 24
 
@@ -24,10 +28,24 @@ func _ready():
 #	pass
 
 
-func has_item(slot_id : int):
+func has_items() -> bool:
+	
+	return not items.empty()
+	
+
+
+func has_item(slot_id : int) -> bool:
 	
 	return items.has(slot_id)
 	
+
+
+func get_free_slot() -> int:
+	if items.size() < max_slot:
+		for slot_id in range(max_slot):
+			if not items.has( slot_id ):
+				return slot_id
+	return -1
 
 
 func get_item(slot_id : int) -> Dictionary:
@@ -47,6 +65,12 @@ func add_item(slot_id : int, item : Dictionary):
 		rpc("rpc_add_item", slot_id, item)
 	else:
 		rpc_add_item(slot_id, item)
+
+
+func add_item_in_free_slot(item : Dictionary):
+	var slot_id := get_free_slot()
+	if slot_id != -1:
+		add_item(slot_id, item)
 
 
 func change_quantity(slot_id : int, quantity : int):
@@ -69,22 +93,28 @@ mastersync func rpc_add_item(slot_id : int, item : Dictionary):
 		if items[slot_id].item_id == item.item_id:
 			change_quantity(slot_id, items[slot_id].quantity + item.quantity)
 			emit_signal("inventory_updated", items)
+			emit_signal("item_added", slot_id, item)
 	else:
 		items[slot_id] = item
 		emit_signal("inventory_updated", items)
+		emit_signal("item_added", slot_id, item)
 		print("[%s] Add item [%d]" % [name, slot_id], item)
 
 
 mastersync func rpc_change_quantity(slot_id : int, quantity : int):
 	if items.has(slot_id):
+		var old_quantity : int = items[slot_id].quantity
 		items[slot_id].quantity = quantity
 		emit_signal("inventory_updated", items)
+		emit_signal("item_quantity_changed", slot_id, items[slot_id], old_quantity)
 		print("[%s] Change quantity [%d] : " % [name, slot_id], quantity)
 
 
 mastersync func rpc_remove_item(slot_id : int):
+	var item = items[slot_id]
 	items.erase(slot_id)
 	emit_signal("inventory_updated", items)
+	emit_signal("item_removed", slot_id, item)
 	print("[%s] Remove item [%d]" % [name, slot_id])
 
 

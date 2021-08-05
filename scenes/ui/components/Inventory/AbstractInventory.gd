@@ -47,13 +47,14 @@ func update_inventory():
 	# Add items
 	for slot_id in inventory.items:
 		
-		var item_info : Dictionary = inventory.items[slot_id]
+		var item_info : Dictionary = inventory.get_item(slot_id)
 		
-		var item := GameTable.get_item(item_info.item_id)
-		
-		var gui_item = ITEM_HANDLER_SCENE.instance()
-		gui_item.item = item
+		var gui_item : ItemHandler = ITEM_HANDLER_SCENE.instance()
+		gui_item.item = GameTable.get_item(item_info.item_id)
 		gui_item.quantity = item_info.quantity
+		
+		if item_info.has("attributes"):
+			gui_item.attributes = item_info.attributes
 		
 		var slot = container.get_child(slot_id)
 		slot.slot_id = slot_id

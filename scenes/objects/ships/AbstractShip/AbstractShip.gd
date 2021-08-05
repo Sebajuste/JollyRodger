@@ -2,6 +2,12 @@ class_name AbstractShip
 extends RigidBody
 
 
+var CRATE_SCENE = preload("res://scenes/objects/Crate/Crate.tscn")
+
+
+signal destroyed
+
+
 export var water_drag := 2.0 # 0.99
 export var water_angular_drag := 2.0 # 0.5
 
@@ -12,16 +18,18 @@ export var rudder_force := 10.0
 export var sail_force := 10.0
 
 export var selectable := true setget set_selectable
-
+export var drop_inventory := true
+export var drop_equipment := true
 
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
+onready var cannons = $Cannons
 onready var flag = $Flag
 onready var sticker := $Sticker3D
 
 onready var inventory := $Inventory
-onready var equipement := $Equipement
+onready var equipment := $Equipment
 
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
@@ -93,6 +101,43 @@ func set_selectable(value):
 	
 
 
+func _drop():
+	
+	if (not drop_equipment or not equipment.has_items()) and (not drop_inventory or not inventory.has_items()):
+		print("no items to drop")
+		return
+	
+	var crate = CRATE_SCENE.instance()
+	
+	var crate_pos = global_transform.origin
+	
+	crate_pos += Vector3(
+		rand_range(-1, 1),
+		0,
+		rand_range(-1, 1)
+	) * 10
+	
+	crate.transform.origin = crate_pos
+	
+	Spawner.spawn(crate)
+	
+	if drop_equipment and equipment.has_items():
+		
+		for item_slot in equipment.items:
+			if equipment.has_item(item_slot):
+				var item = equipment.get_item(item_slot)
+				equipment.remove_item(item_slot)
+				var crate_index = equipment.get_free_slot()
+				crate.inventory.add_item(crate_index, item)
+	
+	if drop_inventory and inventory.has_items():
+		for item_slot in inventory.items:
+			if inventory.has_item(item_slot):
+				var item = inventory.get_item(item_slot)
+				inventory.remove_item(item_slot)
+				var crate_index = inventory.get_free_slot()
+				crate.inventory.add_item(crate_index, item)
+
 
 func _on_DamageStats_health_changed(_new_value, _old_value):
 	pass # Replace with function body.
@@ -109,4 +154,5 @@ func _on_DamageStats_health_depleted():
 	$SinkTween.start()
 	
 	alive = false
-	
+	_drop()
+	emit_signal("destroyed")

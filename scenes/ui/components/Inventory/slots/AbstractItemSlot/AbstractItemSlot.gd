@@ -15,7 +15,8 @@ signal item_unequiped(item)
 
 export var filter_category := ""
 export var filter_type := ""
-export var max_quantity := 250 setget set_max_quantity
+export var unlimited_quantity := true
+export var max_quantity := 1 setget set_max_quantity
 
 
 onready var stack_label := $StackLabel
@@ -85,12 +86,14 @@ func drop_data(_pos, source_slot):
 		
 		add_child(split_popup)
 		
-		var amount := min(max_quantity, source_slot.item_handler.quantity)
+		var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
+		
+		#var amount := _calculate_amount(max_quantity, source_slot.item_handler)
+		
 		split_popup.amount_label.text = str(amount / 2)
 		
 		split_popup.show()
 		return 
-	
 	
 	if has_item():
 		
@@ -106,7 +109,12 @@ func drop_data(_pos, source_slot):
 
 
 func item_transfer(source_slot):
-	var amount := min(max_quantity - item_handler.quantity, source_slot.item_handler.quantity)
+	#var amount := min(max_quantity - item_handler.quantity, source_slot.item_handler.quantity)
+	
+	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
+	
+	#var amount := _calculate_amount(max_quantity - item_handler.quantity, item_handler)
+	
 	var item : ItemHandler = source_slot.pick(amount)
 	put(item, amount)
 
@@ -119,7 +127,12 @@ func item_swap(source_slot):
 
 
 func item_give(source_slot):
-	var amount := min(max_quantity, source_slot.item_handler.quantity)
+	#var amount := min(max_quantity, source_slot.item_handler.quantity)
+	
+	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
+	
+	#var amount := _calculate_amount(max_quantity, source_slot.item_handler)
+	
 	var item : ItemHandler = source_slot.pick(amount)
 	put(item, amount)
 
@@ -147,7 +160,10 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 		if new_item.item.id != item_handler.item.id:
 			return false
 		
-		if max_quantity - item_handler.quantity < amount:
+		if unlimited_quantity:
+			if item_handler.quantity < amount:
+				return false
+		elif max_quantity - item_handler.quantity < amount:
 			return false
 		
 		item_handler.quantity += amount
@@ -171,14 +187,10 @@ func pick(amount : int = -1) -> ItemHandler:
 	
 	# Split stack
 	elif has_item():
-		
-		print("Create NEW item handler")
-		
 		var result = ITEM_HANDLER_SCENE.instance()
-		
 		result.item = item_handler.item
+		result.attributes = item_handler.attributes
 		result.quantity = amount
-		
 		item_handler.set_quantity( item_handler.quantity - amount)
 		
 		return result
@@ -200,7 +212,7 @@ func set_item_handler(new_item : ItemHandler):
 		item_handler.get_parent().remove_child(item_handler)
 	
 	add_child(item_handler)
-	if max_quantity > 1:
+	if new_item.quantity > 1:
 		stack_label.visible = true
 		stack_label.text = str(new_item.quantity)
 	
@@ -217,6 +229,32 @@ func remove_item_handler():
 		emit_signal("item_unequiped", old_item)
 		old_item.disconnect("quantity_changed", self, "_on_quantity_changed")
 		old_item.queue_free()
+
+
+func get_item_max_quantity(item : GameItem) -> int:
+	if has_item():
+		if unlimited_quantity:
+			return int(min(item_handler.quantity, item.max_stack))
+		else:
+			
+			return int(min(max_quantity, item.max_stack)) - item_handler.quantity
+			
+			#return int(min(min(item_handler.quantity, max_quantity), item.max_stack))
+	else:
+		if unlimited_quantity:
+			return item.max_stack
+		else:
+			return int(min(max_quantity, item.max_stack))
+
+
+func _calculate_amount(amount : int, item_handler : ItemHandler) -> int:
+	
+	if max_quantity > 0:
+		return int(min(min(min(amount, max_quantity), item_handler.quantity), item_handler.item.max_stack))
+	else:
+		return int(min(min(amount, item_handler.quantity), item_handler.item.max_stack))
+	#max_stack
+	return 0
 
 
 func set_max_quantity(value):
@@ -242,7 +280,6 @@ func _on_mouse_entered():
 		add_child(tooltip)
 		tooltip.name = "ItemTooltip"
 		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
-		
 		tooltip.item = item_handler.item
 		
 		yield(get_tree().create_timer(0.35), "timeout")
@@ -265,4 +302,3 @@ func _on_gui_input(event):
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == BUTTON_RIGHT:
 				emit_signal("slot_action", "secondary")
-	

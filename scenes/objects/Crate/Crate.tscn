@@ -8,7 +8,7 @@
 
 [sub_resource type="BoxShape" id=1]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=2]
 
 [node name="Crate" type="RigidBody" groups=[
 "has_inventory",
@@ -31,18 +31,23 @@ displacement_amount = 1.5
 [node name="SelectArea" parent="." instance=ExtResource( 3 )]
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Inventory" parent="." instance=ExtResource( 4 )]
-items = {
-0: {
-"item_id": 101000,
-"quantity": 10
-},
-1: {
-"item_id": 100001,
-"quantity": 2
-}
-}
+
+[node name="SinkTimer" type="Timer" parent="."]
+wait_time = 300.0
+one_shot = true
+autostart = true
+
+[node name="ClearTimer" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true
+
+[node name="SinkTween" type="Tween" parent="."]
+
+[connection signal="inventory_updated" from="Inventory" to="." method="_on_Inventory_inventory_updated"]
+[connection signal="timeout" from="SinkTimer" to="." method="_on_LifeTimer_timeout"]
+[connection signal="timeout" from="ClearTimer" to="." method="_on_ClearTimer_timeout"]
 
 [editable path="SelectArea"]
