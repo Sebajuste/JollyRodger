@@ -1,6 +1,15 @@
 extends Popup
 
 
+const RARITY_COLORS:= {
+	"Common": Color.white,
+	"Uncommon": Color.aquamarine,
+	"Rare": Color.cornflower,
+	"Epic": Color.goldenrod,
+	"Legendary": Color.orange
+}
+
+
 var STAT_SCENE = preload("res://scenes/ui/components/Inventory/ItemTooltip/ItemTooltipStat.tscn")
 
 
@@ -10,7 +19,7 @@ onready var description_label = $MarginContainer/VBoxContainer/Description
 onready var stats_list = $MarginContainer/VBoxContainer/Statistics
 
 var item : GameItem setget set_item
-
+var rarity : String setget set_rarity
 var attributes : Dictionary = {} setget set_attributes
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +39,10 @@ func update_item_info():
 	if item:
 		name_label.text = item.name
 		description_label.text = item.description
+	
+	if rarity:
+		print("set color rarity : %s" % rarity)
+		name_label.add_color_override("font_color", RARITY_COLORS[rarity])
 	
 	# Clear olf attributes info
 	for child in stats_list.get_children():
@@ -54,8 +67,13 @@ func set_item(value):
 	update_item_info()
 
 
+func set_rarity(value):
+	if value:
+		rarity = value
+		update_item_info()
+
+
 func set_attributes(value : Dictionary):
-	
 	attributes = value
 	update_item_info()
 

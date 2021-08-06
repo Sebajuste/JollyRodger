@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/ui/components/Inventory/ItemTooltip/ItemTooltipStat.tscn" type="PackedScene" id=6]
 
 [node name="ItemTooltip" type="Popup"]
+visible = true
 modulate = Color( 1, 1, 1, 0 )
 margin_right = 200.0
 margin_bottom = 300.0

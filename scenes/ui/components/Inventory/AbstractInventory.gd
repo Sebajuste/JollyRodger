@@ -52,6 +52,9 @@ func update_inventory():
 		var gui_item : ItemHandler = ITEM_HANDLER_SCENE.instance()
 		gui_item.item = GameTable.get_item(item_info.item_id)
 		gui_item.quantity = item_info.quantity
+		print("create item handler : ", item_info)
+		if item_info.has("item_rarity"):
+			gui_item.rarity = item_info.item_rarity
 		
 		if item_info.has("attributes"):
 			gui_item.attributes = item_info.attributes
