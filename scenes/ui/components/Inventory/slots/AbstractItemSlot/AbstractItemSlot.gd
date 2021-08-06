@@ -98,7 +98,7 @@ func drop_data(_pos, source_slot):
 	if has_item():
 		
 		# Transfer to same item type
-		if item_handler.item.id == source_slot.item_handler.item.id:
+		if item_handler.item.id == source_slot.item_handler.item.id and item_handler.item.max_stack > 1:
 			item_transfer(source_slot)
 		else: # Swap items
 			item_swap(source_slot)
