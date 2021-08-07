@@ -50,7 +50,7 @@ func get_first_empty_slot(item_id : int = -1) -> InventoryItemSlot:
 	# Search first same items
 	if item_id > 0:
 		for slot in grid_container.get_children():
-			if slot.has_item() and slot.item_handler.item.id == item_id:
+			if slot.has_item() and slot.item_handler.item.id == item_id and slot.item_handler.item.max_stack > 1:
 				return slot
 	
 	# Search empty slot

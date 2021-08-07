@@ -30,8 +30,9 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 	if result:
 		gui_inventory.inventory.add_item(slot_id, {
 			"item_id": new_item.item.id,
-			"quantity": amount,
-			"attributes": new_item.attributes
+			"item_rarity": new_item.rarity,
+			"attributes": new_item.attributes,
+			"quantity": amount
 		})
 	return result
 

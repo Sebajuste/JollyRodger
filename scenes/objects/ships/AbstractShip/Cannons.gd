@@ -24,7 +24,7 @@ func add_cannon(slot_id : int, cannon_info):
 			var cannon := get_child(child_index)
 			cannon.damage = cannon_info.attributes.damage
 			cannon.speed = cannon_info.attributes.range
-			cannon.fire_rate = cannon_info.attributes.firerate
+			cannon.fire_rate = cannon_info.attributes.fire_rate
 			cannons.append(cannon)
 			print("Cannon added %d" % slot_id)
 

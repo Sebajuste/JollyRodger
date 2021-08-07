@@ -109,34 +109,43 @@ func _drop():
 	
 	var crate = CRATE_SCENE.instance()
 	
-	var crate_pos = global_transform.origin
-	
-	crate_pos += Vector3(
+	var dir := Vector3(
 		rand_range(-1, 1),
 		0,
 		rand_range(-1, 1)
-	) * 10
+	).normalized()
 	
+	var crate_pos := global_transform.origin + dir*10 + dir*randf()*10
 	crate.transform.origin = crate_pos
 	
 	Spawner.spawn(crate)
 	
 	if drop_equipment and equipment.has_items():
-		
-		for item_slot in equipment.items:
-			if equipment.has_item(item_slot):
-				var item = equipment.get_item(item_slot)
+		var keys = equipment.items.keys()
+		for key_index in range(keys.size()):
+			var item_slot = keys[key_index]
+			var item = equipment.items[item_slot]
+			var crate_index : int = crate.inventory.get_free_slot()
+			if crate_index != -1:
 				equipment.remove_item(item_slot)
-				var crate_index = equipment.get_free_slot()
 				crate.inventory.add_item(crate_index, item)
+			else:
+				break
 	
 	if drop_inventory and inventory.has_items():
-		for item_slot in inventory.items:
-			if inventory.has_item(item_slot):
-				var item = inventory.get_item(item_slot)
+		var keys = inventory.items.keys()
+		for key_index in range(keys.size()):
+			var item_slot = keys[key_index]
+			var item = inventory.items[item_slot]
+			var crate_index : int = crate.inventory.get_free_slot()
+			if crate_index != -1:
 				inventory.remove_item(item_slot)
-				var crate_index = inventory.get_free_slot()
 				crate.inventory.add_item(crate_index, item)
+			else:
+				break
+		
+	
+
 
 
 func _on_DamageStats_health_changed(_new_value, _old_value):

@@ -40,6 +40,14 @@ func has_item(slot_id : int) -> bool:
 	
 
 
+func get_same_free_slot(item : GameItem) -> int:
+	if items.size() < max_slot:
+		for slot_id in range(max_slot):
+			if items.has( slot_id ) and items[slot_id].item_id == item.id:
+				return slot_id
+	return -1
+
+
 func get_free_slot() -> int:
 	if items.size() < max_slot:
 		for slot_id in range(max_slot):
@@ -67,10 +75,19 @@ func add_item(slot_id : int, item : Dictionary):
 		rpc_add_item(slot_id, item)
 
 
-func add_item_in_free_slot(item : Dictionary):
-	var slot_id := get_free_slot()
+func add_item_in_free_slot(item_description : Dictionary):
+	
+	var slot_id := -1
+	
+	var item := GameTable.get_item(item_description.item_id)
+	if item.max_stack > 1:
+		slot_id = get_same_free_slot(item)
+	
+	if slot_id == -1:
+		slot_id = get_free_slot()
+	
 	if slot_id != -1:
-		add_item(slot_id, item)
+		add_item(slot_id, item_description)
 
 
 func change_quantity(slot_id : int, quantity : int):

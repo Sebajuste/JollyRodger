@@ -60,14 +60,14 @@ func get_drag_data(_pos):
 func can_drop_data(_pos, slot):
 	if slot.is_in_group("gui_item_slot"):
 		if can_equipe(slot.item_handler):
-			if not has_item(): # if slot empty
-				return true
-			else: # if sawp item
-				if Input.is_action_pressed("secondary"):
+			if has_item(): # if swap item
+				if Input.is_action_pressed("secondary"): # if split asked
 					if slot.item_handler.item.id == item_handler.item.id:
 						return true
 					else:
 						return false
+			else: # if slot empty
+				return true
 			return true
 	return false
 
@@ -75,7 +75,7 @@ func can_drop_data(_pos, slot):
 func drop_data(_pos, source_slot):
 	
 	#Open Split Screen
-	if Input.is_action_pressed("secondary"):
+	if Input.is_action_pressed("secondary") and source_slot.item_handler.quantity > 1:
 		
 		var split_popup : Control = SPLIT_POPUP_SCENE.instance()
 		
@@ -88,8 +88,6 @@ func drop_data(_pos, source_slot):
 		
 		var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
 		
-		#var amount := _calculate_amount(max_quantity, source_slot.item_handler)
-		
 		split_popup.amount_label.text = str(amount / 2)
 		
 		split_popup.show()
@@ -98,7 +96,7 @@ func drop_data(_pos, source_slot):
 	if has_item():
 		
 		# Transfer to same item type
-		if item_handler.item.id == source_slot.item_handler.item.id:
+		if item_handler.item.id == source_slot.item_handler.item.id and item_handler.item.max_stack > 1:
 			item_transfer(source_slot)
 		else: # Swap items
 			item_swap(source_slot)
@@ -109,11 +107,8 @@ func drop_data(_pos, source_slot):
 
 
 func item_transfer(source_slot):
-	#var amount := min(max_quantity - item_handler.quantity, source_slot.item_handler.quantity)
 	
 	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
-	
-	#var amount := _calculate_amount(max_quantity - item_handler.quantity, item_handler)
 	
 	var item : ItemHandler = source_slot.pick(amount)
 	put(item, amount)
@@ -127,11 +122,8 @@ func item_swap(source_slot):
 
 
 func item_give(source_slot):
-	#var amount := min(max_quantity, source_slot.item_handler.quantity)
 	
 	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
-	
-	#var amount := _calculate_amount(max_quantity, source_slot.item_handler)
 	
 	var item : ItemHandler = source_slot.pick(amount)
 	put(item, amount)
@@ -176,6 +168,9 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 
 
 func pick(amount : int = -1) -> ItemHandler:
+	
+	if item_handler == null:
+		return null
 	
 	amount = min(amount, item_handler.quantity)
 	
@@ -281,6 +276,8 @@ func _on_mouse_entered():
 		tooltip.name = "ItemTooltip"
 		tooltip.rect_position = get_parent().get_global_transform_with_canvas().origin - Vector2(tooltip.rect_size.x, 0)
 		tooltip.item = item_handler.item
+		tooltip.rarity = item_handler.rarity
+		tooltip.attributes = item_handler.attributes
 		
 		yield(get_tree().create_timer(0.35), "timeout")
 		if has_node("ItemTooltip"):

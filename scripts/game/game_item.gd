@@ -6,6 +6,8 @@ enum ATTRIBUT_TYPE {FLOAT, INTEGER, STRING}
 const ATTRIBUTS_TYPE := {
 	"speed": ATTRIBUT_TYPE.FLOAT,
 	"damage": ATTRIBUT_TYPE.INTEGER,
+	"range": ATTRIBUT_TYPE.INTEGER,
+	"fire_rate": ATTRIBUT_TYPE.INTEGER,
 	"rotation_speed": ATTRIBUT_TYPE.FLOAT
 }
 
@@ -17,7 +19,7 @@ var description : String
 var icon : Texture
 var max_stack : int
 var attributes : Dictionary = {}
-
+var rarity_mult := {}
 
 
 # Called when the node enters the scene tree for the first time.
@@ -45,10 +47,13 @@ func _init( item : Dictionary ):
 					self.max_stack = item.max_stack.to_int()
 				_:
 					var value = item[key]
-					if self.has_meta(key):
-						self.set_meta(key, value)
+					if key.ends_with("multi"):
+						rarity_mult[key] = value.replacen(",", ".").to_float()
 					else:
-						attributes[key] = get_attribute(key, value)
+						if self.has_meta(key):
+							self.set_meta(key, value)
+						else:
+							attributes[key] = get_attribute(key, value)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -62,7 +67,7 @@ func get_attribute(key, value):
 		
 		match ATTRIBUTS_TYPE[key]:
 			ATTRIBUT_TYPE.FLOAT:
-				return value.to_float()
+				return value.replacen(",", ".").to_float()
 			ATTRIBUT_TYPE.INTEGER:
 				return value.to_int()
 			ATTRIBUT_TYPE.STRING:

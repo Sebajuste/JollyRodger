@@ -7,6 +7,7 @@ signal quantity_changed(quantity)
 
 var item setget set_item
 var quantity : int = 0 setget set_quantity
+var rarity : String = "Common"
 var attributes := {}
 
 

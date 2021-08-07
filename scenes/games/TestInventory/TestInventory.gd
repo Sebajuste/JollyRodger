@@ -52,13 +52,6 @@ func _ready():
 		}
 	)
 	
-	"""
-	ship.equipment.add_item(1, {
-		"item_id": cannon.id,
-		"quantity": 2,
-		"attributes": cannon.attributes
-	})
-	"""
 	#  Create Inventory
 	crate.get_node("Inventory").add_item_in_free_slot({
 		"item_id": 101000,
@@ -73,17 +66,21 @@ func _ready():
 	
 	#AI Inventory
 	
+	var item_generator := GameItemGeneration.new()
+	
+	for i in range(10):
+		
+		ship_ai.inventory.add_item_in_free_slot( item_generator.generate_item() )
+		
+		ship.inventory.add_item_in_free_slot( item_generator.generate_item() )
+		
+	
 	ship_ai.inventory.add_item_in_free_slot( {
 		"item_id": 101000,
 		"quantity": 20
 	})
 	
-	ship_ai.equipment.add_item(1, {
-		"item_id": cannon.id,
-		"quantity": 2,
-		"attributes": cannon.attributes
-	})
-	
+	crate._on_SinkTimer_timeout()
 	
 	pass # Replace with function body.
 
@@ -123,13 +120,12 @@ func _on_InventoryButton_pressed():
 		
 		ship_windows = SHIP_WINDOW_SCENE.instance()
 		
-		#gui_ship_inventory.add_child( ship_windows )
-		
 		gui_canvas_layer.add_child( ship_windows )
-		#gui_canvas_layer.add_child( gui_ship_inventory )
 		
 		ship_windows.ship_equipment.inventory = ship.equipment
 		ship_windows.ship_inventory.inventory = ship.inventory
+		
+		ship_windows.ship_ref = weakref(ship)
 		
 		ship_windows.show()
 	else:
