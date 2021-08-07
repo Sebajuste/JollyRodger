@@ -20,6 +20,7 @@ script = ExtResource( 9 )
 [node name="Island01" parent="." instance=ExtResource( 2 )]
 
 [node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 247.763 )
 
 [node name="ShipAI" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
@@ -28,6 +29,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
 max_health = 5
 
 [node name="Crate" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5698, 0.172508, 262.004 )
 
 [node name="Tower" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 145.198, 3.77727, 35.5033 )

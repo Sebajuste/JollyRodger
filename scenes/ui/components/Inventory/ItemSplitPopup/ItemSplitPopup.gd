@@ -40,7 +40,7 @@ func _on_Confirm_pressed():
 		
 		var amount : int = amount_label.text.to_int() if amount_label.text != "" else 1
 		
-		var split_amount := min(amount, from_slot.item_handler.quantity-1)
+		var split_amount := clamp(amount, 1, from_slot.item_handler.quantity-1)
 		
 		if to_slot.has_item():
 			split_amount = min(split_amount, to_slot.max_quantity - to_slot.item_handler.quantity)
