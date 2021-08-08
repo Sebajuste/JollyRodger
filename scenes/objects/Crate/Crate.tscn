@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/miscs/Inventory/Inventory.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/games/TestInventory/Crate.gd" type="Script" id=7]
+[ext_resource path="res://scenes/objects/Crate/Crate.gd" type="Script" id=7]
 
 [sub_resource type="BoxShape" id=1]
 
