@@ -150,15 +150,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.0598, 0 )
 [node name="CollisionShape" parent="SelectArea" index="0"]
 shape = SubResource( 2 )
 
-[node name="3DSticker" parent="." index="8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 47.2827, 0 )
-
 [node name="CollisionShape" parent="HitBox" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.01934 )
 shape = SubResource( 3 )
 
-[node name="DamageStats" parent="." index="10"]
+[node name="DamageStats" parent="." index="13"]
 max_health = 400
 
 [editable path="SelectArea"]
+[editable path="Sticker3D"]
 [editable path="HitBox"]

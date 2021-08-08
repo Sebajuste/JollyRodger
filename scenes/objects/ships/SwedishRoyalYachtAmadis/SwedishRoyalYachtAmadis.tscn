@@ -33,15 +33,19 @@ transform = Transform( -0.00774917, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.0077491
 
 [node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
+debug = true
 
 [node name="Floater2" parent="FloatManager" index="1" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -2, 8 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, 8 )
+debug = true
 
 [node name="Floater3" parent="FloatManager" index="2" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -8 )
+debug = true
 
 [node name="Floater4" parent="FloatManager" index="3" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, -8 )
+debug = true
 
 [node name="Rudder" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949787, 7.81677 )

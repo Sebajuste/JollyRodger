@@ -189,6 +189,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/objects/Flag/Flag.gd"
 }, {
+"base": "State",
+"class": "ShipState",
+"language": "GDScript",
+"path": "res://scenes/objects/ships/AbstractShip/ShipState.gd"
+}, {
 "base": "Control",
 "class": "SimpleWindow",
 "language": "GDScript",
@@ -251,6 +256,7 @@ _global_script_class_icons={
 "Ocean": "",
 "SceneSpawner": "",
 "ShipFlag": "",
+"ShipState": "",
 "SimpleWindow": "",
 "State": "",
 "StateMachine": "",
@@ -272,6 +278,7 @@ Loading="*res://scripts/singletons/loading.gd"
 Spawner="*res://scripts/singletons/Spawner.gd"
 Configuration="*res://scripts/singletons/configuration.gd"
 GameTable="*res://scripts/singletons/GameTable.gd"
+DebugOverlay="*res://scenes/miscs/DebugOverlay/DebugOverlay.tscn"
 
 [editor_plugins]
 
