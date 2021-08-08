@@ -26,6 +26,11 @@ var water_manager = null
 var immerged := false
 
 
+var water_surface := Vector3.ZERO
+var archimed_force := Vector3.ZERO
+var gravity := Vector3.ZERO
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -33,9 +38,9 @@ func _ready():
 	if not oceans.empty():
 		water_manager = oceans[0]
 	
-	
 	rigid_body = _get_rigidbody_parent(self)
 	set_debug(debug)
+	
 
 
 func _get_rigidbody_parent(node : Node) -> Node:
@@ -47,13 +52,14 @@ func _get_rigidbody_parent(node : Node) -> Node:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+"""
 func _process(_delta):
 	var depth := get_water_height() - self.global_transform.origin.y
 	if depth > 0:
 		floater_mesh.material_override = inwater_material
 	else:
 		floater_mesh.material_override = inair_material
-	
+"""
 
 
 func _physics_process(delta : float):
@@ -63,6 +69,8 @@ func _physics_process(delta : float):
 		return
 	
 	var floater_offset := self.global_transform.origin - rigid_body.global_transform.origin
+	
+	gravity = ( (get_gravity() * rigid_body.mass) / floater_count ) * delta
 	
 	rigid_body.apply_impulse(
 		floater_offset,
@@ -75,12 +83,9 @@ func _physics_process(delta : float):
 		immerged = true
 		
 		var displacement_multiplier := get_displacement_multiplier(depth) * delta
-		"""
-		rigid_body.apply_impulse(
-			floater_offset,
-			Vector3.UP * abs(get_gravity().y) * displacement_multiplier
-		)
-		"""
+		
+		water_surface = Vector3(0, depth, 0)
+		archimed_force = Vector3.UP * abs(get_gravity().y * rigid_body.mass) * (displacement_multiplier / floater_count)
 		
 		rigid_body.apply_impulse(
 			floater_offset,
@@ -95,6 +100,8 @@ func _physics_process(delta : float):
 		rigid_body.add_torque( (displacement_multiplier / floater_count) * -rigid_body.angular_velocity * water_angular_drag)
 		
 	else:
+		water_surface = Vector3.ZERO
+		archimed_force = Vector3.ZERO
 		immerged = false
 
 
@@ -121,5 +128,12 @@ func get_gravity() -> Vector3:
 
 func set_debug(value):
 	debug = value
-	self.visible = value
-	set_process(value)
+	if DebugOverlay and DebugOverlay.vector:
+		if debug:
+			DebugOverlay.vector.add_vector(self, "water_surface", 1.0, 2.0, Color.darkblue)
+			DebugOverlay.vector.add_vector(self, "archimed_force", 1.0, 2.0, Color.dodgerblue)
+			DebugOverlay.vector.add_vector(self, "gravity", 1.0, 2.0, Color.red)
+		else:
+			DebugOverlay.vector.remove_vector(self, "water_surface")
+			DebugOverlay.vector.remove_vector(self, "archimed_force")
+			DebugOverlay.vector.remove_vector(self, "gravity")
