@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
@@ -8,6 +8,13 @@
 [ext_resource path="res://scenes/games/TestAI/TestAI.gd" type="Script" id=6]
 [ext_resource path="res://scenes/miscs/DebugOverlay/DebugOverlay.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/miscs/SelectHint/SelectHint.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Curve3D" id=1]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -39.5718, -0.646118, 313.415, 0, 0, 0, 0, 0, 0, 70.6159, 0.439468, 420.602, 0, 0, 0, 0, 0, 0, 222.903, 0.439484, 365.93, 0, 0, 0, 0, 0, 0, 342.319, 0.439484, 386.013, 0, 0, 0, 0, 0, 0, 436.222, 0.439453, 287.224, 0, 0, 0, 0, 0, 0, 390.708, 0.439453, 146.79, 0, 0, 0, 0, 0, 0, 263.863, 0.439453, -19.3929, 0, 0, 0, 0, 0, 0, 86.0486, 0.477295, -14.0456, 0, 0, 0, 0, 0, 0, -39.5718, -0.646118, 313.415 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+}
 
 [node name="TestAI" type="Spatial"]
 script = ExtResource( 6 )
@@ -33,6 +40,13 @@ mode = "Gimbal"
 target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPlace")
 current = true
 
+[node name="Path" type="Path" parent="."]
+curve = SubResource( 1 )
+
 [node name="SceneSpawner" parent="." instance=ExtResource( 3 )]
+
+[node name="PathTarget" type="Spatial" parent="."]
+
+[node name="SelectHint" parent="PathTarget" instance=ExtResource( 9 )]
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 7 )]

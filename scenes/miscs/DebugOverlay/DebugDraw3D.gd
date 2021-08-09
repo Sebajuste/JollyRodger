@@ -2,16 +2,16 @@ extends Control
 
 
 class Vector:
-	var spatial
-	var object
+	var spatial_ref
+	var object_ref
 	var property
 	var scale
 	var width
 	var color
 	
 	func _init(_spatial, _object, _property, _scale, _width, _color):
-		spatial = _spatial
-		object = _object
+		spatial_ref = weakref(_spatial)
+		object_ref = weakref(_object)
 		property = _property
 		scale = _scale
 		width = _width
@@ -19,6 +19,14 @@ class Vector:
 	
 	
 	func draw(node : Control, camera : Camera):
+		
+		var spatial = spatial_ref.get_ref()
+		var object = object_ref.get_ref()
+		
+		if spatial == null or object == null:
+			# TODO : remove this Vector
+			return
+		
 		var cam_dir = (camera.global_transform.origin - spatial.global_transform.origin).normalized()
 		var cam_dot = cam_dir.dot( camera.global_transform.basis.z )
 		
@@ -105,7 +113,7 @@ func remove_vector(spatial : Spatial, property : String):
 func find_vector(object : Object, property : String) -> int:
 	for index in range(vectors.size()):
 		var vector : Vector = vectors[index]
-		if vector.object == object and vector.property == property:
+		if vector.object_ref.get_ref() == object and vector.property == property:
 			return index
 	return -1
 

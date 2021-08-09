@@ -2,7 +2,7 @@ extends ShipState
 
 
 export var num_rays := 30
-export var look_ahead := 20
+export var look_ahead := 10
 
 #var global_goal_position := Vector3.ZERO
 
@@ -61,15 +61,17 @@ func exit():
 
 func process(delta):
 	
-	if path_position.is_equal_approx(Vector3.ZERO):
-		path_position = ship.global_transform.origin + -ship.global_transform.basis.z * 100 + Vector3(-50, 0, 500)
+	#if path_position.is_equal_approx(Vector3.ZERO):
+	#	path_position = ship.global_transform.origin + -ship.global_transform.basis.z * 100 + Vector3(-50, 0, 500)
 	
 	
-	var path_position_delta = path_position - ship.global_transform.origin
+	var path_position_delta := path_position - ship.global_transform.origin
 	path_direction = path_position_delta.normalized()
 	
+	var distance_squared := path_position_delta.length_squared()
+	
 	# Need to move to goal position
-	if path_position_delta.length_squared() > 10.0*10.0:
+	if distance_squared > 10.0*10.0:
 		
 		if nearest_collision:
 			
@@ -78,9 +80,9 @@ func process(delta):
 			var s := look_ahead*look_ahead * nearest_collision_distance
 			var t := s / v
 			
-			ship.sail_position = lerp(ship.sail_position, 1.0 / t + 1.0/v, delta)
+			ship.sail_position = lerp(ship.sail_position, 1.0/t + 1.0/v, delta)
 		else:
-			ship.sail_position = lerp(ship.sail_position, 1.0, delta)
+			ship.sail_position = lerp(ship.sail_position, distance_squared - (1.0 / distance_squared), delta)
 	else:
 		ship.sail_position = lerp(ship.sail_position, 0.0, delta)
 	
@@ -109,7 +111,7 @@ func physics_process(delta):
 	find_unobstructed_direction()
 	
 
-
+"""
 func set_interest():
 	
 	var angle : float = Vector3.FORWARD.angle_to(-ship.global_transform.basis.z)
@@ -158,7 +160,7 @@ func choose_direction():
 	chosen_direction = chosen_direction.normalized()
 	
 	pass
-
+"""
 
 func find_unobstructed_direction():
 	var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
@@ -169,25 +171,79 @@ func find_unobstructed_direction():
 	
 	for i in range(num_rays):
 		rays[i] = Vector3.ZERO
-		danger_rays[i] = Vector3.ZERO
+		#danger_rays[i] = Vector3.ZERO
 	
 	var speed := ship.linear_velocity.length()
+	
+	var ray_look_ahead := max(look_ahead, look_ahead*speed)
 	
 	nearest_collision = false
 	nearest_collision_distance = 0.0
 	
+	
+	# Check all dangers
 	for i in range(num_rays):
+		if danger_rays[i]:
+			var ray : Vector3 = ray_directions[i].rotated(Vector3.UP, angle)
+			
+			ray_detection(i, ray, ray_look_ahead)
+			
+			"""
+			var result := space_state.intersect_ray(
+				ship.global_transform.origin,
+				ship.global_transform.origin + ray * ray_look_ahead,
+				[ship]
+			)
+			
+			if result:
+				var dist_collision := ship.global_transform.origin.distance_squared_to(result.position)
+				if not nearest_collision:
+					nearest_collision_distance = dist_collision
+				else:
+					if dist_collision < nearest_collision_distance:
+						nearest_collision_distance = dist_collision
+				nearest_collision = true
+				danger_rays[i] = ray
+			else:
+				danger_rays[i] = null
+			"""
+	
+	
+	
+	# Chek all rays
+	for i in range(num_rays):
+		
+		if danger_rays[i]:
+			continue
 		
 		var ray : Vector3 = ray_directions[i].rotated(Vector3.UP, angle)
 		
+		rays[i] = ray * speed
+		
+		var obstacle_detected := ray_detection(i, ray, ray_look_ahead)
+		
+		if obstacle_detected:
+			if i < num_rays - 1:
+				ray = ray_directions[i+1].rotated(Vector3.UP, angle)
+				ray_detection(i+1, ray, ray_look_ahead)
+				rays[i+1] = ray * speed
+		elif nearest_collision:
+			chosen_direction = (danger_avoidance()).normalized()
+			if i < num_rays - 1:
+				ray = ray_directions[i+1].rotated(Vector3.UP, angle)
+				ray_detection(i+1, ray, ray_look_ahead)
+				rays[i+1] = ray * speed
+			break
+		else:
+			chosen_direction = path_direction.normalized()
+			break
+		
+		"""
 		var result := space_state.intersect_ray(
 			ship.global_transform.origin,
-			ship.global_transform.origin + ray * max(look_ahead, look_ahead*speed),
+			ship.global_transform.origin + ray * ray_look_ahead,
 			[ship]
 		)
-		
-		
-		rays[i] = ray * speed
 		
 		if result:
 			var dist_collision := ship.global_transform.origin.distance_squared_to(result.position)
@@ -199,11 +255,57 @@ func find_unobstructed_direction():
 			nearest_collision = true
 			danger_rays[i] = ray
 		elif nearest_collision:
+			danger_rays[i] = null
 			chosen_direction = ray.normalized()
 			return
 		else:
+			danger_rays[i] = null
 			chosen_direction = path_direction.normalized()
 			return
-		
+		"""
+
+
+func danger_avoidance() -> Vector3:
 	
+	var count := 0
+	var steer := Vector3.ZERO
+	
+	for i in range(num_rays):
+		if danger_rays[i]:
+			var delta_position : Vector3 = ship.global_transform.origin - danger_rays[i]
+			steer += delta_position.normalized() / delta_position.length()
+			count += 1
+	
+	if count > 0:
+		steer = steer / count
+		return steer.normalized()
+	
+	return Vector3.ZERO
+
+
+func ray_detection(idx : int, ray : Vector3, ray_look_ahead : float) -> bool:
+	
+	var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
+	
+	#var ray : Vector3 = ray_directions[idx].rotated(Vector3.UP, angle)
+	
+	var result := space_state.intersect_ray(
+		ship.global_transform.origin + Vector3.DOWN,
+		ship.global_transform.origin + Vector3.DOWN + ray * ray_look_ahead,
+		[ship]
+	)
+	
+	if result:
+		var dist_collision := ship.global_transform.origin.distance_squared_to(result.position)
+		if not nearest_collision:
+			nearest_collision_distance = dist_collision
+		else:
+			if dist_collision < nearest_collision_distance:
+				nearest_collision_distance = dist_collision
+		nearest_collision = true
+		danger_rays[idx] = result.position - ship.global_transform.origin
+		return true
+	else:
+		danger_rays[idx] = null
+		return false
 	
