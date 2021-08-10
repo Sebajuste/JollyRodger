@@ -5,11 +5,12 @@ extends Spatial
 var MATERIAL_MAP := {
 	"None": "",
 	"GB": "res://scenes/objects/Flag/flag_gb.material",
+	"Spain": "res://scenes/objects/Flag/flag_spain.material",
 	"Pirate": "res://scenes/objects/Flag/flag_pirate.material"
 }
 
 
-export(String, "None", "GB", "Pirate") var faction := "None" setget set_faction
+export(String, "None", "GB", "Spain", "Pirate") var faction := "None" setget set_faction
 
 
 onready var flag_mesh := $Pivot/MeshInstance
