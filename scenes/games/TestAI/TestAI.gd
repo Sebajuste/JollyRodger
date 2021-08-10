@@ -77,7 +77,7 @@ func _physics_process(delta):
 	
 	patrol_position_distance = position.distance_to(target)
 	
-	if position.distance_squared_to(target) < 10*10:
+	if position.distance_squared_to(target) < 30*30:
 		
 		while position.distance_squared_to(target) < 40*40:
 			patrol_index = wrapi(patrol_index + 1, 0, patrol_points.size())

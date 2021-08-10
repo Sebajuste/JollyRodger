@@ -12,8 +12,8 @@
 
 [sub_resource type="Curve3D" id=1]
 _data = {
-"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -39.5718, -0.646118, 313.415, 0, 0, 0, 0, 0, 0, 70.6159, 0.439468, 420.602, 0, 0, 0, 0, 0, 0, 222.903, 0.439484, 365.93, 0, 0, 0, 0, 0, 0, 342.319, 0.439484, 386.013, 0, 0, 0, 0, 0, 0, 436.222, 0.439453, 287.224, 0, 0, 0, 0, 0, 0, 390.708, 0.439453, 146.79, 0, 0, 0, 0, 0, 0, 263.863, 0.439453, -19.3929, 0, 0, 0, 0, 0, 0, 86.0486, 0.477295, -14.0456, 0, 0, 0, 0, 0, 0, -39.5718, -0.646118, 313.415 ),
-"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0 )
+"points": PoolVector3Array( 5.07952, 5.72604, -90.8421, -5.07952, -5.72604, 90.8421, -39.794, -1.73972, 330.787, -60.8673, 4.33115, -66.4096, 60.8673, -4.33115, 66.4096, 1.07516, 0.479996, 516.861, 15.9363, -0.0494995, 107.215, -15.9363, 0.0494995, -107.215, 376.531, 0.439484, 504.098, -55.2983, -0.0379333, 49.9876, 55.2983, 0.0379333, -49.9876, 408.792, 0.433472, 294.945, 31.5412, 1.19209e-07, 40.7166, -31.5412, -1.19209e-07, -40.7166, 390.708, 0.439453, 146.79, 55.6902, 1.19209e-07, 25.1583, -55.6902, -1.19209e-07, -25.1583, 235.594, 0.439453, -23.5797, 35.3949, 2.47269, -37.3799, -35.3949, -2.47269, 37.3799, 43.2254, -2.64085, 33.2002, 8.42997, 6.08116, -96.3497, -8.42997, -6.08116, 96.3497, -39.794, -1.73972, 330.787 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 )
 }
 
 [node name="TestAI" type="Spatial"]
@@ -25,6 +25,9 @@ script = ExtResource( 6 )
 
 [node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
 control_mode = "AI"
+
+[node name="Flag" parent="SwedishRoyalYachtAmadis" index="2"]
+faction = "Spain"
 
 [node name="SwedishHemmemaStrybjorn" parent="." instance=ExtResource( 8 )]
 transform = Transform( -0.0182202, 0, -0.999834, 0, 1, 0, 0.999834, 0, -0.0182202, -63.3624, 0, 93.4747 )
@@ -50,3 +53,8 @@ curve = SubResource( 1 )
 [node name="SelectHint" parent="PathTarget" instance=ExtResource( 9 )]
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 7 )]
+
+[editable path="SwedishRoyalYachtAmadis"]
+[editable path="SwedishRoyalYachtAmadis/SelectArea"]
+[editable path="SwedishRoyalYachtAmadis/Sticker3D"]
+[editable path="SwedishRoyalYachtAmadis/HitBox"]

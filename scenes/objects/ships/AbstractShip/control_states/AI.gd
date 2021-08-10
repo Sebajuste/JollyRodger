@@ -49,13 +49,19 @@ func _ready():
 
 func enter(_msg : Dictionary = {}):
 	
-	print("AI enable")
+	var shape = ship.get_node("DetectionArea/CollisionShape")
+	shape.disabled = false
+	
+	print("AI enabled")
 	pass
 
 
 func exit():
 	
-	print("AI disable")
+	var shape = ship.get_node("DetectionArea/CollisionShape")
+	shape.disabled = true
+	
+	print("AI disabled")
 	
 
 
@@ -73,16 +79,19 @@ func process(delta):
 	# Need to move to goal position
 	if distance_squared > 10.0*10.0:
 		
+		# If the ship is near of obstacles
 		if nearest_collision:
-			
 			var v := ship.linear_velocity.length_squared()
-			
 			var s := look_ahead*look_ahead * nearest_collision_distance
 			var t := s / v
-			
 			ship.sail_position = lerp(ship.sail_position, 1.0/t + 1.0/v, delta)
 		else:
-			ship.sail_position = lerp(ship.sail_position, distance_squared - (1.0 / distance_squared), delta)
+			
+			var dot = path_direction.dot(-ship.global_transform.basis.z)
+			
+			var s = clamp(distance_squared / (30*30), 0.1, 1.0)
+			var t = dot*dot if dot > 0 else 0.2
+			ship.sail_position = lerp(ship.sail_position, min(s, t), delta)
 	else:
 		ship.sail_position = lerp(ship.sail_position, 0.0, delta)
 	
