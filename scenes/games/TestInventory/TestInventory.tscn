@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/objects/Crate/Crate.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=11]
 
-[sub_resource type="CylinderShape" id=2]
+[sub_resource type="CylinderShape" id=1]
 radius = 250.0
 height = 40.0
 
@@ -30,9 +30,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 247.763 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
 
 [node name="CollisionShape" parent="ShipAI/DetectionArea" index="0"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
-[node name="DamageStats" parent="ShipAI" index="14"]
+[node name="DamageStats" parent="ShipAI" index="15"]
 max_health = 5
 
 [node name="Combat" parent="ShipAI/ControlSM/Control/AI/StateSM/AvoidObstacle" index="3"]

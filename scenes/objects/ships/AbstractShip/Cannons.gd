@@ -8,6 +8,9 @@ var cannons := []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	for cannon in get_children():
+		cannon.cannon_owner = owner
+	
 	pass # Replace with function body.
 
 

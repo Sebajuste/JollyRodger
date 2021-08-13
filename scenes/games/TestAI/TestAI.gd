@@ -93,7 +93,7 @@ func _on_SpawnZone_spawn_object(object):
 	
 	object.faction = "GB"
 	object.control_mode = "AI"
-	object.control_sm.get_node("Control/AI").follow_path($Path)
+	object.control_sm.get_node("Control/AI").follow_path($PathAI)
 	
 	var cannon := GameTable.get_item(100001)
 	for i in range(4):

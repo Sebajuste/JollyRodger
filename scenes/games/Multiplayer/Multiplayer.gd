@@ -70,7 +70,7 @@ func _ready():
 #	
 #	pass
 
-
+"""
 func _unhandled_input(event):
 	
 	if event.is_action_pressed("fire_order"):
@@ -94,7 +94,7 @@ func _unhandled_input(event):
 		else:
 			#target_ref = null
 			pass
-
+"""
 
 func _input(event):
 	if event.is_action_pressed("ui_main_menu"):
@@ -207,3 +207,26 @@ func _on_AcceptButton_pressed():
 	
 	$GUI/GameMenu.close()
 	
+
+
+func _on_SpawnZone_spawn_object(object):
+	
+	object.faction = "Spain"
+	
+	object.control_mode = "AI"
+	object.control_sm.get_node("Control/AI").follow_path($World/Path)
+	
+	var cannon := GameTable.get_item(100001)
+	for i in range(4):
+		object.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+	
+	var item_generator := GameItemGeneration.new()
+	for i in range(10):
+		object.inventory.add_item_in_free_slot( item_generator.generate_item() )
+	
+	pass # Replace with function body.

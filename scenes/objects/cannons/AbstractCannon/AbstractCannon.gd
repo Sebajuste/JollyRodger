@@ -108,6 +108,9 @@ func _on_fire_delayed():
 	
 	Spawner.spawn(bullet)
 	
+	bullet.damage_source.source = cannon_owner
+	bullet.damage_source.damage = damage
+	
 	if Network.enabled:
 		rpc("rpc_fire")
 	else:

@@ -24,6 +24,11 @@ func _ready():
 	pass # Replace with function body.
 
 
+func _enter_tree():
+	if Network.enabled and not is_network_master():
+		rpc("rpc_request_flag")
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -44,11 +49,6 @@ func set_faction(value):
 		load_material()
 		if Network.enabled and is_network_master():
 			rpc("rpc_change_flag", value)
-
-
-func _on_Flag_tree_entered():
-	if Network.enabled and not is_network_master():
-		rpc("rpc_request_flag")
 
 
 puppet func rpc_change_flag(value):
