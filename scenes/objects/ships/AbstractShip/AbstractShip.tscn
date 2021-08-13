@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -18,6 +18,13 @@
 [ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/Control.gd" type="Script" id=16]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/AI.gd" type="Script" id=17]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/DetectionArea.gd" type="Script" id=18]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/Combat.gd" type="Script" id=19]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/AvoidObstacle.gd" type="Script" id=20]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/MoveToPosition.gd" type="Script" id=21]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/Idle.gd" type="Script" id=22]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/FollowPath.gd" type="Script" id=23]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/boid_ennemy_config.tres" type="Resource" id=24]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/boid_ally_config.tres" type="Resource" id=25]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -106,6 +113,28 @@ script = ExtResource( 15 )
 [node name="AI" type="Node" parent="ControlSM/Control"]
 script = ExtResource( 17 )
 
+[node name="StateSM" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 14 )
+initial_state = NodePath("AvoidObstacle/Idle")
+enable = false
+
+[node name="AvoidObstacle" type="Node" parent="ControlSM/Control/AI/StateSM"]
+script = ExtResource( 20 )
+
+[node name="Idle" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 22 )
+
+[node name="MoveToPosition" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 21 )
+
+[node name="FollowPath" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 23 )
+
+[node name="Combat" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 19 )
+boid_ennemy_config = ExtResource( 24 )
+boid_ally_config = ExtResource( 25 )
+
 [node name="NetSyncShip" type="Node" parent="."]
 script = ExtResource( 5 )
 
@@ -123,8 +152,10 @@ autostart = true
 [connection signal="item_added" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_added"]
 [connection signal="item_quantity_changed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_quantity_changed"]
 [connection signal="item_removed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_removed"]
+[connection signal="damage_taken" from="DamageStats" to="ControlSM/Control/AI" method="_on_DamageStats_damage_taken"]
 [connection signal="health_changed" from="DamageStats" to="." method="_on_DamageStats_health_changed"]
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
+[connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]
 
 [editable path="Sticker3D"]

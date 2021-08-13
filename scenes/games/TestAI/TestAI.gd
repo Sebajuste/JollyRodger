@@ -2,6 +2,8 @@ extends Spatial
 
 
 onready var ai_ship := $SwedishRoyalYachtAmadis
+onready var ennemy_ship = $SwedishRoyalYachtAmadis2
+
 
 onready var ship_obstacle := $SwedishHemmemaStrybjorn
 
@@ -24,9 +26,10 @@ func _ready():
 	
 	DebugOverlay.vector.add_vector(ai_ship, "linear_velocity", 1.0, 2.0, Color.blue)
 	
-	DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/chosen_direction", 20.0, 4.0, Color.orange)
-	#DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/path_position", 1.0, 2.0, Color.yellow)
-	DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/path_direction", 5.0, 4.0, Color.greenyellow)
+	DebugOverlay.vector.add_vector(ai_ship,  "ControlSM/Control/AI/StateSM/AvoidObstacle/chosen_direction", 20.0, 4.0, Color.orange)
+	DebugOverlay.stats.add_property(ai_ship, "ControlSM/Control/AI/StateSM/AvoidObstacle/chosen_direction")
+	
+	#DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/StateSM/AvoidObstacle/MoveToPosition/path_direction", 5.0, 4.0, Color.greenyellow)
 	
 	
 	DebugOverlay.stats.add_property(ai_ship, "sail_position")
@@ -37,10 +40,10 @@ func _ready():
 	
 	
 	
-	for i in range(ai_state.num_rays):
+	for i in range(ai_state.get_node("StateSM/AvoidObstacle").NUM_RAYS):
 		
-		DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/rays:%d" % i, 40.0, 2.0, Color.green)
-		DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/danger_rays:%d" % i, 40.0, 2.0, Color.red)
+		DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/StateSM/AvoidObstacle/rays:%d" % i, 40.0, 2.0, Color.green)
+		DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/StateSM/AvoidObstacle/danger_rays:%d" % i, 40.0, 2.0, Color.red)
 		#DebugOverlay.stats.add_property(ai_state, "ray_directions:%d" % i)
 	
 	#DebugOverlay.vector.add_vector(ai_ship, "ControlSM/Control/AI/rays:0", 30.0, 2.0, Color.purple)
@@ -56,8 +59,33 @@ func _ready():
 	DebugOverlay.stats.add_property(ship_obstacle, "rudder_position")
 	
 	
-	var target := patrol_points[patrol_index]
-	ai_state.path_position = target
+	#var target := patrol_points[patrol_index]
+	#ai_state.path_position = target
+	
+	ai_state.follow_path($Path)
+	ennemy_ship.get_node("ControlSM/Control/AI").follow_path($Path)
+	
+	
+	#
+	# Add Equipment
+	#
+	var cannon := GameTable.get_item(100001)
+	
+	for i in range(4):
+		ai_ship.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+		
+		ennemy_ship.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+	
 	
 	pass # Replace with function body.
 
@@ -66,7 +94,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
+"""
 func _physics_process(delta):
 	
 	var position : Vector3 = ai_ship.global_transform.origin
@@ -85,4 +113,4 @@ func _physics_process(delta):
 		
 		ai_ship.get_node("ControlSM/Control/AI").path_position = target
 		
-	
+"""

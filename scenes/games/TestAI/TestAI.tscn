@@ -24,13 +24,17 @@ script = ExtResource( 6 )
 [node name="Island01" parent="." instance=ExtResource( 1 )]
 
 [node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.985133, 0, 0.171791, 0, 1, 0, -0.171791, 0, -0.985133, -31.164, 0, 90.4712 )
 control_mode = "AI"
-
-[node name="Flag" parent="SwedishRoyalYachtAmadis" index="2"]
 faction = "Spain"
 
+[node name="SwedishRoyalYachtAmadis2" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.996596, 0, -0.0824429, 0, 1, 0, 0.0824429, 0, -0.996596, -196.193, 0, 353.233 )
+control_mode = "AI"
+faction = "GB"
+
 [node name="SwedishHemmemaStrybjorn" parent="." instance=ExtResource( 8 )]
-transform = Transform( -0.0182202, 0, -0.999834, 0, 1, 0, 0.999834, 0, -0.0182202, -63.3624, 0, 93.4747 )
+transform = Transform( -0.0182202, 0, -0.999834, 0, 1, 0, 0.999834, 0, -0.0182202, -85.0742, 0, 93.4747 )
 
 [node name="SwedishHemmemaStrybjorn2" parent="." instance=ExtResource( 8 )]
 transform = Transform( -0.794838, 0, -0.606821, 0, 1, 0, 0.606821, 0, -0.794838, -57.2527, 0, -52.6755 )
@@ -53,8 +57,3 @@ curve = SubResource( 1 )
 [node name="SelectHint" parent="PathTarget" instance=ExtResource( 9 )]
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 7 )]
-
-[editable path="SwedishRoyalYachtAmadis"]
-[editable path="SwedishRoyalYachtAmadis/SelectArea"]
-[editable path="SwedishRoyalYachtAmadis/Sticker3D"]
-[editable path="SwedishRoyalYachtAmadis/HitBox"]

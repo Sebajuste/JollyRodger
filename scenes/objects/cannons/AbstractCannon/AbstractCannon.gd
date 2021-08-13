@@ -13,6 +13,9 @@ export var damage := 1 setget set_damage
 onready var muzzle = $Skin/Muzzle
 
 
+var cannon_owner
+
+
 var max_range : float = 0.0
 var fire_ready := true
 
@@ -41,13 +44,13 @@ func is_in_range(target_position : Vector3, target_velocity := Vector3.ZERO) -> 
 	var target_dir := (self.global_transform.origin - target_position).normalized()
 	
 	if target_dir.dot( self.global_transform.basis.z ) < 0.8:
-		print("> not aligned")
+		#print("> not aligned")
 		return false
 	
 	if self.global_transform.origin.distance_squared_to(target_position) > max_range * max_range:
-		print("> too far")
+		#print("> too far")
 		return false
-	print("> ok")
+	#print("> ok")
 	return true
 	
 
@@ -97,7 +100,7 @@ func _on_fire_delayed():
 	bullet.set_network_master( peer_id )
 	bullet.name = "%s_%d_%d" % [bullet.name, peer_id, randi()]
 	
-	bullet.get_node("DamageSource").source = self
+	bullet.get_node("DamageSource").source = cannon_owner
 	bullet.get_node("DamageSource").damage = damage
 	
 	bullet.transform.origin = muzzle.global_transform.origin

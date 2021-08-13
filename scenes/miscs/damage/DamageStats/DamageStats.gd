@@ -2,8 +2,8 @@ class_name DamageStats
 extends Node
 
 
-signal damage_taken(damage)
-signal heal_received(heal)
+signal damage_taken(damage, source_path)
+signal heal_received(heal, source_path)
 signal health_changed(new_value, old_value)
 signal health_depleted()
 signal health_undepleted()
@@ -54,13 +54,13 @@ func heal(value):
 		rpc("rpc_heal", new_health)
 
 
-func take_damage(hit: Hit, hit_box = null) -> void:
+func take_damage(hit, hit_box = null) -> void:
 	if not is_alive():
 		return
 	
 	var new_health = health - hit.damage
 	print("[%s] take damage : " % owner.name, new_health)
-	set_health(new_health)
+	set_health(new_health, hit.source_path)
 
 
 func set_max_health(value: int) -> void:
@@ -69,14 +69,14 @@ func set_max_health(value: int) -> void:
 	max_health = max(1, value)
 
 
-func set_health(value: int):
+func set_health(value: int, source_path := ""):
 	value = clamp(value, 0, max_health)
 	if Network.enabled:
 		if is_network_master():
-			rpc("rpc_set_health", value)
-			rpc_set_health(value)
+			rpc("rpc_set_health", value, source_path)
+			rpc_set_health(value, source_path)
 	else:
-		rpc_set_health(value)
+		rpc_set_health(value, source_path)
 
 
 master func rpc_heal(value):
@@ -84,13 +84,13 @@ master func rpc_heal(value):
 		set_health(value)
 
 
-puppet func rpc_set_health(value: int):
+puppet func rpc_set_health(value: int, source_path : String):
 	var old_health = health
 	health = clamp(value, 0, max_health)
 	if old_health > health:
-		emit_signal("damage_taken", old_health - health)
+		emit_signal("damage_taken", old_health - health, source_path)
 	else:
-		emit_signal("heal_received", health - old_health)
+		emit_signal("heal_received", health - old_health, source_path)
 	emit_signal("health_changed", health, old_health)
 	if health == 0:
 		alive = false
