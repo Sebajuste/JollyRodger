@@ -32,8 +32,8 @@ onready var cannons = $Cannons
 onready var flag = $Flag
 onready var sticker := $Sticker3D
 
-onready var inventory := $Inventory
-onready var equipment := $Equipment
+onready var inventory : Inventory = $Inventory
+onready var equipment : Inventory = $Equipment
 
 onready var control_sm := $ControlSM
 

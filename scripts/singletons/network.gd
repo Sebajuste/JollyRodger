@@ -10,7 +10,8 @@ var Settings = {
 	"Version": "",
 	"Host": "",
 	"Port": 12345,
-	"MaxPlayer": 12
+	"MaxPlayer": 12,
+	"SecurityKey": ""
 }
 
 

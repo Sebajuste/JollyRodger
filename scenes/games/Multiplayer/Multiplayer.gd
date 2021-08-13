@@ -1,6 +1,7 @@
 extends Node
 
 
+
 var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
@@ -92,10 +93,91 @@ func _input(event):
 			pass
 		
 		pass
+
+
+func read_save_file() -> Dictionary:
 	
+	var filename : String = "%s.savegame" % Network.get_self_property("username").to_lower()
+	
+	var fs := File.new()
+	
+	if fs.file_exists(filename):
+		fs.open(filename, File.READ)
+		var content = fs.get_as_text()
+		fs.close()
+		
+		var save = parse_json(content)
+		
+		if typeof(save) != TYPE_DICTIONARY:
+			return {}
+		
+		var save_seed : String = save.save_seed
+		var save_hash : String = save.save_hash
+		var payload : Dictionary = save.payload
+		
+		var ctx := HashingContext.new()
+		ctx.start(HashingContext.HASH_SHA256)
+		
+		ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+		ctx.update(to_json(payload).to_utf8())
+		var res := ctx.finish()
+		
+		if save_hash != res.hex_encode():
+			fs.open(filename, File.WRITE)
+			fs.store_line("")
+			fs.close()
+			return {}
+		
+		return payload
+	
+	return {}
+
+
+func write_save_file(savegame : Dictionary):
+	
+	randomize()
+	
+	var save_seed := str(randi())
+	
+	var ctx := HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA256)
+	
+	var json_paylaod := to_json(savegame)
+	
+	ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+	ctx.update(json_paylaod.to_utf8())
+	var res := ctx.finish()
+	
+	var save_hash := res.hex_encode()
+	
+	var save := {
+		"save_seed": save_seed,
+		"save_hash": save_hash,
+		"payload": savegame
+	}
+	
+	var fs := File.new()
+	fs.open("%s.savegame" % Network.get_self_property("username").to_lower(), File.WRITE)
+	fs.store_line( to_json(save) )
+	fs.close()
+
+
 
 
 func create_player():
+	
+	var faction : String = Network.get_self_property("faction")
+	
+	var savegame := read_save_file()
+	
+	var ship_save := {}
+	var load_ship := true
+	
+	if savegame.has(faction):
+		ship_save = savegame[faction]
+	else:
+		load_ship = false
+	
 	
 	if admin_mode:
 		player = SHIP_FRIGATE_SCENE.instance()
@@ -119,23 +201,48 @@ func create_player():
 	camera.set_target( player.get_node("CaptainPlace") )
 	
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.faction = Network.get_self_property("faction")
+	player.flag.faction = faction
 	
-	var cannon := GameTable.get_item(100001)
-	for i in range(4):
-		player.equipment.add_item_in_free_slot({
-				"item_id": cannon.id,
-				"quantity": 1,
-				"attributes": cannon.attributes
-			}
-		)
+	
+	if load_ship:
+		for key in ship_save.equipment:
+			player.equipment.add_item(key.to_int(), ship_save.equipment[key])
+			
+		for key in ship_save.inventory:
+			player.inventory.items[key.to_int()] = ship_save.inventory[key]
+	else: # Add default equipment
+		var cannon := GameTable.get_item(100001)
+		for i in range(4):
+			player.equipment.add_item_in_free_slot({
+					"item_id": cannon.id,
+					"item_rariry": "Common",
+					"quantity": 1,
+					"attributes": cannon.attributes
+				}
+			)
 	
 	
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
 	
+	player.inventory.connect("inventory_updated", self, "on_inventory_changed")
+	player.equipment.connect("inventory_updated", self, "on_inventory_changed")
+	
 	gui_control.set_ship( player )
 	$GUI/InGameMenu.visible = true
+	
+	#
+	# Save
+	#
+	ship_save = {
+		"equipment": player.equipment.items,
+		"inventory": player.inventory.items,
+	}
+	
+	savegame[faction] = ship_save
+	
+	write_save_file(savegame)
+	
 
 
 func return_login_screen():
@@ -195,7 +302,34 @@ func _on_ChangeFactionButton_pressed():
 	
 	$GUI/FactionSelector.open()
 	$GUI/GameMenu.close()
+
+
+func on_inventory_changed(_items):
 	
+	var savegame := read_save_file()
+	
+	print("on_inventory_changed")
+	
+	var save_ship := {
+		"equipement": player.equipment.items,
+		"inventory": player.inventory.items
+	}
+	
+	var faction : String = Network.get_self_property("faction")
+	
+	var save_payload := {}
+	
+	var ship_save = {
+		"equipment": player.equipment.items,
+		"inventory": player.inventory.items,
+	}
+	
+	savegame[faction] = ship_save
+	
+	write_save_file(savegame)
+	
+	pass
+
 
 
 func _on_QuitGameButton_pressed():
@@ -261,4 +395,4 @@ func _on_InGameMenu_inventory_clicked():
 	else:
 		player_ship_window.queue_free()
 		player_ship_window_ref = weakref(null)
-	
+

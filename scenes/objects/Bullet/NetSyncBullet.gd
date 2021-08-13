@@ -22,7 +22,7 @@ func integrate_forces(state : PhysicsDirectBodyState):
 	
 	if Network.enabled and not is_network_master() and not slave_updated:
 		state.linear_velocity = last_properties_received.linear_velocity
-		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position)
+		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position, 0.2)
 		slave_updated = true
 	
 

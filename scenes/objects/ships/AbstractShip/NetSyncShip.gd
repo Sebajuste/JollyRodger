@@ -35,7 +35,7 @@ func integrate_forces(state : PhysicsDirectBodyState):
 		state.linear_velocity = last_properties.linear_velocity
 		state.angular_velocity = last_properties.angular_velocity
 		
-		state.transform = NetNodeSync.update_transform(state.transform, last_properties.transform)
+		state.transform = NetNodeSync.update_transform(state.transform, last_properties.transform, 0.5)
 		
 		slave_updated = true
 	

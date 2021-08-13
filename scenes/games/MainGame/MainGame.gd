@@ -30,7 +30,7 @@ func _ready():
 		Network.Settings.Host = config.get("server_host", "0.0.0.0")
 		Network.Settings.Port = config.get("game_port", DEFAULT_GAME_PORT)
 		Network.Settings.MaxPlayer = config.get("max_player", DEFAULT_MAX_PLAYER)
-		
+		Network.Settings.SecurityKey = config.get("security_key")
 		
 	else:
 		Network.Settings.Host = "0.0.0.0"
@@ -77,6 +77,8 @@ func _ready():
 		upnp.add_port_mapping(game_port, game_port, GAME_NAME, "UDP", 3600)
 		
 		print("Server starded on %s:%d" % [external_address, game_port])
+		
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 		
 		get_tree().change_scene("res://scenes/games/Multiplayer/Multiplayer.tscn")
 		
