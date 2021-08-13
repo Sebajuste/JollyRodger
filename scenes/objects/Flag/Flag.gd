@@ -5,11 +5,12 @@ extends Spatial
 var MATERIAL_MAP := {
 	"None": "",
 	"GB": "res://scenes/objects/Flag/flag_gb.material",
+	"Spain": "res://scenes/objects/Flag/flag_spain.material",
 	"Pirate": "res://scenes/objects/Flag/flag_pirate.material"
 }
 
 
-export(String, "None", "GB", "Pirate") var faction := "None" setget set_faction
+export(String, "None", "GB", "Spain", "Pirate") var faction := "None" setget set_faction
 
 
 onready var flag_mesh := $Pivot/MeshInstance
@@ -21,6 +22,11 @@ func _ready():
 	set_faction(faction)
 	
 	pass # Replace with function body.
+
+
+func _enter_tree():
+	if Network.enabled and not is_network_master():
+		rpc("rpc_request_flag")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,11 +49,6 @@ func set_faction(value):
 		load_material()
 		if Network.enabled and is_network_master():
 			rpc("rpc_change_flag", value)
-
-
-func _on_Flag_tree_entered():
-	if Network.enabled and not is_network_master():
-		rpc("rpc_request_flag")
 
 
 puppet func rpc_change_flag(value):

@@ -21,6 +21,10 @@ export var selectable := true setget set_selectable
 export var drop_inventory := true
 export var drop_equipment := true
 
+export(String, "None", "AI") var control_mode = "None" setget set_control_mode
+
+export(String, "None", "GB", "Spain", "Pirate") var faction = "None" setget set_faction
+
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
@@ -31,11 +35,16 @@ onready var sticker := $Sticker3D
 onready var inventory := $Inventory
 onready var equipment := $Equipment
 
+onready var control_sm := $ControlSM
+
+onready var detection_area := $DetectionArea
+
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
 
 var alive := true
 
+var speed := 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -48,8 +57,9 @@ func _ready():
 			child.displacement_amount = displacement_amount
 	
 	set_selectable(selectable)
+	set_control_mode(control_mode)
+	set_faction(faction)
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -67,9 +77,10 @@ func _physics_process(_delta):
 	
 	if Vector3.UP.dot( global_transform.basis.y ) < 0.0:
 		if not Network.enabled or is_network_master():
-			var hit := Hit.new($DamageStats.health)
+			var hit := Hit.new($DamageStats.health, self.get_path())
 			$DamageStats.take_damage(hit)
 	
+	speed = linear_velocity.length()
 	
 	if global_transform.origin.y < -200.0:
 		queue_free()
@@ -99,6 +110,20 @@ func set_selectable(value):
 	selectable = value
 	$SelectArea.input_ray_pickable = value
 	
+
+
+func set_control_mode(value):
+	if Network.enabled and not is_network_master():
+		return
+	control_mode = value
+	if control_sm:
+		control_sm.transition_to("Control/%s" % value)
+
+
+func set_faction(value):
+	faction = value
+	if flag:
+		flag.faction = value
 
 
 func _drop():

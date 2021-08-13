@@ -1,39 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scenes/objects/Floater/Floater.gd" type="Script" id=1]
-[ext_resource path="res://scenes/objects/Floater/ImmediateGeometry.gd" type="Script" id=2]
-[ext_resource path="res://scenes/objects/Floater/floater_inair.material" type="Material" id=3]
-
-[sub_resource type="SphereMesh" id=1]
-radius = 0.5
-height = 1.0
-
-[sub_resource type="SpatialMaterial" id=2]
-flags_no_depth_test = true
-vertex_color_use_as_albedo = true
-
-[sub_resource type="SpatialMaterial" id=3]
-flags_no_depth_test = true
-
-[sub_resource type="CubeMesh" id=4]
-size = Vector3( 0.25, 0.25, 0.25 )
 
 [node name="Floater" type="Spatial" groups=[
 "water_floater",
 ]]
 visible = false
 script = ExtResource( 1 )
-
-[node name="FloaterMesh" type="MeshInstance" parent="."]
-material_override = ExtResource( 3 )
-mesh = SubResource( 1 )
-material/0 = null
-
-[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 2 )
-script = ExtResource( 2 )
-
-[node name="WaterSurface" type="MeshInstance" parent="ImmediateGeometry"]
-material_override = SubResource( 3 )
-mesh = SubResource( 4 )
-material/0 = null

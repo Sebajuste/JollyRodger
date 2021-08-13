@@ -49,13 +49,13 @@ func _on_damaged(damage_source : DamageSource):
 		rpc_on_damage(damage_source.damage)
 	"""
 	
-	rpc_on_damage(damage_source.damage)
+	rpc_on_damage(damage_source.damage, damage_source.source.get_path())
 	
 	pass # Replace with function body.
 
 
-master func rpc_on_damage(damage):
-	var hit: = Hit.new(damage)
+master func rpc_on_damage(damage : int, source_path : String):
+	var hit: = Hit.new(damage, source_path)
 	if damage_stats and damage_stats.has_method("take_damage"):
 		damage_stats.take_damage(hit, self)
 	if Network.enabled:

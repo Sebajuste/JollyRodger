@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -13,8 +13,26 @@
 [ext_resource path="res://scenes/miscs/Inventory/Inventory.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/Cannons.gd" type="Script" id=12]
 [ext_resource path="res://scenes/objects/ships/AbstractShip/EquipmentManager.gd" type="Script" id=13]
+[ext_resource path="res://scripts/miscs/state_machine/state_machine.gd" type="Script" id=14]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/None.gd" type="Script" id=15]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/Control.gd" type="Script" id=16]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/AI.gd" type="Script" id=17]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/DetectionArea.gd" type="Script" id=18]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/Combat.gd" type="Script" id=19]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/AvoidObstacle.gd" type="Script" id=20]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/MoveToPosition.gd" type="Script" id=21]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/Idle.gd" type="Script" id=22]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/control_states/ai_states/FollowPath.gd" type="Script" id=23]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/boid_ennemy_config.tres" type="Resource" id=24]
+[ext_resource path="res://scenes/objects/ships/AbstractShip/boid_ally_config.tres" type="Resource" id=25]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="CapsuleShape" id=5]
+
+[sub_resource type="BoxShape" id=4]
+
+[sub_resource type="CylinderShape" id=2]
+radius = 250.0
+height = 40.0
 
 [node name="AbstractShip" type="RigidBody" groups=[
 "ship",
@@ -27,8 +45,11 @@ linear_damp = 0.9
 angular_damp = 0.9
 script = ExtResource( 1 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 1 )
+[node name="HullCollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 5 )
+
+[node name="DeckCollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 4 )
 
 [node name="Skin" type="Spatial" parent="."]
 
@@ -64,6 +85,15 @@ __meta__ = {
 damage_stats_path = NodePath("../DamageStats")
 avoid_parent = true
 
+[node name="DetectionArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 18 )
+
+[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
+shape = SubResource( 2 )
+disabled = true
+
 [node name="Inventory" parent="." instance=ExtResource( 11 )]
 
 [node name="Equipment" parent="." instance=ExtResource( 11 )]
@@ -72,6 +102,43 @@ avoid_parent = true
 script = ExtResource( 13 )
 
 [node name="DamageStats" parent="." instance=ExtResource( 6 )]
+
+[node name="ControlSM" type="Node" parent="." groups=[
+"state_machine",
+]]
+script = ExtResource( 14 )
+initial_state = NodePath("Control/None")
+
+[node name="Control" type="Node" parent="ControlSM"]
+script = ExtResource( 16 )
+
+[node name="None" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 15 )
+
+[node name="AI" type="Node" parent="ControlSM/Control"]
+script = ExtResource( 17 )
+
+[node name="StateSM" type="Node" parent="ControlSM/Control/AI"]
+script = ExtResource( 14 )
+initial_state = NodePath("AvoidObstacle/Idle")
+enable = false
+
+[node name="AvoidObstacle" type="Node" parent="ControlSM/Control/AI/StateSM"]
+script = ExtResource( 20 )
+
+[node name="Idle" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 22 )
+
+[node name="MoveToPosition" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 21 )
+
+[node name="FollowPath" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 23 )
+
+[node name="Combat" type="Node" parent="ControlSM/Control/AI/StateSM/AvoidObstacle"]
+script = ExtResource( 19 )
+boid_ennemy_config = ExtResource( 24 )
+boid_ally_config = ExtResource( 25 )
 
 [node name="NetSyncShip" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -85,11 +152,15 @@ autostart = true
 
 [node name="SinkTween" type="Tween" parent="."]
 
+[connection signal="body_entered" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_exited"]
 [connection signal="item_added" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_added"]
 [connection signal="item_quantity_changed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_quantity_changed"]
 [connection signal="item_removed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_removed"]
+[connection signal="damage_taken" from="DamageStats" to="ControlSM/Control/AI" method="_on_DamageStats_damage_taken"]
 [connection signal="health_changed" from="DamageStats" to="." method="_on_DamageStats_health_changed"]
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
+[connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]
 
 [editable path="Sticker3D"]

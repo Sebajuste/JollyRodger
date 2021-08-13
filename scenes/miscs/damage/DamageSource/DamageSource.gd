@@ -19,3 +19,19 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _enter_tree():
+	if Network.enabled and not is_network_master():
+		rpc("rpc_request")
+
+
+master func rpc_request():
+	var peer_id := get_tree().get_rpc_sender_id()
+	rpc_id(peer_id, "rpc_request_response", damage, source.get_path())
+	pass
+
+
+puppet func rpc_request_response(_damage : float, source_path : String):
+	damage = damage
+	source = get_node(source_path)

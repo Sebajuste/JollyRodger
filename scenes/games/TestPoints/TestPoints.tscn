@@ -1,0 +1,116 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/games/TestPoints/TestPoints.gd" type="Script" id=1]
+
+[node name="TestPoints" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -441.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 159.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 421.0
+margin_bottom = 139.0
+custom_constants/separation = 20
+
+[node name="NumPoints" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 421.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/NumPoints"]
+margin_top = 1.0
+margin_right = 208.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Num points"
+
+[node name="NumPointsSlider" type="HSlider" parent="MarginContainer/VBoxContainer/NumPoints"]
+margin_left = 212.0
+margin_right = 421.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 300.0
+value = 2.0
+
+[node name="TurnFraction" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 421.0
+margin_bottom = 52.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TurnFraction"]
+margin_top = 1.0
+margin_right = 208.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Turn Fraction"
+
+[node name="TurnFractionSlider" type="HSlider" parent="MarginContainer/VBoxContainer/TurnFraction"]
+margin_left = 212.0
+margin_right = 421.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Pow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 72.0
+margin_right = 421.0
+margin_bottom = 88.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Pow"]
+margin_top = 1.0
+margin_right = 208.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Pow"
+
+[node name="PowSlider" type="HSlider" parent="MarginContainer/VBoxContainer/Pow"]
+margin_left = 212.0
+margin_right = 421.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="CursorIndex" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 421.0
+margin_bottom = 124.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CursorIndex"]
+margin_top = 1.0
+margin_right = 208.0
+margin_bottom = 15.0
+size_flags_horizontal = 3
+text = "Cursor Index"
+
+[node name="CursorIndexSlider" type="HSlider" parent="MarginContainer/VBoxContainer/CursorIndex"]
+margin_left = 212.0
+margin_right = 421.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 200.0
+value = 1.0
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/NumPoints/NumPointsSlider" to="." method="_on_NumPointsSlider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TurnFraction/TurnFractionSlider" to="." method="_on_TurnFractionSlider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Pow/PowSlider" to="." method="_on_PowSlider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/CursorIndex/CursorIndexSlider" to="." method="_on_CursorIndexSlider_value_changed"]

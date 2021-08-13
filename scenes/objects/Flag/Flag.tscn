@@ -20,5 +20,4 @@ material/0 = null
 
 [node name="Capturable" parent="." instance=ExtResource( 2 )]
 
-[connection signal="tree_entered" from="." to="." method="_on_Flag_tree_entered"]
 [connection signal="faction_changed" from="Capturable" to="." method="_on_Capturable_faction_changed"]
