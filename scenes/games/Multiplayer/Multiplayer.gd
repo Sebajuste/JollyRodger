@@ -4,6 +4,9 @@ extends Node
 var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
+var SHIP_WINDOW_SCENE = preload("res://scenes/ui/windows/ShipWindow/ShipWindow.tscn")
+var INVENTORY_TRANSFERT_SCENE = preload("res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.tscn")
+
 
 onready var world := $World
 onready var camera := $World/CameraRig
@@ -15,6 +18,8 @@ onready var start_position_a := $World/Island01/SpawnPositionA
 onready var start_position_b := $World/Island02/SpawnPositionB
 
 
+onready var gui_control := $GUI/ControlContainer/BoatControl
+
 var start_position := Vector3.ZERO
 
 var admin_mode := false
@@ -23,12 +28,8 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
-"""
-var target_ref : WeakRef
-var select_hint_ref : WeakRef
+var player_ship_window_ref = weakref(null)
 
-var select_timer := 0.0
-"""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -70,39 +71,27 @@ func _ready():
 #	
 #	pass
 
-"""
-func _unhandled_input(event):
-	
-	if event.is_action_pressed("fire_order"):
-		
-		var target : Spatial = $SelectorHandler.get_select()
-		
-		if target:
-			for canon in player.get_node("Cannons").get_children():
-				
-				var target_pos := target.global_transform.origin + Vector3.UP*3.0
-				
-				var target_velocity := Vector3.ZERO
-				if target.has_meta("linear_velocity"):
-					target_velocity = target.linear_velocity
-				
-				if canon.fire_ready and canon.is_in_range(target_pos):
-					
-					canon.fire_delay = rand_range(0.0, 0.5)
-					
-					canon.fire(target_pos, target_velocity)
-		else:
-			#target_ref = null
-			pass
-"""
 
 func _input(event):
 	if event.is_action_pressed("ui_main_menu"):
-		
 		if not $GUI/GameMenu.visible:
 			$GUI/GameMenu.open()
 		else:
 			$GUI/GameMenu.close()
+	
+	if event.is_action_pressed("use"):
+		var target : Spatial = selector_handler.get_select()
+		
+		if target and target.is_in_group("has_inventory"):
+			
+			var gui_transfert = INVENTORY_TRANSFERT_SCENE.instance()
+			$GUI.add_child(gui_transfert)
+			gui_transfert.set_inventory_a(player.inventory)
+			gui_transfert.set_inventory_b(target.inventory)
+			gui_transfert.show()
+			pass
+		
+		pass
 	
 
 
@@ -132,11 +121,21 @@ func create_player():
 	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
 	player.flag.faction = Network.get_self_property("faction")
 	
+	var cannon := GameTable.get_item(100001)
+	for i in range(4):
+		player.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+	
+	
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
 	
-	$GUI/MarginContainer2/BoatControl.set_ship( player )
-	
+	gui_control.set_ship( player )
+	$GUI/InGameMenu.visible = true
 
 
 func return_login_screen():
@@ -158,9 +157,11 @@ func _on_server_kicked(cause):
 func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
+	$GUI/InGameMenu.visible = false
+	
 	camera.set_target( null )
 	
-	$GUI/MarginContainer2/BoatControl.set_ship( null )
+	gui_control.set_ship( null )
 
 
 func _on_RestartGameButton_pressed():
@@ -186,7 +187,7 @@ func _on_ChangeFactionButton_pressed():
 	
 	camera.set_target( null )
 	
-	$GUI/MarginContainer2/BoatControl.set_ship( null )
+	gui_control.set_ship( null )
 	
 	if player:
 		player.queue_free()
@@ -230,3 +231,34 @@ func _on_SpawnZone_spawn_object(object):
 		object.inventory.add_item_in_free_slot( item_generator.generate_item() )
 	
 	pass # Replace with function body.
+
+
+func _on_InGameMenu_help_clicked():
+	
+	$GUI/HelpContainer.visible = false if $GUI/HelpContainer.visible else true
+	
+
+
+func _on_InGameMenu_inventory_clicked():
+	
+	var player_ship_window = player_ship_window_ref.get_ref()
+	
+	#if not gui_ship_inventory:
+	if not player_ship_window:
+		
+		player_ship_window = SHIP_WINDOW_SCENE.instance()
+		
+		$GUI.add_child( player_ship_window )
+		
+		player_ship_window.ship_equipment.inventory = player.equipment
+		player_ship_window.ship_inventory.inventory = player.inventory
+		
+		player_ship_window.ship_ref = weakref(player)
+		
+		player_ship_window.show()
+		
+		player_ship_window_ref = weakref(player_ship_window)
+	else:
+		player_ship_window.queue_free()
+		player_ship_window_ref = weakref(null)
+	

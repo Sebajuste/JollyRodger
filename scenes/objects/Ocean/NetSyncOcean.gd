@@ -46,7 +46,6 @@ func sync_ocean():
 	
 	rpc_unreliable("rpc_sync_ocean", byte_packet)
 	
-	pass
 
 
 puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
@@ -82,8 +81,7 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	
 	# Jitter correction
 	if jitter_time > 0:
-		# properties.transform.origin = properties.transform.origin + properties.linear_velocity * jitter_time    # project out received position
-		properties.ocean_time = properties.ocean_time + jitter_time * 1000
+		properties.ocean_time = properties.ocean_time + jitter_time * 1000 # project out received position
 		pass
 	
 	ocean.wave_direction = properties.wave_direction
@@ -94,7 +92,7 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	if ocean.steepness != properties.steepness:
 		ocean.set_steepness(properties.steepness)
 	
-	ocean.ocean_time = NetNodeSync.update_float(ocean.ocean_time, float(properties.ocean_time) / 1000.0, 0.5)
+	ocean.ocean_time = NetNodeSync.update_float(ocean.ocean_time, float(properties.ocean_time) / 1000.0, 0.1)
 	
 
 

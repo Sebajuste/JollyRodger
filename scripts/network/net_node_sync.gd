@@ -21,17 +21,16 @@ var _last_name : String
 
 
 static func update_float(from : float, to : float, threshold := 2.0) -> float:
-	var diff := from - to
+	var diff := abs(to - from)
 	if diff > threshold:
 		return to
 	elif diff > threshold / 2.0:
 		return from + threshold / 2.0
 	return from
-	
 
 
 static func update_vector3(from : Vector3, to: Vector3, threshold := 2.0) -> Vector3:
-	var pos_diff : Vector3 = from - to
+	var pos_diff : Vector3 = to - from
 	var pos_length_squared := pos_diff.length_squared()
 	if pos_length_squared > threshold*threshold:
 		return to

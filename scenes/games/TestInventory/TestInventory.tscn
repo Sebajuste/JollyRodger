@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://scenes/games/TestInventory/TestInventory.gd" type="Script" id=9]
 [ext_resource path="res://scenes/objects/Crate/Crate.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=13]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 250.0
@@ -50,6 +52,16 @@ mode = "Gimbal"
 target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPlace")
 
 [node name="SceneSpawner" parent="." instance=ExtResource( 5 )]
+
+[node name="SpawnZone" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -244.701, 0, 272.623 )
+spawn_object = ExtResource( 4 )
+area = Vector3( 50, 0, 50 )
+respawn_timer = 10
+autoreload = true
+
+[node name="RepairDock" parent="." instance=ExtResource( 13 )]
+transform = Transform( 0.21361, 0, -0.976919, 0, 1, 0, 0.976919, 0, 0.21361, 65.9806, 0, 335.337 )
 
 [node name="SelectorHandler" parent="." instance=ExtResource( 6 )]
 

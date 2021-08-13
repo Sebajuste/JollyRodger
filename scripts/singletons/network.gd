@@ -51,10 +51,10 @@ func _process(_delta):
 		for index in range(node_sync_list.size()):
 			var node_sync_info: NodeSyncInfo = node_sync_list[index]
 			
+			#var parent = get_tree().get_root().get_node(node_sync_info.path)
 			var parent = get_node(node_sync_info.path)
 			
 			if parent:
-				
 				var scene = load(node_sync_info.filename)
 				var instance = scene.instance()
 				instance.name = node_sync_info.name
@@ -62,6 +62,8 @@ func _process(_delta):
 				parent.add_child(instance)
 				node_sync_list.remove(index)
 				return
+			else:
+				push_error("Cannot found %s" % node_sync_info.path)
 
 
 func close_connection():

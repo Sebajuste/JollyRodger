@@ -49,7 +49,10 @@ func _on_damaged(damage_source : DamageSource):
 		rpc_on_damage(damage_source.damage)
 	"""
 	
-	rpc_on_damage(damage_source.damage, damage_source.source.get_path())
+	if damage_source.source:
+		rpc_on_damage(damage_source.damage, damage_source.source.get_path())
+	else:
+		rpc_on_damage(damage_source.damage, "")
 	
 	pass # Replace with function body.
 

@@ -93,6 +93,12 @@ func _integrate_forces(state : PhysicsDirectBodyState):
 	
 
 
+func is_alive() -> bool:
+	
+	return alive
+	
+
+
 func set_rudder_position(value):
 	
 	rudder_position = clamp(value, -1.0, 1.0)

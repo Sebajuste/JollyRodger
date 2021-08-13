@@ -28,10 +28,12 @@ func _enter_tree():
 
 master func rpc_request():
 	var peer_id := get_tree().get_rpc_sender_id()
+	print("[Bullet] rpc_request : ", damage, ", ", source.get_path())
 	rpc_id(peer_id, "rpc_request_response", damage, source.get_path())
 	pass
 
 
 puppet func rpc_request_response(_damage : float, source_path : String):
+	print("[Bullet] rpc_request_response : ", _damage, ", ", source_path)
 	damage = damage
 	source = get_node(source_path)

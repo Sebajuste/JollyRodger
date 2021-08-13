@@ -26,4 +26,4 @@ func _ready():
 func _on_node_emitted(node : Node):
 	
 	add_child(node)
-	print("[Spawner] add node : ", node.name)
+	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://scenes/ui/ChatBox/ChatBox.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/ui/InGameMenu/InGameMenu.tscn" type="PackedScene" id=23]
 
 [sub_resource type="Curve3D" id=1]
 _data = {
@@ -61,8 +62,6 @@ steepness = 0.05
 [node name="CameraRig" parent="World" instance=ExtResource( 6 )]
 mode = "Gimbal"
 current = true
-
-[node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
 
 [node name="Island01" parent="World" instance=ExtResource( 11 )]
 
@@ -145,11 +144,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 164.2, 7.99862, 46.228 )
 [node name="SpawnZone" parent="World" instance=ExtResource( 22 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 933.457, 0, -981.944 )
 spawn_object = ExtResource( 21 )
-respawn_timer = 300
+area = Vector3( 50, 0, 50 )
+respawn_timer = 30
 autoreload = true
 
 [node name="Path" type="Path" parent="World"]
 curve = SubResource( 1 )
+
+[node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
 
 [node name="FactionManager" type="Node" parent="."]
 script = ExtResource( 14 )
@@ -164,7 +166,7 @@ environment = SubResource( 3 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="GUI"]
+[node name="ChatContainer" type="MarginContainer" parent="GUI"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
@@ -175,13 +177,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ChatBox" parent="GUI/MarginContainer" instance=ExtResource( 20 )]
+[node name="ChatBox" parent="GUI/ChatContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 304.0
 margin_bottom = 175.0
 
-[node name="MarginContainer2" type="MarginContainer" parent="GUI"]
+[node name="ControlContainer" type="MarginContainer" parent="GUI"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -194,26 +196,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BoatControl" parent="GUI/MarginContainer2" instance=ExtResource( 5 )]
+[node name="BoatControl" parent="GUI/ControlContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 213.0
 margin_bottom = 162.0
+selector_path = NodePath("../../../SelectorHandler")
 
-[node name="MarginContainer3" type="MarginContainer" parent="GUI"]
-margin_left = 20.0
+[node name="HelpContainer" type="MarginContainer" parent="GUI"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -330.0
 margin_top = 20.0
-margin_right = 350.0
-margin_bottom = 215.0
+margin_right = -20.0
+margin_bottom = 195.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InputHelper" parent="GUI/MarginContainer3" instance=ExtResource( 9 )]
+[node name="InputHelper" parent="GUI/HelpContainer" instance=ExtResource( 9 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 330.0
-margin_bottom = 195.0
+margin_right = 310.0
+margin_bottom = 175.0
 
 [node name="SinkMenu" parent="GUI" instance=ExtResource( 10 )]
 visible = false
@@ -266,7 +272,6 @@ margin_left = 115.0
 margin_right = 265.0
 
 [node name="FactionSelector" parent="GUI" instance=ExtResource( 13 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -274,11 +279,13 @@ anchor_bottom = 0.5
 margin_left = -407.5
 margin_top = -301.5
 margin_right = 407.5
-margin_bottom = 301.5
+margin_bottom = 398.5
+rect_min_size = Vector2( 0, 700 )
+faction_manager_path = NodePath("../../FactionManager")
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer" index="0"]
 margin_right = 775.0
-margin_bottom = 578.0
+margin_bottom = 675.0
 
 [node name="Title" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="0"]
 margin_right = 775.0
@@ -288,7 +295,7 @@ margin_right = 775.0
 
 [node name="Content" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="2"]
 margin_right = 775.0
-margin_bottom = 513.0
+margin_bottom = 625.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content" index="0"]
 margin_right = 775.0
@@ -359,9 +366,9 @@ margin_right = 366.0
 margin_bottom = 449.0
 
 [node name="Footer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="3"]
-margin_top = 523.0
+margin_top = 635.0
 margin_right = 775.0
-margin_bottom = 563.0
+margin_bottom = 675.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer" index="0"]
 margin_right = 775.0
@@ -394,7 +401,7 @@ margin_right = 285.0
 
 [node name="Content" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="2"]
 margin_right = 285.0
-margin_bottom = 309.0
+margin_bottom = 344.0
 
 [node name="ChangeFactionButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
 margin_right = 285.0
@@ -410,9 +417,9 @@ rect_min_size = Vector2( 0, 40 )
 text = "btn_quit"
 
 [node name="Footer" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="3"]
-margin_top = 329.0
+margin_top = 344.0
 margin_right = 285.0
-margin_bottom = 369.0
+margin_bottom = 384.0
 
 [node name="HBoxContainer" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Footer" index="0"]
 margin_right = 285.0
@@ -421,6 +428,9 @@ margin_right = 285.0
 margin_left = 67.0
 margin_right = 217.0
 text = "btn_resume"
+
+[node name="InGameMenu" parent="GUI" instance=ExtResource( 23 )]
+visible = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
@@ -435,6 +445,8 @@ autoplay = true
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_AcceptButton_pressed"]
+[connection signal="help_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_help_clicked"]
+[connection signal="inventory_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_inventory_clicked"]
 
 [editable path="GUI/SinkMenu"]
 [editable path="GUI/FactionSelector"]
