@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/miscs/DebugOverlay/DebugOverlay.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/miscs/SelectHint/SelectHint.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Curve3D" id=1]
 _data = {
@@ -28,11 +29,6 @@ transform = Transform( -0.985133, 0, 0.171791, 0, 1, 0, -0.171791, 0, -0.985133,
 control_mode = "AI"
 faction = "Spain"
 
-[node name="SwedishRoyalYachtAmadis2" parent="." instance=ExtResource( 2 )]
-transform = Transform( -0.996596, 0, -0.0824429, 0, 1, 0, 0.0824429, 0, -0.996596, -196.193, 0, 353.233 )
-control_mode = "AI"
-faction = "GB"
-
 [node name="SwedishHemmemaStrybjorn" parent="." instance=ExtResource( 8 )]
 transform = Transform( -0.0182202, 0, -0.999834, 0, 1, 0, 0.999834, 0, -0.0182202, -85.0742, 0, 93.4747 )
 
@@ -50,6 +46,10 @@ current = true
 [node name="Path" type="Path" parent="."]
 curve = SubResource( 1 )
 
+[node name="SpawnZone" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -196.977, 0, 361.073 )
+spawn_object = ExtResource( 2 )
+
 [node name="SceneSpawner" parent="." instance=ExtResource( 3 )]
 
 [node name="PathTarget" type="Spatial" parent="."]
@@ -57,3 +57,5 @@ curve = SubResource( 1 )
 [node name="SelectHint" parent="PathTarget" instance=ExtResource( 9 )]
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 7 )]
+
+[connection signal="spawn_object" from="SpawnZone" to="." method="_on_SpawnZone_spawn_object"]

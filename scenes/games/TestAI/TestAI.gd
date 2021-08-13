@@ -2,7 +2,7 @@ extends Spatial
 
 
 onready var ai_ship := $SwedishRoyalYachtAmadis
-onready var ennemy_ship = $SwedishRoyalYachtAmadis2
+#onready var ennemy_ship = $SwedishRoyalYachtAmadis2
 
 
 onready var ship_obstacle := $SwedishHemmemaStrybjorn
@@ -63,7 +63,7 @@ func _ready():
 	#ai_state.path_position = target
 	
 	ai_state.follow_path($Path)
-	ennemy_ship.get_node("ControlSM/Control/AI").follow_path($Path)
+	#ennemy_ship.get_node("ControlSM/Control/AI").follow_path($Path)
 	
 	
 	#
@@ -79,13 +79,6 @@ func _ready():
 			}
 		)
 		
-		ennemy_ship.equipment.add_item_in_free_slot({
-				"item_id": cannon.id,
-				"quantity": 1,
-				"attributes": cannon.attributes
-			}
-		)
-	
 	
 	pass # Replace with function body.
 
@@ -94,23 +87,20 @@ func _ready():
 #func _process(delta):
 #	pass
 
-"""
-func _physics_process(delta):
+
+
+func _on_SpawnZone_spawn_object(object):
 	
-	var position : Vector3 = ai_ship.global_transform.origin
+	object.faction = "GB"
+	object.control_mode = "AI"
+	object.control_sm.get_node("Control/AI").follow_path($Path)
 	
-	var target := patrol_points[patrol_index]
+	var cannon := GameTable.get_item(100001)
+	for i in range(4):
+		object.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
 	
-	$PathTarget.global_transform.origin = target
-	
-	patrol_position_distance = position.distance_to(target)
-	
-	if position.distance_squared_to(target) < 30*30:
-		
-		while position.distance_squared_to(target) < 40*40:
-			patrol_index = wrapi(patrol_index + 1, 0, patrol_points.size())
-			target = patrol_points[patrol_index]
-		
-		ai_ship.get_node("ControlSM/Control/AI").path_position = target
-		
-"""

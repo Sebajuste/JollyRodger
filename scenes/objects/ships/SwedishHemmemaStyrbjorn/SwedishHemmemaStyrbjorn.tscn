@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/3d/ships/swedish_hemmema_styrbjorn/SwedishHemmemaStyrbjorn.tscn" type="PackedScene" id=2]
@@ -6,13 +6,16 @@
 [ext_resource path="res://scenes/objects/cannons/AbstractCannon/AbstractCannon.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 5.0265
-height = 33.908
+radius = 3.25831
+height = 33.4087
 
-[sub_resource type="SphereShape" id=2]
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 4.91503, 0.28339, 20.0615 )
+
+[sub_resource type="SphereShape" id=3]
 radius = 22.1641
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=4]
 extents = Vector3( 5.85466, 3.21295, 22.7126 )
 
 [node name="SwedishHemmemaStrybjorn" instance=ExtResource( 1 )]
@@ -24,13 +27,17 @@ displacement_amount = 3.0
 rudder_force = 1400.0
 sail_force = 1400.0
 
-[node name="CollisionShape" parent="." index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.459339, 1.37802 )
+[node name="HullCollisionShape" parent="." index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.137224, 0.345702, -0.103109 )
 shape = SubResource( 1 )
+
+[node name="DeckCollisionShape" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.23371, 1.90012 )
+shape = SubResource( 2 )
 
 [node name="SwedishHemmemaStrybjorn" parent="Skin" index="0" instance=ExtResource( 2 )]
 
-[node name="Flag" parent="." index="2"]
+[node name="Flag" parent="." index="3"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 48.3859, 1.68577 )
 
 [node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 3 )]
@@ -51,10 +58,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.27687, -2.9841, -0.0130248 
 [node name="Floater6" parent="FloatManager" index="5" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.28316, -2.9841, -0.0130248 )
 
-[node name="Rudder" parent="." index="4"]
+[node name="Rudder" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20.6079 )
 
-[node name="CaptainPlace" parent="." index="5"]
+[node name="CaptainPlace" parent="." index="6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.99389, 19.0344 )
 
 [node name="Cannon1" parent="Cannons" index="0" instance=ExtResource( 4 )]
@@ -145,17 +152,17 @@ speed = 100.0
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.95649, 2.47377, 15.9166 )
 speed = 100.0
 
-[node name="SelectArea" parent="." index="7"]
+[node name="SelectArea" parent="." index="8"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.0598, 0 )
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="CollisionShape" parent="HitBox" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.01934 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
-[node name="DamageStats" parent="." index="13"]
+[node name="DamageStats" parent="." index="15"]
 max_health = 400
 
 [editable path="SelectArea"]

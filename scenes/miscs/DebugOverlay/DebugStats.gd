@@ -4,17 +4,25 @@ extends MarginContainer
 
 class Property:
 	var label
-	var object
+	var object_ref
 	var property
 	var display
 	
 	func _init(_label: Label, _object : Object, _property : String, _display : String):
 		label = _label
-		object = _object
+		object_ref = weakref(_object)
 		property = _property
 		display = _display
 	
-	func set_label():
+	
+	func is_valid() -> bool:
+		
+		return object_ref.get_ref() != null
+		
+	
+	
+	func update_label():
+		var object = object_ref.get_ref()
 		var s := "%s/%s : " % [object.name, property]
 		
 		var properties = property.split(":")
@@ -27,8 +35,6 @@ class Property:
 				_:
 					p = p[properties[i]]
 		
-		
-		#var p = object.get_indexed(property)
 		
 		match display:
 			"length":
@@ -60,19 +66,18 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if visible:
-		for property in properties:
-			property.set_label()
+		for index in range(properties.size()-1, -1, -1):
+			var property : Property = properties[index]
+			if property.is_valid():
+				property.update_label()
+			else:
+				properties.remove(index)
 
 
 func add_property(object : Object, property : String, display := ""):
-	
 	var label = Label.new()
-	
 	property_list.add_child(label)
-	
 	properties.append( Property.new(label, object, property, display) )
-	
-	pass
 
 
 func remove_property():

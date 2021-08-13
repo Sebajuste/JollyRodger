@@ -18,6 +18,12 @@ class Vector:
 		color = _color
 	
 	
+	func is_valid() -> bool:
+		
+		return spatial_ref.get_ref() and object_ref.get_ref()
+		
+	
+	
 	func draw(node : Control, camera : Camera):
 		
 		var spatial = spatial_ref.get_ref()
@@ -25,6 +31,9 @@ class Vector:
 		
 		if spatial == null or object == null:
 			# TODO : remove this Vector
+			return
+		
+		if not spatial.is_inside_tree():
 			return
 		
 		var cam_dir = (camera.global_transform.origin - spatial.global_transform.origin).normalized()
@@ -64,8 +73,12 @@ func _process(delta):
 func _draw():
 	var camera := get_viewport().get_camera()
 	if camera:
-		for vector in vectors:
-			vector.draw(self, camera)
+		for index in range(vectors.size()-1, -1, -1):
+			var vector : Vector = vectors[index]
+			if vector.is_valid():
+				vector.draw(self, camera)
+			else:
+				vectors.remove(index)
 
 
 func _draw_triangle(pos : Vector2, dir : Vector2, size : float, color : Color):
