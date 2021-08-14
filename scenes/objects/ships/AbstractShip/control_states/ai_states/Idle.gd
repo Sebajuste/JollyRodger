@@ -22,7 +22,7 @@ func enter(_msg := {}):
 	
 
 
-func process(delta):
+func process(_delta):
 	
 	#print("[%s] idle ai process" % ship.name)
 	pass

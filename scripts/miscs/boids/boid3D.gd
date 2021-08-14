@@ -13,15 +13,15 @@ class Boid3DNearestResult:
 	var align : Array
 	var cohesion : Array
 	
-	func _init(separate : Array, align : Array, cohesion : Array):
-		self.separate = separate
-		self.align = align
-		self.cohesion = cohesion
+	func _init(_separate : Array, _align : Array, _cohesion : Array):
+		self.separate = _separate
+		self.align = _align
+		self.cohesion = _cohesion
 
 
-func _init(velocity : Vector3, position : Vector3):
-	self.velocity = velocity
-	self.position = position
+func _init(_velocity : Vector3, _position : Vector3):
+	self.velocity = _velocity
+	self.position = _position
 
 
 func calculate_move_direction(boids : Array, config : BoidConfig) -> Vector3:

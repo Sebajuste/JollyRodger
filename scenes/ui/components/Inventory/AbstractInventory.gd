@@ -76,10 +76,16 @@ func set_inventory(value):
 	inventory = value
 	if inventory:
 		update_inventory()
-		inventory.connect("inventory_updated", self, "_on_inventory_updated")
+		var _r := inventory.connect("inventory_updated", self, "_on_inventory_updated")
 
 
-func _on_inventory_updated(items):
+func _on_inventory_updated(_items):
 	
 	update_inventory()
+	
+
+
+func _on_slot_action(type, slot):
+	
+	emit_signal("slot_action", type, slot)
 	

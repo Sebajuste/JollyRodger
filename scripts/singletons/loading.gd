@@ -10,7 +10,7 @@ var loader : ResourceInteractiveLoader
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	
 	if not loader:
 		return
@@ -21,15 +21,15 @@ func _process(delta):
 	
 	if result == ERR_FILE_EOF:
 		var resource = loader.get_resource()
-		var instance = resource.instance()
+		#var instance = resource.instance()
 		#get_tree().change_scene(instance)
-		get_tree().change_scene_to(resource)
+		var _r := get_tree().change_scene_to(resource)
 		loader = null
 
 
 func load_scene(scene_path : String):
 	
-	get_tree().change_scene(LOADING_SCENE)
+	var _r := get_tree().change_scene(LOADING_SCENE)
 	
 	loader = ResourceLoader.load_interactive("res://%s" % scene_path)
 	

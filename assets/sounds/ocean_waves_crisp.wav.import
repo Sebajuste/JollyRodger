@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ocean_waves_crisp.wav-6f430cec35ca3ce2cfaf2a45170cb9a3.sample"
+
+[deps]
+
+source_file="res://assets/sounds/ocean_waves_crisp.wav"
+dest_files=[ "res://.import/ocean_waves_crisp.wav-6f430cec35ca3ce2cfaf2a45170cb9a3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

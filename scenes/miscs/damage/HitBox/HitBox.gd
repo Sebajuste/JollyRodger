@@ -40,6 +40,8 @@ func _on_damaged(damage_source : DamageSource):
 	if Network.enabled and not is_network_master():
 		return
 	
+	damage_source.hitbox_hit(self)
+	
 	print("[%s] damaged by %s" % [owner.name, damage_source.owner.name] )
 	
 	"""
@@ -49,7 +51,10 @@ func _on_damaged(damage_source : DamageSource):
 		rpc_on_damage(damage_source.damage)
 	"""
 	
-	rpc_on_damage(damage_source.damage, damage_source.source.get_path())
+	if damage_source.source:
+		rpc_on_damage(damage_source.damage, damage_source.source.get_path())
+	else:
+		rpc_on_damage(damage_source.damage, "")
 	
 	pass # Replace with function body.
 

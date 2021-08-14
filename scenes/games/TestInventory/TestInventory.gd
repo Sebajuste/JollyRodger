@@ -68,12 +68,9 @@ func _ready():
 	
 	var item_generator := GameItemGeneration.new()
 	
-	for i in range(10):
-		
+	for _i in range(10):
 		ship_ai.inventory.add_item_in_free_slot( item_generator.generate_item() )
-		
 		ship.inventory.add_item_in_free_slot( item_generator.generate_item() )
-		
 	
 	ship_ai.inventory.add_item_in_free_slot( {
 		"item_id": 101000,

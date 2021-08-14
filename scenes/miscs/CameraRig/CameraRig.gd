@@ -12,8 +12,6 @@ export var distance := 30.0
 
 export var rotation_speed := 0.1 # PI / 2
 
-#export var zoom_min := 1.0
-#export var zoom_max := 3.0
 export var zoom_range := Vector2(1.0, 10.0) setget set_zoom_range
 export var zoom := 1.5 setget set_zoom
 export var zoom_speed := 1.5

@@ -41,6 +41,6 @@ func set_item(new_item : GameItem):
 
 func set_quantity(value):
 	var old_quantity := quantity
-	quantity = max(1, value)
+	quantity = int(max(1, value))
 	if old_quantity != quantity:
 		emit_signal("quantity_changed", quantity)

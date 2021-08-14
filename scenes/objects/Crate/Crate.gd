@@ -40,7 +40,7 @@ func move_in_ground(duration : float = 5):
 	$SinkTween.start()
 
 
-func _on_Inventory_inventory_updated(items):
+func _on_Inventory_inventory_updated(_items):
 	
 	$SinkTimer.start()
 	

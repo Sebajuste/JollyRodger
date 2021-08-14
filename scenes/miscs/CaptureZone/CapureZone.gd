@@ -161,7 +161,7 @@ puppet func rpc_capture_status(capture_info : Dictionary, capture_time := -1.0):
 
 func set_faction(value):
 	faction = value
-	if get_tree():
+	if is_inside_tree():
 		_update_faction()
 
 

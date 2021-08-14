@@ -60,8 +60,4 @@ func get_first_empty_slot(item_id : int = -1) -> InventoryItemSlot:
 	return null
 
 
-func _on_slot_action(type, slot):
-	
-	emit_signal("slot_action", type, slot)
-	
-	pass
+

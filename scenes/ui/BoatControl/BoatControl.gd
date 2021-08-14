@@ -1,6 +1,7 @@
 extends Control
 
 
+
 export(NodePath) var ship_path
 export(NodePath) var selector_path
 
@@ -157,7 +158,6 @@ func _unhandled_input(event):
 				target_velocity = target.linear_velocity
 			
 			ship.cannons.fire(target_pos, target_velocity)
-		
 	
 
 

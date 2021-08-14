@@ -32,8 +32,8 @@ onready var cannons = $Cannons
 onready var flag = $Flag
 onready var sticker := $Sticker3D
 
-onready var inventory := $Inventory
-onready var equipment := $Equipment
+onready var inventory : Inventory = $Inventory
+onready var equipment : Inventory = $Equipment
 
 onready var control_sm := $ControlSM
 
@@ -93,6 +93,12 @@ func _integrate_forces(state : PhysicsDirectBodyState):
 	
 
 
+func is_alive() -> bool:
+	
+	return alive
+	
+
+
 func set_rudder_position(value):
 	
 	rudder_position = clamp(value, -1.0, 1.0)
@@ -133,6 +139,8 @@ func _drop():
 		return
 	
 	var crate = CRATE_SCENE.instance()
+	crate.set_network_master( 1 )
+	crate.name = "%s_%d_%d" % [crate.name, 1, randi()]
 	
 	var dir := Vector3(
 		rand_range(-1, 1),

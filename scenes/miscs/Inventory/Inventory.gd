@@ -128,11 +128,12 @@ mastersync func rpc_change_quantity(slot_id : int, quantity : int):
 
 
 mastersync func rpc_remove_item(slot_id : int):
-	var item = items[slot_id]
-	items.erase(slot_id)
-	emit_signal("inventory_updated", items)
-	emit_signal("item_removed", slot_id, item)
-	print("[%s] Remove item [%d]" % [name, slot_id])
+	if items.has(slot_id):
+		var item = items[slot_id]
+		var _r := items.erase(slot_id)
+		emit_signal("inventory_updated", items)
+		emit_signal("item_removed", slot_id, item)
+		print("[%s] Remove item [%d]" % [name, slot_id])
 
 
 master func rpc_request_inventory():

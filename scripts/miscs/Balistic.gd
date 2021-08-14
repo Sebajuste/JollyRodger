@@ -178,7 +178,7 @@ static func solve_quartic(c0 : float, c1 : float, c2 : float, c3 : float, c4 : f
 		s_temp[0] = s[0]
 		s_temp[1] = s[1]
 		s_temp[2] = s[2]
-		solve_cubic(coeffs[0], coeffs[1], coeffs[2], coeffs[3], s_temp);
+		var _r := solve_cubic(coeffs[0], coeffs[1], coeffs[2], coeffs[3], s_temp);
 		s[0] = s_temp[0]
 		s[1] = s_temp[1]
 		s[2] = s_temp[2]
@@ -285,7 +285,7 @@ static func solve_ballistic_arc(proj_pos : Vector3, proj_speed : float, target :
 	
 	# C# requires out variables be set
 	var s0 := Vector3.ZERO;
-	var s1 := Vector3.ZERO;
+	var _s1 := Vector3.ZERO;
 	
 	# Derivation
 	#   (1) x = v*t*cos O
@@ -331,7 +331,7 @@ static func solve_ballistic_arc(proj_pos : Vector3, proj_speed : float, target :
 	s0 = groundDir * cos(lowAng) * proj_speed + Vector3.UP * sin(lowAng) * proj_speed
 	
 	if numSolutions > 1:
-		s1 = groundDir * cos(highAng) * proj_speed + Vector3.UP * sin(highAng) * proj_speed
+		_s1 = groundDir * cos(highAng) * proj_speed + Vector3.UP * sin(highAng) * proj_speed
 	
 	return s0
 
@@ -342,7 +342,7 @@ static func solve_ballistic_arc_velocity(proj_pos : Vector3, proj_speed : float,
 	
 	# Initialize output parameters
 	var s0 := Vector3.ZERO;
-	var s1 := Vector3.ZERO;
+	var _s1 := Vector3.ZERO;
 	
 	"""
         // Derivation 
@@ -399,7 +399,7 @@ static func solve_ballistic_arc_velocity(proj_pos : Vector3, proj_speed : float,
 	#double[] times = new double[4];
 	var times := []
 	times.resize(4)
-	var numTimes : int = solve_quartic(c0, c1, c2, c3, c4, times)
+	var _numTimes : int = solve_quartic(c0, c1, c2, c3, c4, times)
 	
 	# Sort so faster collision is found first
 	times.sort()
@@ -435,7 +435,7 @@ static func solve_ballistic_arc_velocity(proj_pos : Vector3, proj_speed : float,
 	if numSolutions > 0:
 		s0 = solutions[0]
 	if numSolutions > 1:
-		s1 = solutions[1]
+		_s1 = solutions[1]
 	
 	#return numSolutions
 	return s0

@@ -47,7 +47,7 @@ func add_cannon(slot_id : int, cannon_info):
 			cannons.append(cannon)
 
 
-func remove_cannon(slot_id : int, cannon_info):
+func remove_cannon(slot_id : int, _cannon_info):
 	var start_cannon_index := slot_id*2
 	for child_index in range(start_cannon_index, start_cannon_index+2):
 		var cannon := get_child(child_index)

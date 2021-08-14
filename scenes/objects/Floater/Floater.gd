@@ -16,9 +16,6 @@ export var displacement_amount := 0.5
 export var debug := false setget set_debug
 
 
-onready var floater_mesh : MeshInstance = $FloaterMesh
-
-
 var rigid_body : RigidBody
 var floater_count := 1
 var water_manager = null
@@ -52,14 +49,6 @@ func _get_rigidbody_parent(node : Node) -> Node:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-"""
-func _process(_delta):
-	var depth := get_water_height() - self.global_transform.origin.y
-	if depth > 0:
-		floater_mesh.material_override = inwater_material
-	else:
-		floater_mesh.material_override = inair_material
-"""
 
 
 func _physics_process(delta : float):

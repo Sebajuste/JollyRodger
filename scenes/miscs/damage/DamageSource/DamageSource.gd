@@ -5,7 +5,7 @@ extends Area
 signal hit(hit_box)
 
 
-export var damage := 1.0
+export var damage := 1
 
 
 var source
@@ -26,12 +26,20 @@ func _enter_tree():
 		rpc("rpc_request")
 
 
+func hitbox_hit(hit_box):
+	
+	emit_signal("hit", hit_box)
+	
+
+
 master func rpc_request():
 	var peer_id := get_tree().get_rpc_sender_id()
+	print("[Bullet] rpc_request : ", damage, ", ", source.get_path())
 	rpc_id(peer_id, "rpc_request_response", damage, source.get_path())
 	pass
 
 
 puppet func rpc_request_response(_damage : float, source_path : String):
+	print("[Bullet] rpc_request_response : ", _damage, ", ", source_path)
 	damage = damage
 	source = get_node(source_path)

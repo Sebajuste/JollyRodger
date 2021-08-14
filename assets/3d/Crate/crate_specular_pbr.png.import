@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path.s3tc="res://.import/crate_specular_pbr.png-dd3033e2bf5cc315af677d5959df83ab.s3tc.stex"
+path.etc2="res://.import/crate_specular_pbr.png-dd3033e2bf5cc315af677d5959df83ab.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://assets/3d/Crate/crate_specular_pbr.png"
+dest_files=[ "res://.import/crate_specular_pbr.png-dd3033e2bf5cc315af677d5959df83ab.s3tc.stex", "res://.import/crate_specular_pbr.png-dd3033e2bf5cc315af677d5959df83ab.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=true
+flags/filter=true
+flags/mipmaps=true
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=1.0

@@ -22,7 +22,7 @@ func integrate_forces(state : PhysicsDirectBodyState):
 	
 	if Network.enabled and not is_network_master() and not slave_updated:
 		state.linear_velocity = last_properties_received.linear_velocity
-		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position)
+		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position, 0.2)
 		slave_updated = true
 	
 
@@ -40,11 +40,12 @@ master func sync_node_emission():
 	var byte_buffer := NetByteBuffer.new(64)
 	var write_stream := NetStreamWriter.new(byte_buffer)
 	
+	var _r
 	packet_id = packet_id + 1
-	write_stream.serialize_bits(packet_id, 32) # frequency
-	write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
+	_r = write_stream.serialize_bits(packet_id, 32) # frequency
+	_r = write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
 	
-	_serialize(write_stream, properties)
+	_r = _serialize(write_stream, properties)
 	
 	write_stream.flush()
 	byte_buffer.flip()

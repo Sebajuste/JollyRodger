@@ -54,7 +54,7 @@ func heal(value):
 		rpc("rpc_heal", new_health)
 
 
-func take_damage(hit, hit_box = null) -> void:
+func take_damage(hit, _hit_box = null) -> void:
 	if not is_alive():
 		return
 	
@@ -66,11 +66,11 @@ func take_damage(hit, hit_box = null) -> void:
 func set_max_health(value: int) -> void:
 	if value == null:
 		return
-	max_health = max(1, value)
+	max_health = int(max(1, value))
 
 
 func set_health(value: int, source_path := ""):
-	value = clamp(value, 0, max_health)
+	value = int(clamp(value, 0, max_health))
 	if Network.enabled:
 		if is_network_master():
 			rpc("rpc_set_health", value, source_path)
@@ -86,7 +86,7 @@ master func rpc_heal(value):
 
 puppet func rpc_set_health(value: int, source_path : String):
 	var old_health = health
-	health = clamp(value, 0, max_health)
+	health = int(clamp(value, 0, max_health))
 	if old_health > health:
 		emit_signal("damage_taken", old_health - health, source_path)
 	else:

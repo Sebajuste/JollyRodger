@@ -16,9 +16,10 @@ func _ready():
 	
 	set_network_master( 1 )
 	
-	Network.connect("properties_created", self, "_on_properties_changed")
-	Network.connect("properties_removed", self, "_on_properties_changed")
-	Network.connect("property_changed", self, "_on_property_changed")
+	var _r
+	_r = Network.connect("properties_created", self, "_on_properties_changed")
+	_r = Network.connect("properties_removed", self, "_on_properties_changed")
+	_r = Network.connect("property_changed", self, "_on_property_changed")
 	
 	update_faction_info()
 

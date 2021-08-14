@@ -38,12 +38,12 @@ __meta__ = {
 
 [node name="UnitedKingdomFaction" type="MarginContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" index="0"]
 margin_right = 470.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction" index="0"]
 margin_right = 470.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 custom_constants/separation = 10
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="0"]
@@ -81,32 +81,32 @@ __meta__ = {
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="4"]
 margin_top = 259.0
 margin_right = 470.0
-margin_bottom = 441.0
+margin_bottom = 396.0
 size_flags_vertical = 3
 text = "info_great_britain"
 autowrap = true
 
 [node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="5"]
-margin_top = 451.0
+margin_top = 406.0
 margin_right = 470.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 rect_min_size = Vector2( 0, 40 )
 text = "btn_join_great_britain"
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" index="1"]
 margin_left = 490.0
 margin_right = 494.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 
 [node name="PirateFaction" type="MarginContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" index="2"]
 margin_left = 514.0
 margin_right = 984.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction" index="0"]
 margin_right = 470.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 custom_constants/separation = 10
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="0"]
@@ -143,15 +143,15 @@ __meta__ = {
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="4"]
 margin_top = 259.0
 margin_right = 470.0
-margin_bottom = 441.0
+margin_bottom = 396.0
 size_flags_vertical = 3
 text = "info_pirates"
 autowrap = true
 
 [node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="5"]
-margin_top = 451.0
+margin_top = 406.0
 margin_right = 470.0
-margin_bottom = 491.0
+margin_bottom = 446.0
 rect_min_size = Vector2( 0, 40 )
 text = "btn_join_pirates"
 

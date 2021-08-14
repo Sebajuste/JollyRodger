@@ -8,7 +8,7 @@ var channel_selected
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	get_popup().connect("index_pressed", self, "_on_index_pressed")
+	var _r := get_popup().connect("index_pressed", self, "_on_index_pressed")
 	
 	channel_selected = get_popup().get_item_text(0)
 	self.text = channel_selected
