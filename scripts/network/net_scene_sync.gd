@@ -12,7 +12,7 @@ func _ready():
 	scene = owner
 	
 	#get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+	var _r := get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 	
 	# Request when scene is ready to receive all existings remote nodes
 	rpc("rpc_request_sync_nodes", Network.get_self_peer_id() )

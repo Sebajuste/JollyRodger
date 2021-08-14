@@ -1,0 +1,6 @@
+"ID","Name","Category","Type","Max_Stack","Description","Icon","Damage","Range","Fire_Rate","Rotation_Speed","Speed","Common_Multi","Uncommon_Multi","Rare_Multi","Epic_Multi","Legendary_Multi"
+1,"Doublons","Money","Coins",9999999,"Des pièces de monaies","res://assets/2d/items/coins.png",,,,,,,,,,
+100001,"Canon 1lb de mauvaise qualité","Weapon","Cannon_1lb",1,"Un petit canon d'une livre","res://assets/2d/items/cannon.png",1,80,6,,,1,"1,125","1,25","1,5",2
+100100,"Gouvernail de mauvaise qualité","Rudder","Rudder",1,,"res://assets/2d/items/rudder.png",,,,"10",,1,"1,15","1,4","1,8","2,4"
+100200,"Voiles de mauvaises qualité","Sail","Sail",1,"Des voiles grossières","res://assets/2d/items/sail.png",,,,,"5,0",1,"1,15","1,4","1,8","2,4"
+101000,"Noix de coco","Ingredient","Ingredient",250,"Un fruit local","res://assets/2d/gui/wenrexa_free03/ResIcon25.png",,,,,,1,"1,15","1,4","1,8","2,4"

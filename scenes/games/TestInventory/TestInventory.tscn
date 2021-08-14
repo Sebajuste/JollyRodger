@@ -1,0 +1,130 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/miscs/SelectorHandler/SelectorHandler.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/games/TestInventory/GameMenu.gd" type="Script" id=8]
+[ext_resource path="res://scenes/games/TestInventory/TestInventory.gd" type="Script" id=9]
+[ext_resource path="res://scenes/objects/Crate/Crate.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=13]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 250.0
+height = 40.0
+
+[node name="TestInventory" type="Spatial"]
+script = ExtResource( 9 )
+
+[node name="Ocean" parent="." instance=ExtResource( 1 )]
+
+[node name="Island01" parent="." instance=ExtResource( 2 )]
+
+[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 247.763 )
+
+[node name="ShipAI" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
+
+[node name="CollisionShape" parent="ShipAI/DetectionArea" index="0"]
+shape = SubResource( 1 )
+
+[node name="DamageStats" parent="ShipAI" index="15"]
+max_health = 5
+
+[node name="Combat" parent="ShipAI/ControlSM/Control/AI/StateSM/AvoidObstacle" index="3"]
+boid_ennemy_config = null
+boid_ally_config = null
+
+[node name="Crate" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5698, 0.172508, 262.004 )
+
+[node name="Tower" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 145.198, 3.77727, 35.5033 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 3 )]
+mode = "Gimbal"
+target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPlace")
+
+[node name="SceneSpawner" parent="." instance=ExtResource( 5 )]
+
+[node name="SpawnZone" parent="." instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -244.701, 0, 272.623 )
+spawn_object = ExtResource( 4 )
+area = Vector3( 50, 0, 50 )
+respawn_timer = 10
+autoreload = true
+
+[node name="RepairDock" parent="." instance=ExtResource( 13 )]
+transform = Transform( 0.21361, 0, -0.976919, 0, 1, 0, 0.976919, 0, 0.21361, 65.9806, 0, 335.337 )
+
+[node name="SelectorHandler" parent="." instance=ExtResource( 6 )]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -322.0
+margin_top = -169.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShipControl" parent="CanvasLayer/MarginContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 302.0
+margin_bottom = 149.0
+ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
+selector_path = NodePath("../../../SelectorHandler")
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+margin_right = 354.0
+margin_bottom = 41.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameMenu" type="HBoxContainer" parent="CanvasLayer/MarginContainer2"]
+margin_right = 354.0
+margin_bottom = 41.0
+script = ExtResource( 8 )
+
+[node name="InventoryButton" type="Button" parent="CanvasLayer/MarginContainer2/GameMenu"]
+margin_right = 73.0
+margin_bottom = 41.0
+text = "Inventory"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -168.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 55.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DropAll" type="Button" parent="CanvasLayer/MarginContainer3"]
+margin_right = 148.0
+margin_bottom = 35.0
+text = "Drop All"
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/GameMenu/InventoryButton" to="." method="_on_InventoryButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer3/DropAll" to="." method="_on_DropAll_pressed"]
+
+[editable path="ShipAI"]
+[editable path="ShipAI/SelectArea"]
+[editable path="ShipAI/Sticker3D"]
+[editable path="ShipAI/HitBox"]

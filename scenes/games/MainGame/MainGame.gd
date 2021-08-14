@@ -30,7 +30,7 @@ func _ready():
 		Network.Settings.Host = config.get("server_host", "0.0.0.0")
 		Network.Settings.Port = config.get("game_port", DEFAULT_GAME_PORT)
 		Network.Settings.MaxPlayer = config.get("max_player", DEFAULT_MAX_PLAYER)
-		
+		Network.Settings.SecurityKey = config.get("security_key")
 		
 	else:
 		Network.Settings.Host = "0.0.0.0"
@@ -70,25 +70,24 @@ func _ready():
 		print("Game Version : ", game_version)
 		
 		upnp = UPNP.new()
-		upnp.discover()
+		var upnp_result = upnp.discover()
 		
-		var external_address = upnp.query_external_address()
+		if upnp_result == UPNP.UPNP_RESULT_SUCCESS:
+			var external_address = upnp.query_external_address()
+			upnp.add_port_mapping(game_port, game_port, GAME_NAME, "UDP", 3600)
+			print("Server starded on %s:%d" % [external_address, game_port])
+		else:
+			print("Server starded on port %d" % [game_port])
 		
-		upnp.add_port_mapping(game_port, game_port, GAME_NAME, "UDP", 3600)
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 		
-		print("Server starded on %s:%d" % [external_address, game_port])
-		
-		get_tree().change_scene("res://scenes/games/Multiplayer/Multiplayer.tscn")
+		var _r := get_tree().change_scene("res://scenes/games/Multiplayer/Multiplayer.tscn")
 		
 	else:
 		
-		#$Loading.load_resource("scenes/ui/LoginPanel/LoginPanel.tscn")
-		
 		Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 		
-		pass
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

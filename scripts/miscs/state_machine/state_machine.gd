@@ -48,8 +48,9 @@ func _process(delta):
 	state.process(delta)
 	
 	if _next_state != null:
-		_process_transition(_next_state)
+		var next_state = _next_state
 		_next_state = null
+		_process_transition(next_state)
 	
 
 
@@ -80,11 +81,14 @@ func _process_transition(next_state : NextState):
 	var target_state: = get_node(target_state_path)
 	
 	if not target_state or self.state == target_state:
+		if not target_state:
+			push_error("Invalid State %s" % target_state_path)
 		return
 	
-	state.exit()
+	if self.state:
+		self.state.exit()
 	self.state = target_state
-	state.enter(msg)
+	self.state.enter(msg)
 	emit_signal("transitioned", target_state_path, msg)
 
 

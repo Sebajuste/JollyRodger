@@ -3,9 +3,11 @@ extends Object
 
 
 var damage := 0
+var source_path : String
 
 
-func _init(value: int) -> void:
+func _init(_damage: int, _source_path : String = "") -> void:
 	
-	damage = value
+	damage = _damage
+	source_path = _source_path
 	

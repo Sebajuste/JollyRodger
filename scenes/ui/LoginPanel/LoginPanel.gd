@@ -13,10 +13,13 @@ func _ready():
 	
 	login_input.text = "Player_%d" % randi()
 	
-	get_tree().connect("connected_to_server", self, "_connected_ok")
-	get_tree().connect("connection_failed", self, "_connected_fail")
+	var _r
+	_r = get_tree().connect("connected_to_server", self, "_connected_ok")
+	_r = get_tree().connect("connection_failed", self, "_connected_fail")
 	
 	$CanvasLayer/Control/Version/Label.text = "Version " + str( Network.Settings.Version )
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 	pass # Replace with function body.
 

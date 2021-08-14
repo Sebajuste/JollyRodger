@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/objects/Flag/Flag.gd" type="Script" id=1]
+[ext_resource path="res://scenes/miscs/Capturable/Capturable.tscn" type="PackedScene" id=2]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 3, 2 )
@@ -17,4 +18,6 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.5, 0,
 mesh = SubResource( 1 )
 material/0 = null
 
-[connection signal="tree_entered" from="." to="." method="_on_Flag_tree_entered"]
+[node name="Capturable" parent="." instance=ExtResource( 2 )]
+
+[connection signal="faction_changed" from="Capturable" to="." method="_on_Capturable_faction_changed"]

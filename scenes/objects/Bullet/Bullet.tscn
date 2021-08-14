@@ -48,6 +48,5 @@ wait_time = 60.0
 one_shot = true
 
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
-[connection signal="hit" from="DamageSource" to="." method="_on_DamageSource_hit"]
 [connection signal="timeout" from="NetSyncBullet/Timer" to="NetSyncBullet" method="sync_node_emission"]
 [connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]

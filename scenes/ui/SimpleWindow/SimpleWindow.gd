@@ -2,6 +2,13 @@ class_name SimpleWindow
 extends Control
 
 
+
+export(NodePath) var ship_path
+
+
+onready var ship : AbstractShip = get_node(ship_path) if has_node(ship_path) else null
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	

@@ -54,7 +54,7 @@ func _ready():
 	
 	update_shader()
 	
-	if is_network_master():
+	if not Network.enabled or is_network_master():
 		
 		$NetNodeSync/Timer.start()
 		
@@ -86,7 +86,7 @@ func update_shader():
 	
 	for ocean_mesh in meshes.get_children():
 		
-		var w_dir : Vector2 =  wave_direction.normalized()
+		# var w_dir : Vector2 =  wave_direction.normalized()
 		
 		wave_a.direction = wave_direction.normalized()
 		wave_b.direction = wave_a.direction.rotated(PI/5)
@@ -120,20 +120,14 @@ func get_wave_height(position : Vector3) -> float:
 
 func _gerstner_wave(wave : Dictionary, p : Vector2, time : float) -> Vector3:
 	
-	var steepness : float = wave.steepness
+	var s : float = wave.steepness
 	var wavelength : float = wave.wavelength
 	
 	var k := 2.0 * PI / wavelength
 	var c := sqrt(9.8 / k)
 	var d := Vector2(wave.direction.x, wave.direction.y).normalized()
 	var f := k * (d.dot( Vector2(p.x, p.y) ) - c * time);
-	var a := steepness / k;
-	
-	return Vector3(
-		0.0,
-		a * sin(f),
-		0.0
-	)
+	var a := s / k;
 	
 	"""
 	return Vector3(
@@ -142,6 +136,12 @@ func _gerstner_wave(wave : Dictionary, p : Vector2, time : float) -> Vector3:
 		d.y * (a * cos(f))
 	)
 	"""
+	
+	return Vector3(
+		0.0,
+		a * sin(f),
+		0.0
+	)
 
 
 func set_wave_direction(value):

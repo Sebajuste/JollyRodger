@@ -3,13 +3,16 @@ extends RigidBody
 var WATER_SPLASH_SCENE = preload("res://scenes/miscs/WaterSplash/WaterSplash.tscn")
 
 
+onready var damage_source := $DamageSource
+
+
 var submerded := false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	if is_network_master():
+	if not Network.enabled or is_network_master():
 		$LifeTimer.start()
 	
 	pass # Replace with function body.
@@ -20,7 +23,7 @@ func _ready():
 #	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if not is_inside_tree():
 		return
@@ -66,7 +69,7 @@ func _on_LifeTimer_timeout():
 	
 
 
-func _on_DamageSource_hit(hit_box):
+func _on_DamageSource_hit(_hit_box):
 	
 	queue_free()
 	

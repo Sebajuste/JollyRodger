@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/2d/textures/water_effect.png" type="Texture" id=1]
 [ext_resource path="res://scenes/miscs/WaterSplash/WaterSplash.gd" type="Script" id=3]
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=1]
 direction = Vector3( 0, 1, 0 )
 spread = 90.0
 flatness = 0.95
@@ -11,16 +11,15 @@ gravity = Vector3( 0, -9, 0 )
 initial_velocity = 10.0
 initial_velocity_random = 0.5
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=2]
 flags_do_not_receive_shadows = true
 albedo_color = Color( 0.670588, 0.815686, 0.831373, 1 )
 
-[sub_resource type="CubeMesh" id=9]
-material = SubResource( 10 )
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
 size = Vector3( 0.1, 0.1, 0.1 )
 
-[sub_resource type="Animation" id=1]
-resource_name = "default"
+[sub_resource type="Animation" id=4]
 length = 1.5
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Sprite3D")
@@ -42,7 +41,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "test"
 
 [node name="WaterSplash" type="Spatial"]
@@ -58,13 +57,13 @@ amount = 32
 lifetime = 0.6
 one_shot = true
 explosiveness = 1.0
-process_material = SubResource( 5 )
-draw_pass_1 = SubResource( 9 )
+process_material = SubResource( 1 )
+draw_pass_1 = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "default"
-anims/default = SubResource( 1 )
-anims/test = SubResource( 8 )
+anims/default = SubResource( 4 )
+anims/test = SubResource( 5 )
 
 [node name="DestroyTimer" type="Timer" parent="."]
 wait_time = 1.5

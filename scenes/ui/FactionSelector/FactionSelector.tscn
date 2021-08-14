@@ -20,11 +20,11 @@ text = "title_select_faction"
 
 [node name="HSeparator" parent="MarginContainer/VBoxContainer" index="1"]
 margin_top = 50.0
-margin_bottom = 54.0
+margin_bottom = 55.0
 
 [node name="Content" parent="MarginContainer/VBoxContainer" index="2"]
-margin_top = 64.0
-margin_bottom = 510.0
+margin_top = 65.0
+margin_bottom = 525.0
 rect_pivot_offset = Vector2( 250.794, -301.962 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Content" index="0"]
@@ -32,6 +32,9 @@ margin_right = 984.0
 margin_bottom = 446.0
 size_flags_vertical = 3
 custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="UnitedKingdomFaction" type="MarginContainer" parent="MarginContainer/VBoxContainer/Content/HBoxContainer" index="0"]
 margin_right = 470.0
@@ -55,26 +58,28 @@ uppercase = true
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="1"]
 margin_top = 50.0
 margin_right = 470.0
-margin_bottom = 185.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 150 )
 texture = ExtResource( 2 )
-stretch_mode = 4
+expand = true
+stretch_mode = 6
 
 [node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="2"]
-margin_top = 195.0
+margin_top = 210.0
 margin_right = 470.0
-margin_bottom = 209.0
+margin_bottom = 235.0
 text = "Nombre de navire : %d"
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="3"]
-margin_top = 219.0
+margin_top = 245.0
 margin_right = 470.0
-margin_bottom = 223.0
+margin_bottom = 249.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="4"]
-margin_top = 233.0
+margin_top = 259.0
 margin_right = 470.0
 margin_bottom = 396.0
 size_flags_vertical = 3
@@ -116,26 +121,27 @@ uppercase = true
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="1"]
 margin_top = 50.0
 margin_right = 470.0
-margin_bottom = 197.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 150 )
 texture = ExtResource( 3 )
-stretch_mode = 4
+stretch_mode = 6
 
 [node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="2"]
-margin_top = 207.0
+margin_top = 210.0
 margin_right = 470.0
-margin_bottom = 221.0
+margin_bottom = 235.0
 text = "Nombre de navire : %d"
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="3"]
-margin_top = 231.0
+margin_top = 245.0
 margin_right = 470.0
-margin_bottom = 235.0
+margin_bottom = 249.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="4"]
-margin_top = 245.0
+margin_top = 259.0
 margin_right = 470.0
 margin_bottom = 396.0
 size_flags_vertical = 3

@@ -35,7 +35,7 @@ func integrate_forces(state : PhysicsDirectBodyState):
 		state.linear_velocity = last_properties.linear_velocity
 		state.angular_velocity = last_properties.angular_velocity
 		
-		state.transform = NetNodeSync.update_transform(state.transform, last_properties.transform)
+		state.transform = NetNodeSync.update_transform(state.transform, last_properties.transform, 0.5)
 		
 		slave_updated = true
 	
@@ -58,9 +58,10 @@ master func sync_ship():
 	var byte_buffer := NetByteBuffer.new(64)
 	var write_stream := NetStreamWriter.new(byte_buffer)
 	
+	var _r
 	packet_id = packet_id + 1
-	write_stream.serialize_bits(packet_id, 32) # frequency
-	write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
+	_r = write_stream.serialize_bits(packet_id, 32) # frequency
+	_r = write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
 	
 	_serialize(write_stream, properties)
 	
@@ -70,7 +71,7 @@ master func sync_ship():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
+	# print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
 	
 	rpc_unreliable("sync_ship_reception", byte_packet)
 	

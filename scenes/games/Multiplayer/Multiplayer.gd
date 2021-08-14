@@ -1,17 +1,24 @@
 extends Node
 
 
+
 var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
+var SHIP_WINDOW_SCENE = preload("res://scenes/ui/windows/ShipWindow/ShipWindow.tscn")
+var INVENTORY_TRANSFERT_SCENE = preload("res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.tscn")
+
 
 onready var world := $World
 onready var camera := $World/CameraRig
 onready var faction_manager := $FactionManager
 
+onready var selector_handler := $SelectorHandler
 
-onready var start_position_a := $World/Island01/SpawnPositionA
-onready var start_position_b := $World/Island02/SpawnPositionB
+onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
+onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
+
+onready var gui_control := $GUI/ControlContainer/BoatControl
 
 
 var start_position := Vector3.ZERO
@@ -22,10 +29,7 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
-var target_ref : WeakRef
-var select_hint_ref : WeakRef
-
-var select_timer := 0.0
+var player_ship_window_ref = weakref(null)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -40,10 +44,9 @@ func _ready():
 		
 		$World/Ocean.update_shader()
 		
-		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
-		Network.connect("kicked", self, "_on_server_kicked")
-		
-		ObjectSelector.connect("object_selected", self, "_on_object_selected")
+		var _r
+		_r = get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+		_r = Network.connect("kicked", self, "_on_server_kicked")
 		
 		$GUI/FactionSelector.open()
 		
@@ -51,8 +54,9 @@ func _ready():
 		print("Game ready")
 	else:
 		
-		#$GUI.queue_free()
-		$AudioStreamPlayer.queue_free()
+		
+		# $AudioStreamPlayer.queue_free()
+		pass
 	
 	
 	
@@ -64,58 +68,122 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	
-	select_timer += delta
-	
-	pass
+#func _process(delta):
+#	
+#	select_timer += delta
+#	
+#	pass
 
 
-
-func _unhandled_input(event):
-	
-	if event is InputEventMouseButton:
-		
-		if event.button_index == BUTTON_LEFT and select_timer > 0.5:
-			
-			if select_hint_ref != null:
-				
-				var select_hint = select_hint_ref.get_ref()
-				if select_hint == null:
-					select_hint_ref = null
-				else:
-					select_hint.queue_free()
-				
-			target_ref = null
-	
-	if event.is_action_pressed("fire_order") and target_ref:
-		
-		var target : AbstractShip = target_ref.get_ref()
-		
-		if target:
-			for canon in player.get_node("Cannons").get_children():
-				
-				var target_pos := target.global_transform.origin + Vector3.UP*3.0
-				var target_velocity := target.linear_velocity
-				
-				if canon.fire_ready and canon.is_in_range(target_pos):
-					
-					canon.fire_delay = rand_range(0.0, 0.5)
-					
-					canon.fire(target_pos, target_velocity)
-		else:
-			target_ref = null
-	
+func _input(event):
 	if event.is_action_pressed("ui_main_menu"):
-		
 		if not $GUI/GameMenu.visible:
 			$GUI/GameMenu.open()
 		else:
 			$GUI/GameMenu.close()
 	
+	if event.is_action_pressed("use"):
+		var target : Spatial = selector_handler.get_select()
+		
+		if target and target.is_in_group("has_inventory"):
+			
+			var gui_transfert = INVENTORY_TRANSFERT_SCENE.instance()
+			$GUI.add_child(gui_transfert)
+			gui_transfert.set_inventory_a(player.inventory)
+			gui_transfert.set_inventory_b(target.inventory)
+			gui_transfert.show()
+			pass
+		
+		pass
+
+
+func read_save_file() -> Dictionary:
+	
+	var filename : String = "%s.savegame" % Network.get_self_property("username").to_lower()
+	
+	var fs := File.new()
+	
+	if fs.file_exists(filename):
+		var r := fs.open(filename, File.READ)
+		if r != OK:
+			return {}
+		var content = fs.get_as_text()
+		fs.close()
+		
+		var save = parse_json(content)
+		
+		if typeof(save) != TYPE_DICTIONARY:
+			return {}
+		
+		var save_seed : String = save.save_seed
+		var save_hash : String = save.save_hash
+		var payload : Dictionary = save.payload
+		
+		var ctx := HashingContext.new()
+		var _r
+		_r = ctx.start(HashingContext.HASH_SHA256)
+		
+		_r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+		_r = ctx.update(to_json(payload).to_utf8())
+		var res := ctx.finish()
+		
+		if save_hash != res.hex_encode():
+			_r = fs.open(filename, File.WRITE)
+			fs.store_line("")
+			fs.close()
+			return {}
+		
+		return payload
+	
+	return {}
+
+
+func write_save_file(savegame : Dictionary):
+	
+	randomize()
+	
+	var save_seed := str(randi())
+	
+	var ctx := HashingContext.new()
+	var _r := ctx.start(HashingContext.HASH_SHA256)
+	
+	var json_paylaod := to_json(savegame)
+	
+	_r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+	_r = ctx.update(json_paylaod.to_utf8())
+	var res := ctx.finish()
+	
+	var save_hash := res.hex_encode()
+	
+	var save := {
+		"save_seed": save_seed,
+		"save_hash": save_hash,
+		"payload": savegame
+	}
+	
+	var fs := File.new()
+	var r = fs.open("%s.savegame" % Network.get_self_property("username").to_lower(), File.WRITE)
+	if r == OK:
+		fs.store_line( to_json(save) )
+		fs.close()
+
+
 
 
 func create_player():
+	
+	var faction : String = Network.get_self_property("faction")
+	
+	var savegame := read_save_file()
+	
+	var ship_save := {}
+	var load_ship := true
+	
+	if savegame.has(faction):
+		ship_save = savegame[faction]
+	else:
+		load_ship = false
+	
 	
 	if admin_mode:
 		player = SHIP_FRIGATE_SCENE.instance()
@@ -134,19 +202,63 @@ func create_player():
 	
 	world.add_child(player)
 	
-	#player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
-	camera.target = player.get_node("CaptainPlace")
+	camera.set_target( player.get_node("CaptainPlace") )
 	
-	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.type = Network.get_self_property("faction")
+	var _r = player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
+	player.flag.faction = faction
 	
-	$GUI/MarginContainer/BoatInfo.ship = player
-	$GUI/MarginContainer2/BoatControl.boat = player
+	
+	gui_control.set_ship( player )
+	$GUI/InGameMenu.visible = true
+	
+	selector_handler.exclude_select.clear()
+	selector_handler.exclude_select.append(player)
+	
+	print("Start load inventory")
+	
+	if load_ship:
+		print("load inventory")
+		for key in ship_save.equipment:
+			player.equipment.add_item(key.to_int(), ship_save.equipment[key])
+		for key in ship_save.inventory:
+			player.inventory.items[key.to_int()] = ship_save.inventory[key]
+	else: # Add default equipment
+		print("add default inventory")
+		var cannon := GameTable.get_item(100001)
+		for _i in range(4):
+			player.equipment.add_item_in_free_slot({
+					"item_id": cannon.id,
+					"item_rariry": "Common",
+					"quantity": 1,
+					"attributes": cannon.attributes
+				}
+			)
+	
+	print("connect inventory event")
+	
+	_r = player.inventory.connect("inventory_updated", self, "on_inventory_changed")
+	_r = player.equipment.connect("inventory_updated", self, "on_inventory_changed")
+	
+	
+	#
+	# Save
+	#
+	ship_save = {
+		"equipment": player.equipment.items,
+		"inventory": player.inventory.items,
+	}
+	
+	savegame[faction] = ship_save
+	
+	write_save_file(savegame)
 	
 
 
 func return_login_screen():
+	
+	Network.close_connection()
 	
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
@@ -162,32 +274,14 @@ func _on_server_kicked(cause):
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
 
-func _on_object_selected(object):
-	
-	if (not target_ref or target_ref.get_ref() == null or target_ref.get_ref() != object) and object != player:
-		
-		var select_hint
-		
-		if select_hint_ref != null and select_hint_ref.get_ref() != null:
-			select_hint = select_hint_ref.get_ref()
-		else:
-			select_hint = SELECT_HINT_SCENE.instance()
-		
-		object.add_child(select_hint)
-		select_hint.offset.y = 30
-		
-		target_ref = weakref(object)
-		select_hint_ref = weakref(select_hint)
-		
-		select_timer = 0.0
-
-
 func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
-	camera.target = null
-	$GUI/MarginContainer/BoatInfo.ship = null
-	$GUI/MarginContainer2/BoatControl.boat = null
+	$GUI/InGameMenu.visible = false
+	
+	camera.set_target( null )
+	
+	gui_control.set_ship( null )
 
 
 func _on_RestartGameButton_pressed():
@@ -211,10 +305,9 @@ func _on_JoinPirate_pressed():
 
 func _on_ChangeFactionButton_pressed():
 	
-	camera.target = null
+	camera.set_target( null )
 	
-	$GUI/MarginContainer/BoatInfo.ship = null
-	$GUI/MarginContainer2/BoatControl.boat = null
+	gui_control.set_ship( null )
 	
 	if player:
 		player.queue_free()
@@ -222,7 +315,27 @@ func _on_ChangeFactionButton_pressed():
 	
 	$GUI/FactionSelector.open()
 	$GUI/GameMenu.close()
+
+
+func on_inventory_changed(_items):
 	
+	var savegame := read_save_file()
+	
+	print("on_inventory_changed")
+	
+	var faction : String = Network.get_self_property("faction")
+	
+	var ship_save = {
+		"equipment": player.equipment.items,
+		"inventory": player.inventory.items,
+	}
+	
+	savegame[faction] = ship_save
+	
+	write_save_file(savegame)
+	
+	pass
+
 
 
 func _on_QuitGameButton_pressed():
@@ -235,3 +348,57 @@ func _on_AcceptButton_pressed():
 	
 	$GUI/GameMenu.close()
 	
+
+
+func _on_SpawnZone_spawn_object(object):
+	
+	object.faction = "Spain"
+	
+	object.control_mode = "AI"
+	object.control_sm.get_node("Control/AI").follow_path($World/Path)
+	
+	var cannon := GameTable.get_item(100001)
+	for _i in range(4):
+		object.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+	
+	var item_generator := GameItemGeneration.new()
+	for _i in range(10):
+		object.inventory.add_item_in_free_slot( item_generator.generate_item() )
+	
+	pass # Replace with function body.
+
+
+func _on_InGameMenu_help_clicked():
+	
+	$GUI/HelpContainer.visible = false if $GUI/HelpContainer.visible else true
+	
+
+
+func _on_InGameMenu_inventory_clicked():
+	
+	var player_ship_window = player_ship_window_ref.get_ref()
+	
+	#if not gui_ship_inventory:
+	if not player_ship_window:
+		
+		player_ship_window = SHIP_WINDOW_SCENE.instance()
+		
+		$GUI.add_child( player_ship_window )
+		
+		player_ship_window.ship_equipment.inventory = player.equipment
+		player_ship_window.ship_inventory.inventory = player.inventory
+		
+		player_ship_window.ship_ref = weakref(player)
+		
+		player_ship_window.show()
+		
+		player_ship_window_ref = weakref(player_ship_window)
+	else:
+		player_ship_window.queue_free()
+		player_ship_window_ref = weakref(null)
+

@@ -1,31 +1,45 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/games/Multiplayer/Multiplayer.gd" type="Script" id=3]
-[ext_resource path="res://scenes/ui/BoatInfo/BoatInfo.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/miscs/SelectorHandler/SelectorHandler.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=7]
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ui/SimpleWindow/SimpleWindow.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/levels/Island02/Island02.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/miscs/NetworkProxy/NetworkProxy.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/ui/FactionSelector/FactionSelector.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/games/Multiplayer/FactionManager.gd" type="Script" id=14]
+[ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/ui/ChatBox/ChatBox.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/ui/InGameMenu/InGameMenu.tscn" type="PackedScene" id=23]
 
-[sub_resource type="ProceduralSky" id=1]
+[sub_resource type="Curve3D" id=1]
+_data = {
+"points": PoolVector3Array( 227.613, 0, 163.108, -227.613, 0, -163.108, 382.5, 0.00421143, -700.249, 229.858, -6.10352e-05, -275.108, -229.858, 6.10352e-05, 275.108, -706.955, -6.10352e-05, -732.785, -177.615, 0, -37.0749, 177.615, 0, 37.0749, -620.957, 0, 24.0755, -51.2599, 0.322906, -33.5518, 51.2599, -0.322906, 33.5518, -46.9549, 0, 56.5519, -248.958, 0, -217.041, 248.958, 0, 217.041, 125.335, 6.10352e-05, 780.738, -189.911, 6.10352e-05, 193.102, 189.911, -6.10352e-05, -193.102, 774.861, 0, 675.409, 484.153, 6.10352e-05, 317.254, -484.153, -6.10352e-05, -317.254, 382.5, 0.00421143, -700.249 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="ProceduralSky" id=2]
 ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
 ground_horizon_color = Color( 0.501961, 0.6, 0.701961, 1 )
 
-[sub_resource type="Environment" id=2]
+[sub_resource type="Environment" id=3]
 background_mode = 2
-background_sky = SubResource( 1 )
+background_sky = SubResource( 2 )
 fog_enabled = true
 fog_color = Color( 0.501961, 0.6, 0.701961, 1 )
 fog_depth_begin = 100.0
-fog_depth_end = 950.0
+fog_depth_end = 1300.0
+fog_depth_curve = 1.99999
 fog_height_enabled = true
 fog_height_min = 20.0
 fog_height_max = -100.0
@@ -47,23 +61,101 @@ steepness = 0.05
 mode = "Gimbal"
 current = true
 
-[node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
+[node name="Island01NetProxy" parent="World" instance=ExtResource( 11 )]
+client_path = "res://scenes/levels/Island01/Island01.tscn"
+server_path = "res://scenes/levels/Island01/Island01Collider.tscn"
 
-[node name="Island01" parent="World" instance=ExtResource( 11 )]
+[node name="SpawnPositionA" type="Position3D" parent="World/Island01NetProxy"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 122.995, 0, 642.187 )
 
-[node name="SpawnPositionA" type="Position3D" parent="World/Island01"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 600, 0, 600 )
+[node name="CapureZone" parent="World/Island01NetProxy" instance=ExtResource( 17 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 91.1372, 0, 170.143 )
+faction = "GB"
 
-[node name="Island02" parent="World" instance=ExtResource( 12 )]
+[node name="GroundFlag" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.8792, 0.520527, 52.4497 )
+
+[node name="Tower" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66.7748, 7.17494, 51.2697 )
+
+[node name="Tower2" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7254, 5.87931, -54.2478 )
+
+[node name="RepairDock" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 16 )]
+transform = Transform( 0.915684, 0, 0.4019, 0, 1, 0, -0.4019, 0, 0.915684, 32.0327, 2.75156, 8.31299 )
+
+[node name="Island02NetProxy" parent="World" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -500, 0, -500 )
+client_path = "res://scenes/levels/Island02/Island02.tscn"
+server_path = "res://scenes/levels/Island02/Island02Collider.tscn"
 
-[node name="SpawnPositionB" type="Position3D" parent="World/Island02"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, -100 )
+[node name="SpawnPositionB" type="Position3D" parent="World/Island02NetProxy"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 11.6987 )
+
+[node name="CapureZone" parent="World/Island02NetProxy" instance=ExtResource( 17 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 119.206, 0, 430.653 )
+faction = "Pirate"
+
+[node name="RepairDock" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 16 )]
+transform = Transform( -0.160467, 0, -0.987041, 0, 1, 0, 0.987041, 0, -0.160467, 15.2126, 1.32227, 2.48715 )
+
+[node name="Tower" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.6279, 6.10835, 41.0432 )
+
+[node name="Tower2" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.728, 3.36575, -65.5704 )
+
+[node name="GroundFlag" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64.0428, 0, 18.4195 )
+
+[node name="Island03NetProxy" parent="World" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -539.01, 0, 64.281 )
+client_path = "res://scenes/levels/Island03/Island03.tscn"
+server_path = "res://scenes/levels/Island03/Island03Collider.tscn"
+
+[node name="CaptureZone" parent="World/Island03NetProxy" instance=ExtResource( 17 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 209.485, 0, 302.333 )
+
+[node name="RepairDock" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 16 )]
+transform = Transform( -0.978068, 0, -0.208287, 0, 1, 0, 0.208287, 0, -0.978068, -26.1682, 0.669469, 45.6686 )
+
+[node name="GroundFlag" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53.5296, 13.2984, 71.5741 )
+
+[node name="GroundFlag2" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.936, 27.3274, -13.1158 )
+
+[node name="GroundFlag3" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.9204, 42.3806, -156.07 )
+
+[node name="Tower" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8335, 7.47003, 81.7771 )
+
+[node name="Tower2" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -136.866, 20.3734, -91.87 )
+
+[node name="Tower3" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.404, 15.2812, -130.235 )
+
+[node name="Tower4" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 164.2, 7.99862, 46.228 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="World"]
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573576, 0, -0.573576, -0.819152, 0, 41.5843, 0 )
 light_color = Color( 1, 0.913725, 0.682353, 1 )
 shadow_enabled = true
+
+[node name="SpawnZone" parent="World" instance=ExtResource( 22 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 933.457, 0, -981.944 )
+spawn_object = ExtResource( 21 )
+area = Vector3( 50, 0, 50 )
+respawn_timer = 30
+autoreload = true
+
+[node name="Path" type="Path" parent="World"]
+curve = SubResource( 1 )
+
+[node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
 
 [node name="FactionManager" type="Node" parent="."]
 script = ExtResource( 14 )
@@ -71,61 +163,67 @@ script = ExtResource( 14 )
 [node name="NetSceneSync" type="Node" parent="."]
 script = ExtResource( 1 )
 
+[node name="SelectorHandler" parent="." instance=ExtResource( 4 )]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 2 )
+environment = SubResource( 3 )
 
 [node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="GUI"]
+[node name="ChatContainer" type="MarginContainer" parent="GUI"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = -161.0
-margin_right = 198.0
-margin_bottom = -20.0
+margin_left = 10.0
+margin_top = -185.0
+margin_right = 314.0
+margin_bottom = -10.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BoatInfo" parent="GUI/MarginContainer" instance=ExtResource( 4 )]
+[node name="ChatBox" parent="GUI/ChatContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 178.0
-margin_bottom = 141.0
+margin_right = 304.0
+margin_bottom = 175.0
 
-[node name="MarginContainer2" type="MarginContainer" parent="GUI"]
+[node name="ControlContainer" type="MarginContainer" parent="GUI"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -233.0
-margin_top = -182.0
+margin_left = -257.0
+margin_top = -162.0
 margin_right = -20.0
 margin_bottom = -20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BoatControl" parent="GUI/MarginContainer2" instance=ExtResource( 5 )]
+[node name="BoatControl" parent="GUI/ControlContainer" instance=ExtResource( 5 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 213.0
-margin_bottom = 162.0
+margin_right = 237.0
+margin_bottom = 142.0
+selector_path = NodePath("../../../SelectorHandler")
 
-[node name="MarginContainer3" type="MarginContainer" parent="GUI"]
-margin_left = 20.0
+[node name="HelpContainer" type="MarginContainer" parent="GUI"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -330.0
 margin_top = 20.0
-margin_right = 350.0
-margin_bottom = 215.0
+margin_right = -20.0
+margin_bottom = 195.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InputHelper" parent="GUI/MarginContainer3" instance=ExtResource( 9 )]
+[node name="InputHelper" parent="GUI/HelpContainer" instance=ExtResource( 9 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 330.0
-margin_bottom = 195.0
+margin_right = 310.0
+margin_bottom = 175.0
 
 [node name="SinkMenu" parent="GUI" instance=ExtResource( 10 )]
 visible = false
@@ -139,7 +237,7 @@ margin_bottom = -34.0
 
 [node name="VBoxContainer" parent="GUI/SinkMenu/MarginContainer" index="0"]
 margin_right = 381.0
-margin_bottom = 170.0
+margin_bottom = 185.0
 custom_constants/separation = 10
 
 [node name="Title" parent="GUI/SinkMenu/MarginContainer/VBoxContainer" index="0"]
@@ -178,7 +276,6 @@ margin_left = 115.0
 margin_right = 265.0
 
 [node name="FactionSelector" parent="GUI" instance=ExtResource( 13 )]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -186,11 +283,13 @@ anchor_bottom = 0.5
 margin_left = -407.5
 margin_top = -301.5
 margin_right = 407.5
-margin_bottom = 301.5
+margin_bottom = 398.5
+rect_min_size = Vector2( 0, 700 )
+faction_manager_path = NodePath("../../FactionManager")
 
 [node name="VBoxContainer" parent="GUI/FactionSelector/MarginContainer" index="0"]
 margin_right = 775.0
-margin_bottom = 563.0
+margin_bottom = 675.0
 
 [node name="Title" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="0"]
 margin_right = 775.0
@@ -200,7 +299,7 @@ margin_right = 775.0
 
 [node name="Content" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="2"]
 margin_right = 775.0
-margin_bottom = 513.0
+margin_bottom = 625.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Content" index="0"]
 margin_right = 775.0
@@ -271,9 +370,9 @@ margin_right = 366.0
 margin_bottom = 449.0
 
 [node name="Footer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer" index="3"]
-margin_top = 523.0
+margin_top = 635.0
 margin_right = 775.0
-margin_bottom = 563.0
+margin_bottom = 675.0
 
 [node name="HBoxContainer" parent="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer" index="0"]
 margin_right = 775.0
@@ -295,7 +394,7 @@ margin_bottom = 204.5
 
 [node name="VBoxContainer" parent="GUI/GameMenu/MarginContainer" index="0"]
 margin_right = 285.0
-margin_bottom = 369.0
+margin_bottom = 384.0
 
 [node name="Title" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="0"]
 margin_right = 285.0
@@ -306,7 +405,7 @@ margin_right = 285.0
 
 [node name="Content" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="2"]
 margin_right = 285.0
-margin_bottom = 309.0
+margin_bottom = 344.0
 
 [node name="ChangeFactionButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
 margin_right = 285.0
@@ -322,9 +421,9 @@ rect_min_size = Vector2( 0, 40 )
 text = "btn_quit"
 
 [node name="Footer" parent="GUI/GameMenu/MarginContainer/VBoxContainer" index="3"]
-margin_top = 329.0
+margin_top = 344.0
 margin_right = 285.0
-margin_bottom = 369.0
+margin_bottom = 384.0
 
 [node name="HBoxContainer" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Footer" index="0"]
 margin_right = 285.0
@@ -334,10 +433,14 @@ margin_left = 67.0
 margin_right = 217.0
 text = "btn_resume"
 
+[node name="InGameMenu" parent="GUI" instance=ExtResource( 23 )]
+visible = false
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
 
+[connection signal="spawn_object" from="World/SpawnZone" to="." method="_on_SpawnZone_spawn_object"]
 [connection signal="faction_data_updated" from="FactionManager" to="GUI/FactionSelector" method="_on_faction_data_updated"]
 [connection signal="pressed" from="GUI/SinkMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_RestartGameButton_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinButton" to="." method="_on_JoinUnitedKingdom_pressed"]
@@ -346,6 +449,8 @@ autoplay = true
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_AcceptButton_pressed"]
+[connection signal="help_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_help_clicked"]
+[connection signal="inventory_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_inventory_clicked"]
 
 [editable path="GUI/SinkMenu"]
 [editable path="GUI/FactionSelector"]
