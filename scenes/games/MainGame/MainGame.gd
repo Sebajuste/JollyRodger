@@ -84,13 +84,9 @@ func _ready():
 		
 	else:
 		
-		#$Loading.load_resource("scenes/ui/LoginPanel/LoginPanel.tscn")
-		
 		Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 		
-		pass
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

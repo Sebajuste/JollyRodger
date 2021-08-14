@@ -53,8 +53,9 @@ func _ready():
 		print("Game ready")
 	else:
 		
-		#$GUI.queue_free()
-		$AudioStreamPlayer.queue_free()
+		
+		# $AudioStreamPlayer.queue_free()
+		pass
 	
 	
 	
