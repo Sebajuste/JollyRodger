@@ -1,14 +1,14 @@
 /build
-**/*.import
+/.import
+
 **/*/.TMP
 **/*.translation
 **/*.exe
 **/*~
-*.import
-*.savegame
 
+*.savegame
 *.TMP
+
 Settings.cfg
 game_config.json
-
 export_preset.cfg
