@@ -15,8 +15,8 @@ onready var faction_manager := $FactionManager
 
 onready var selector_handler := $SelectorHandler
 
-onready var start_position_a := $World/Island01/SpawnPositionA
-onready var start_position_b := $World/Island02/SpawnPositionB
+onready var start_position_a := $World/Island01Proxy/SpawnPositionA
+onready var start_position_b := $World/Island02Proxy/SpawnPositionB
 
 
 onready var gui_control := $GUI/ControlContainer/BoatControl
@@ -252,6 +252,8 @@ func create_player():
 
 
 func return_login_screen():
+	
+	Network.close_connection()
 	
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
