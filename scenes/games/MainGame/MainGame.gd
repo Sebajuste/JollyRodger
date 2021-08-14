@@ -70,13 +70,14 @@ func _ready():
 		print("Game Version : ", game_version)
 		
 		upnp = UPNP.new()
-		upnp.discover()
+		var upnp_result = upnp.discover()
 		
-		var external_address = upnp.query_external_address()
-		
-		upnp.add_port_mapping(game_port, game_port, GAME_NAME, "UDP", 3600)
-		
-		print("Server starded on %s:%d" % [external_address, game_port])
+		if upnp_result == UPNP.UPNP_RESULT_SUCCESS:
+			var external_address = upnp.query_external_address()
+			upnp.add_port_mapping(game_port, game_port, GAME_NAME, "UDP", 3600)
+			print("Server starded on %s:%d" % [external_address, game_port])
+		else:
+			print("Server starded on port %d" % [game_port])
 		
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 		

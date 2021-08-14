@@ -5,6 +5,7 @@
 **/*.exe
 **/*~
 *.import
+*.savegame
 
 *.TMP
 Settings.cfg
