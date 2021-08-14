@@ -35,12 +35,12 @@ class NodeSyncInfo:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
-	get_tree().connect("connected_to_server", self, "_connected_ok")
-	get_tree().connect("connection_failed", self, "_connected_fail")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	var _r
+	_r = get_tree().connect("network_peer_connected", self, "_player_connected")
+	_r = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+	_r = get_tree().connect("connected_to_server", self, "_connected_ok")
+	_r = get_tree().connect("connection_failed", self, "_connected_fail")
+	_r = get_tree().connect("server_disconnected", self, "_server_disconnected")
 	
 
 
@@ -107,7 +107,7 @@ func erase_property(key: String):
 
 func get_self_peer_id() -> int:
 	
-	return get_tree().get_network_unique_id()
+	return get_tree().get_network_unique_id() if Network.enabled else 1
 	
 
 
@@ -145,7 +145,7 @@ func rename_node(node: Node, old_name: String):
 func get_own_properties() -> Dictionary:
 	var self_peer_id = get_self_peer_id()
 	if not player_info.has(self_peer_id):
-		player_info[self_peer_id] =  {}
+		player_info[self_peer_id] = {}
 	return player_info[self_peer_id]
 
 
@@ -164,13 +164,13 @@ func _player_disconnected(id: int):
 	print("Player disconnected [id: %d]" % id)
 	if player_info.has(id):
 		var info = player_info[id]
-		player_info.erase(id)
+		var _r := player_info.erase(id)
 		emit_signal("properties_removed", id, info)
 
 
 func _connected_ok():
 	enabled = true
-	get_own_properties()
+	var _p := get_own_properties()
 	pass
 
 
@@ -186,7 +186,7 @@ func _server_disconnected():
 
 func _check_version(id: int, key: String, value):
 	if is_server and id != 1 and key == "game_version":
-		var properties := get_own_properties()
+		var _p := get_own_properties()
 		if value != Settings.Version:
 			print("Invalid game version")
 			rpc_id(id, "rpc_kicked", "Invalid Game Version")
@@ -218,7 +218,7 @@ remotesync func rpc_set_property(key: String, value):
 remotesync func rpc_erase_property(key: String):
 	var id = get_tree().get_rpc_sender_id()
 	var info : Dictionary = player_info[id]
-	info.erase(key)
+	var _r := info.erase(key)
 
 
 remote func rpc_spawn_node(parent_path: String, name: String, filename: String):

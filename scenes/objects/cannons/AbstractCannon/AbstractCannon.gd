@@ -39,7 +39,7 @@ func _ready():
 #	pass
 
 
-func is_in_range(target_position : Vector3, target_velocity := Vector3.ZERO) -> bool:
+func is_in_range(target_position : Vector3, _target_velocity := Vector3.ZERO) -> bool:
 	
 	var target_dir := (self.global_transform.origin - target_position).normalized()
 	

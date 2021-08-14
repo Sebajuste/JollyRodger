@@ -108,25 +108,25 @@ func drop_data(_pos, source_slot):
 
 func item_transfer(source_slot):
 	
-	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
+	var amount := int(min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity))
 	
 	var item : ItemHandler = source_slot.pick(amount)
-	put(item, amount)
+	var _r = put(item, amount)
 
 
 func item_swap(source_slot):
 	var item_a : ItemHandler = source_slot.pick()
 	var item_b : ItemHandler = pick()
-	put(item_a)
+	var _r = put(item_a)
 	source_slot.put(item_b)
 
 
 func item_give(source_slot):
 	
-	var amount := min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity)
+	var amount := int(min(get_item_max_quantity(source_slot.item_handler.item), source_slot.item_handler.quantity))
 	
 	var item : ItemHandler = source_slot.pick(amount)
-	put(item, amount)
+	var _r = put(item, amount)
 
 
 func has_item() -> bool:
@@ -172,7 +172,7 @@ func pick(amount : int = -1) -> ItemHandler:
 	if item_handler == null:
 		return null
 	
-	amount = min(amount, item_handler.quantity)
+	amount = int(min(amount, item_handler.quantity))
 	
 	# Take all stack
 	if has_item() and (amount == -1 or amount == item_handler.quantity):
@@ -211,7 +211,7 @@ func set_item_handler(new_item : ItemHandler):
 		stack_label.visible = true
 		stack_label.text = str(new_item.quantity)
 	
-	item_handler.connect("quantity_changed", self, "_on_quantity_changed")
+	var _r := item_handler.connect("quantity_changed", self, "_on_quantity_changed")
 	emit_signal("item_equiped", item_handler)
 
 
@@ -242,19 +242,16 @@ func get_item_max_quantity(item : GameItem) -> int:
 			return int(min(max_quantity, item.max_stack))
 
 
-func _calculate_amount(amount : int, item_handler : ItemHandler) -> int:
-	
+func _calculate_amount(amount : int, _item_handler : ItemHandler) -> int:
 	if max_quantity > 0:
 		return int(min(min(min(amount, max_quantity), item_handler.quantity), item_handler.item.max_stack))
 	else:
 		return int(min(min(amount, item_handler.quantity), item_handler.item.max_stack))
-	#max_stack
-	return 0
 
 
 func set_max_quantity(value):
 	
-	max_quantity = max(1, value)
+	max_quantity = int(max(1, value))
 	
 
 

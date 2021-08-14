@@ -18,7 +18,7 @@ func is_reading() -> bool:
 
 
 func serialize_bits(value: int, bits: int) -> int:
-	_bit_packer.write(value, bits)
+	var _r := _bit_packer.write(value, bits)
 	return value
 
 

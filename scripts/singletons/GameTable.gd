@@ -15,7 +15,6 @@ var items := []
 
 func _ready():
 	
-	print("GameTable ready")
 	
 	var files := []
 	var dir = Directory.new()
@@ -38,7 +37,7 @@ func load_csv(file_path):
 	
 	var file := File.new()
 	
-	file.open(file_path, File.READ)
+	var _r := file.open(file_path, File.READ)
 	
 	var headers : PoolStringArray
 	
@@ -50,11 +49,8 @@ func load_csv(file_path):
 		if line == 0:
 			headers = csv_line
 		else:
-			
 			if csv_line.size() == headers.size():
-				
 				var item := {}
-				
 				for column_index in range(csv_line.size()):
 					var column_name := headers[column_index].to_lower()
 					item[column_name] = csv_line[column_index]
@@ -63,8 +59,11 @@ func load_csv(file_path):
 					var game_item := GameItem.new(item)
 					items.append(game_item)
 				
-			else:
-				push_warning("Invalid game item")
+			elif csv_line.size() > 1:
+				var str_csv_line = ""
+				for item in csv_line:
+					str_csv_line += item + ", "
+				push_warning("Invalid game item line: %s " % [str_csv_line])
 		
 		line += 1
 	

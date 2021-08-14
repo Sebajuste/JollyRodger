@@ -64,13 +64,13 @@ func item_transfer(from : InventoryItemSlot, to : InventoryItemSlot):
 
 
 
-func _on_InventoryA_slot_action(type, slot):
+func _on_InventoryA_slot_action(_type, slot):
 	var empty_slot := gui_inventory_b.get_first_empty_slot(slot.item_handler.item.id)
 	if empty_slot:
 		item_transfer(slot, empty_slot)
 
 
-func _on_InventoryB_slot_action(type, slot):
+func _on_InventoryB_slot_action(_type, slot):
 	var empty_slot := gui_inventory_a.get_first_empty_slot(slot.item_handler.item.id)
 	if empty_slot:
 		item_transfer(slot, empty_slot)

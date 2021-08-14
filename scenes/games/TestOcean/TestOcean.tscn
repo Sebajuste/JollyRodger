@@ -26,7 +26,7 @@ amplitude = 30.0
 steepness = 0.134
 
 [node name="Cube" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8646, 1.59501, -53.3791 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8646, -1.90865, -53.3791 )
 mesh = SubResource( 2 )
 material/0 = null
 
@@ -92,6 +92,7 @@ __meta__ = {
 [node name="DebugPanel" parent="CanvasLayer/MarginContainer" instance=ExtResource( 6 )]
 margin_right = 429.0
 margin_bottom = 382.0
+boat_path = NodePath("../../../Sloop")
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 9 )]
 

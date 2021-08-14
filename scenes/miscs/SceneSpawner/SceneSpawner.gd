@@ -6,7 +6,7 @@ extends Spatial
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	Spawner.connect("on_node_emitted", self, "_on_node_emitted")
+	var _r := Spawner.connect("on_node_emitted", self, "_on_node_emitted")
 	
 	yield(get_tree(),"idle_frame")
 	for node_ref in Spawner.instance_await:

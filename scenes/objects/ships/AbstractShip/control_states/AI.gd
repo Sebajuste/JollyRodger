@@ -60,7 +60,7 @@ func enter(_msg : Dictionary = {}):
 	shape.disabled = false
 	$StateSM.enable = true
 	
-	ship.detection_area.connect("ennemy_entered", self, "_on_ennemy_entered")
+	var _r := ship.detection_area.connect("ennemy_entered", self, "_on_ennemy_entered")
 	
 	print("[%s] AI enabled" % ship.name)
 	pass
@@ -78,19 +78,19 @@ func exit():
 	
 
 
-func _on_ennemy_entered(ship : AbstractShip):
+func _on_ennemy_entered(_ship : AbstractShip):
 	
 	ai_state.transition_to("AvoidObstacle/Combat")
 	
 
 
-func _on_DamageStats_damage_taken(damage, source_path):
+func _on_DamageStats_damage_taken(_damage, source_path):
 	var source := get_node(source_path)
 	if source and source.flag.faction != ship.flag.faction:
 		attack_target(source)
 
 
-func _on_StateSM_transitioned(state_path, msg):
+func _on_StateSM_transitioned(state_path, _msg):
 	if state_path == "AvoidObstacle/Idle":
 		if path:
 			follow_path(path, false)

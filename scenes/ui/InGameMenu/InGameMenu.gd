@@ -14,7 +14,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	
 	$MarginContainer/HBoxContainer/InventoryButton.release_focus()
 	$MarginContainer/HBoxContainer/HelpButton.release_focus()

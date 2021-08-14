@@ -139,6 +139,8 @@ func _drop():
 		return
 	
 	var crate = CRATE_SCENE.instance()
+	crate.set_network_master( 1 )
+	crate.name = "%s_%d_%d" % [crate.name, 1, randi()]
 	
 	var dir := Vector3(
 		rand_range(-1, 1),

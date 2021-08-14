@@ -5,7 +5,7 @@ extends Area
 signal hit(hit_box)
 
 
-export var damage := 1.0
+export var damage := 1
 
 
 var source
@@ -24,6 +24,12 @@ func _ready():
 func _enter_tree():
 	if Network.enabled and not is_network_master():
 		rpc("rpc_request")
+
+
+func hitbox_hit(hit_box):
+	
+	emit_signal("hit", hit_box)
+	
 
 
 master func rpc_request():

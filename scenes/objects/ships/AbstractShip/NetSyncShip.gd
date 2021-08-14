@@ -58,9 +58,10 @@ master func sync_ship():
 	var byte_buffer := NetByteBuffer.new(64)
 	var write_stream := NetStreamWriter.new(byte_buffer)
 	
+	var _r
 	packet_id = packet_id + 1
-	write_stream.serialize_bits(packet_id, 32) # frequency
-	write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
+	_r = write_stream.serialize_bits(packet_id, 32) # frequency
+	_r = write_stream.serialize_bits($Timer.wait_time * 1000, 8) # frequency
 	
 	_serialize(write_stream, properties)
 	

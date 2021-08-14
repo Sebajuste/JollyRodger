@@ -12,7 +12,7 @@ var submerded := false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	if is_network_master():
+	if not Network.enabled or is_network_master():
 		$LifeTimer.start()
 	
 	pass # Replace with function body.
@@ -69,7 +69,7 @@ func _on_LifeTimer_timeout():
 	
 
 
-func _on_DamageSource_hit(hit_box):
+func _on_DamageSource_hit(_hit_box):
 	
 	queue_free()
 	

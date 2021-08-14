@@ -77,7 +77,7 @@ func process(delta):
 	pass
 
 
-func physics_process(delta):
+func physics_process(_delta):
 	
 	find_unobstructed_direction()
 	
@@ -85,7 +85,7 @@ func physics_process(delta):
 
 func find_unobstructed_direction():
 	
-	var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
+	# var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
 	
 	var speed := ship.linear_velocity.length()
 	var ray_look_ahead := max(look_ahead, look_ahead*speed)
@@ -110,7 +110,7 @@ func find_unobstructed_direction():
 		
 		
 		# Test danger
-		ray_detection(i, ray, ray_look_ahead)
+		var _r := ray_detection(i, ray, ray_look_ahead)
 		
 		
 		# Set Interest
@@ -131,7 +131,7 @@ func find_unobstructed_direction():
 
 
 func find_unobstructed_direction_old():
-	var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
+	#var space_state : PhysicsDirectSpaceState = ship.get_world().direct_space_state
 	
 	var angle : float = Vector3.FORWARD.angle_to(-ship.global_transform.basis.z)
 	if Vector3.RIGHT.dot(-ship.global_transform.basis.z) > 0.0:
@@ -154,7 +154,7 @@ func find_unobstructed_direction_old():
 		if danger_rays[i]:
 			var ray : Vector3 = ray_directions[i].rotated(Vector3.UP, angle)
 			
-			ray_detection(i, ray, ray_look_ahead)
+			var _r := ray_detection(i, ray, ray_look_ahead)
 	
 	
 	# Check all rays
@@ -172,13 +172,13 @@ func find_unobstructed_direction_old():
 		if obstacle_detected:
 			if i < NUM_RAYS - 1:
 				ray = ray_directions[i+1].rotated(Vector3.UP, angle)
-				ray_detection(i+1, ray, ray_look_ahead)
+				var _r := ray_detection(i+1, ray, ray_look_ahead)
 				rays[i+1] = ray * speed
 		elif nearest_collision:
 			chosen_direction = (danger_avoidance()).normalized()
 			if i < NUM_RAYS - 1:
 				ray = ray_directions[i+1].rotated(Vector3.UP, angle)
-				ray_detection(i+1, ray, ray_look_ahead)
+				var _r := ray_detection(i+1, ray, ray_look_ahead)
 				rays[i+1] = ray * speed
 			break
 		"""

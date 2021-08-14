@@ -40,6 +40,8 @@ func _on_damaged(damage_source : DamageSource):
 	if Network.enabled and not is_network_master():
 		return
 	
+	damage_source.hitbox_hit(self)
+	
 	print("[%s] damaged by %s" % [owner.name, damage_source.owner.name] )
 	
 	"""

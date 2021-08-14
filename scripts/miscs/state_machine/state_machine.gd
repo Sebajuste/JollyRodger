@@ -81,7 +81,8 @@ func _process_transition(next_state : NextState):
 	var target_state: = get_node(target_state_path)
 	
 	if not target_state or self.state == target_state:
-		push_error("Invalid State %s" % target_state_path)
+		if not target_state:
+			push_error("Invalid State %s" % target_state_path)
 		return
 	
 	if self.state:

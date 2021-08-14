@@ -85,7 +85,7 @@ func _enter_tree():
 		return
 	if replication_enabled and is_network_master():
 		Network.spawn_node(sync_node.get_parent(), sync_node)
-	sync_node.connect("renamed", self, "_node_renamed")
+	var _r := sync_node.connect("renamed", self, "_node_renamed")
 
 
 func _exit_tree():

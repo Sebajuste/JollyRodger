@@ -81,7 +81,7 @@ func _ready():
 		
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 		
-		get_tree().change_scene("res://scenes/games/Multiplayer/Multiplayer.tscn")
+		var _r := get_tree().change_scene("res://scenes/games/Multiplayer/Multiplayer.tscn")
 		
 	else:
 		

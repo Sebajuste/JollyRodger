@@ -64,7 +64,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if visible:
 		for index in range(properties.size()-1, -1, -1):
 			var property : Property = properties[index]

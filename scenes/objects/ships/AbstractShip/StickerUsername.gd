@@ -9,7 +9,7 @@ extends Label
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	Network.connect("property_changed", self, "_property_changed")
+	var _r := Network.connect("property_changed", self, "_property_changed")
 	
 	# var peer_id = $"../../../".name
 	

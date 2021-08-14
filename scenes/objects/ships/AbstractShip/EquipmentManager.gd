@@ -69,7 +69,7 @@ func _on_Equipment_item_removed(slot_id, item):
 	
 
 
-func _on_Equipment_item_quantity_changed(slot_id, item, old_quantity):
+func _on_Equipment_item_quantity_changed(_slot_id, _item, _old_quantity):
 	
 	update_stats()
 	

@@ -62,7 +62,7 @@ func _on_ItemSplitPopup_visibility_changed():
 	pass # Replace with function body.
 
 
-func _on_item_unequiped(item):
+func _on_item_unequiped(_item):
 	
 	queue_free()
 	

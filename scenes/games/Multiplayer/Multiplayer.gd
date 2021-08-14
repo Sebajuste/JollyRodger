@@ -44,8 +44,9 @@ func _ready():
 		
 		$World/Ocean.update_shader()
 		
-		get_tree().connect("server_disconnected", self, "_on_server_disconnected")
-		Network.connect("kicked", self, "_on_server_kicked")
+		var _r
+		_r = get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+		_r = Network.connect("kicked", self, "_on_server_kicked")
 		
 		$GUI/FactionSelector.open()
 		
@@ -103,7 +104,9 @@ func read_save_file() -> Dictionary:
 	var fs := File.new()
 	
 	if fs.file_exists(filename):
-		fs.open(filename, File.READ)
+		var r := fs.open(filename, File.READ)
+		if r != OK:
+			return {}
 		var content = fs.get_as_text()
 		fs.close()
 		
@@ -117,14 +120,15 @@ func read_save_file() -> Dictionary:
 		var payload : Dictionary = save.payload
 		
 		var ctx := HashingContext.new()
-		ctx.start(HashingContext.HASH_SHA256)
+		var _r
+		_r = ctx.start(HashingContext.HASH_SHA256)
 		
-		ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
-		ctx.update(to_json(payload).to_utf8())
+		_r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+		_r = ctx.update(to_json(payload).to_utf8())
 		var res := ctx.finish()
 		
 		if save_hash != res.hex_encode():
-			fs.open(filename, File.WRITE)
+			_r = fs.open(filename, File.WRITE)
 			fs.store_line("")
 			fs.close()
 			return {}
@@ -141,12 +145,12 @@ func write_save_file(savegame : Dictionary):
 	var save_seed := str(randi())
 	
 	var ctx := HashingContext.new()
-	ctx.start(HashingContext.HASH_SHA256)
+	var _r := ctx.start(HashingContext.HASH_SHA256)
 	
 	var json_paylaod := to_json(savegame)
 	
-	ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
-	ctx.update(json_paylaod.to_utf8())
+	_r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+	_r = ctx.update(json_paylaod.to_utf8())
 	var res := ctx.finish()
 	
 	var save_hash := res.hex_encode()
@@ -158,9 +162,10 @@ func write_save_file(savegame : Dictionary):
 	}
 	
 	var fs := File.new()
-	fs.open("%s.savegame" % Network.get_self_property("username").to_lower(), File.WRITE)
-	fs.store_line( to_json(save) )
-	fs.close()
+	var r = fs.open("%s.savegame" % Network.get_self_property("username").to_lower(), File.WRITE)
+	if r == OK:
+		fs.store_line( to_json(save) )
+		fs.close()
 
 
 
@@ -201,7 +206,7 @@ func create_player():
 	
 	camera.set_target( player.get_node("CaptainPlace") )
 	
-	player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
+	var _r = player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
 	player.flag.faction = faction
 	
 	
@@ -213,7 +218,7 @@ func create_player():
 			player.inventory.items[key.to_int()] = ship_save.inventory[key]
 	else: # Add default equipment
 		var cannon := GameTable.get_item(100001)
-		for i in range(4):
+		for _i in range(4):
 			player.equipment.add_item_in_free_slot({
 					"item_id": cannon.id,
 					"item_rariry": "Common",
@@ -226,8 +231,8 @@ func create_player():
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
 	
-	player.inventory.connect("inventory_updated", self, "on_inventory_changed")
-	player.equipment.connect("inventory_updated", self, "on_inventory_changed")
+	_r = player.inventory.connect("inventory_updated", self, "on_inventory_changed")
+	_r = player.equipment.connect("inventory_updated", self, "on_inventory_changed")
 	
 	gui_control.set_ship( player )
 	$GUI/InGameMenu.visible = true
@@ -311,14 +316,7 @@ func on_inventory_changed(_items):
 	
 	print("on_inventory_changed")
 	
-	var save_ship := {
-		"equipement": player.equipment.items,
-		"inventory": player.inventory.items
-	}
-	
 	var faction : String = Network.get_self_property("faction")
-	
-	var save_payload := {}
 	
 	var ship_save = {
 		"equipment": player.equipment.items,
@@ -353,7 +351,7 @@ func _on_SpawnZone_spawn_object(object):
 	object.control_sm.get_node("Control/AI").follow_path($World/Path)
 	
 	var cannon := GameTable.get_item(100001)
-	for i in range(4):
+	for _i in range(4):
 		object.equipment.add_item_in_free_slot({
 				"item_id": cannon.id,
 				"quantity": 1,
@@ -362,7 +360,7 @@ func _on_SpawnZone_spawn_object(object):
 		)
 	
 	var item_generator := GameItemGeneration.new()
-	for i in range(10):
+	for _i in range(10):
 		object.inventory.add_item_in_free_slot( item_generator.generate_item() )
 	
 	pass # Replace with function body.

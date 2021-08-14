@@ -65,7 +65,7 @@ func spawn():
 	if autoreload and not spawn_ready:
 		return
 	
-	for index in range(count_object):
+	for _index in range(count_object):
 		
 		var position := global_transform.origin + Vector3(
 			rand_range(-area.x, area.x),
@@ -113,7 +113,7 @@ func clean():
 
 func set_count_object(value):
 	
-	count_object = max(value, 1)
+	count_object = int(max(value, 1))
 	
 
 
