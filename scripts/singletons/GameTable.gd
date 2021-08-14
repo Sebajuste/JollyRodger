@@ -15,14 +15,27 @@ var items := []
 
 func _ready():
 	
+	print("Loading GameTable")
 	
 	var files := []
 	var dir = Directory.new()
-	dir.open("res://resources")
-	dir.list_dir_begin()
+	var r = dir.open("res://resources")
+	
+	if r != OK:
+		print("Cannot open res://resources directory")
+		push_error("Cannot open res://resources directory")
+		return
+	
+	r = dir.list_dir_begin()
+	
+	if r != OK:
+		print("Cannot list res://resources directory")
+		push_error("Cannot list res://resources directory")
+		return
 	
 	var file_it = dir.get_next()
 	while file_it != "":
+		print(file_it)
 		if not file_it.begins_with("."):
 			files.append(file_it)
 		file_it = dir.get_next()
@@ -35,9 +48,15 @@ func _ready():
 
 func load_csv(file_path):
 	
+	print("loading ", file_path)
+	
 	var file := File.new()
 	
-	var _r := file.open(file_path, File.READ)
+	var r := file.open(file_path, File.READ)
+	
+	if r != OK:
+		push_error("Cannot open resource file %s" % file_path)
+		return
 	
 	var headers : PoolStringArray
 	

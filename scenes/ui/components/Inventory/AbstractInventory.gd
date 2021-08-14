@@ -2,7 +2,7 @@ class_name GUIAbstractInventory
 extends Control
 
 
-# signal slot_action(type, slot)
+signal slot_action(type, slot)
 
 
 var INVENTORY_SLOT_SCENE = preload("slots/InventoryItemSlot/InventoryItemSlot.tscn")
@@ -82,4 +82,10 @@ func set_inventory(value):
 func _on_inventory_updated(_items):
 	
 	update_inventory()
+	
+
+
+func _on_slot_action(type, slot):
+	
+	emit_signal("slot_action", type, slot)
 	

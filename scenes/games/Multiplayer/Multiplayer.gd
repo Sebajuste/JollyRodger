@@ -15,11 +15,11 @@ onready var faction_manager := $FactionManager
 
 onready var selector_handler := $SelectorHandler
 
-onready var start_position_a := $World/Island01Proxy/SpawnPositionA
-onready var start_position_b := $World/Island02Proxy/SpawnPositionB
-
+onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
+onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
 
 onready var gui_control := $GUI/ControlContainer/BoatControl
+
 
 var start_position := Vector3.ZERO
 
@@ -210,13 +210,22 @@ func create_player():
 	player.flag.faction = faction
 	
 	
+	gui_control.set_ship( player )
+	$GUI/InGameMenu.visible = true
+	
+	selector_handler.exclude_select.clear()
+	selector_handler.exclude_select.append(player)
+	
+	print("Start load inventory")
+	
 	if load_ship:
+		print("load inventory")
 		for key in ship_save.equipment:
 			player.equipment.add_item(key.to_int(), ship_save.equipment[key])
-			
 		for key in ship_save.inventory:
 			player.inventory.items[key.to_int()] = ship_save.inventory[key]
 	else: # Add default equipment
+		print("add default inventory")
 		var cannon := GameTable.get_item(100001)
 		for _i in range(4):
 			player.equipment.add_item_in_free_slot({
@@ -227,15 +236,11 @@ func create_player():
 				}
 			)
 	
-	
-	selector_handler.exclude_select.clear()
-	selector_handler.exclude_select.append(player)
+	print("connect inventory event")
 	
 	_r = player.inventory.connect("inventory_updated", self, "on_inventory_changed")
 	_r = player.equipment.connect("inventory_updated", self, "on_inventory_changed")
 	
-	gui_control.set_ship( player )
-	$GUI/InGameMenu.visible = true
 	
 	#
 	# Save

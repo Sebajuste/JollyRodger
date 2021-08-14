@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -10,22 +10,17 @@
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ui/SimpleWindow/SimpleWindow.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/levels/Island02/Island02.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/miscs/NetworkProxy/NetworkProxy.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/ui/FactionSelector/FactionSelector.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/games/Multiplayer/FactionManager.gd" type="Script" id=14]
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=15]
 [ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=18]
-[ext_resource path="res://scenes/levels/Island03/Island03.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/ui/ChatBox/ChatBox.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/ui/InGameMenu/InGameMenu.tscn" type="PackedScene" id=23]
-[ext_resource path="res://scenes/miscs/TerrainProxy/TerrainProxy.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scenes/levels/Island01/t_data/data.hterrain" type="Resource" id=25]
-[ext_resource path="res://scenes/levels/Island03/t_data/data.hterrain" type="Resource" id=27]
 
 [sub_resource type="Curve3D" id=1]
 _data = {
@@ -66,83 +61,83 @@ steepness = 0.05
 mode = "Gimbal"
 current = true
 
-[node name="Island01Proxy" parent="World" instance=ExtResource( 24 )]
-terrain_path = ExtResource( 11 )
-_terrain_data = ExtResource( 25 )
+[node name="Island01NetProxy" parent="World" instance=ExtResource( 11 )]
+client_path = "res://scenes/levels/Island01/Island01.tscn"
+server_path = "res://scenes/levels/Island01/Island01Collider.tscn"
 
-[node name="SpawnPositionA" type="Position3D" parent="World/Island01Proxy"]
+[node name="SpawnPositionA" type="Position3D" parent="World/Island01NetProxy"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 122.995, 0, 642.187 )
 
-[node name="CapureZone" parent="World/Island01Proxy" instance=ExtResource( 17 )]
+[node name="CapureZone" parent="World/Island01NetProxy" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 91.1372, 0, 170.143 )
 faction = "GB"
 
-[node name="GroundFlag" parent="World/Island01Proxy/CapureZone" instance=ExtResource( 18 )]
+[node name="GroundFlag" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.8792, 0.520527, 52.4497 )
 
-[node name="Tower" parent="World/Island01Proxy/CapureZone" instance=ExtResource( 15 )]
+[node name="Tower" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66.7748, 7.17494, 51.2697 )
 
-[node name="Tower2" parent="World/Island01Proxy/CapureZone" instance=ExtResource( 15 )]
+[node name="Tower2" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7254, 5.87931, -54.2478 )
 
-[node name="RepairDock" parent="World/Island01Proxy/CapureZone" instance=ExtResource( 16 )]
+[node name="RepairDock" parent="World/Island01NetProxy/CapureZone" instance=ExtResource( 16 )]
 transform = Transform( 0.915684, 0, 0.4019, 0, 1, 0, -0.4019, 0, 0.915684, 32.0327, 2.75156, 8.31299 )
 
-[node name="Island02Proxy" parent="World" instance=ExtResource( 24 )]
+[node name="Island02NetProxy" parent="World" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -500, 0, -500 )
-terrain_path = ExtResource( 12 )
-_terrain_data = ExtResource( 25 )
+client_path = "res://scenes/levels/Island02/Island02.tscn"
+server_path = "res://scenes/levels/Island02/Island02Collider.tscn"
 
-[node name="SpawnPositionB" type="Position3D" parent="World/Island02Proxy"]
+[node name="SpawnPositionB" type="Position3D" parent="World/Island02NetProxy"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 11.6987 )
 
-[node name="CapureZone" parent="World/Island02Proxy" instance=ExtResource( 17 )]
+[node name="CapureZone" parent="World/Island02NetProxy" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 119.206, 0, 430.653 )
 faction = "Pirate"
 
-[node name="RepairDock" parent="World/Island02Proxy/CapureZone" instance=ExtResource( 16 )]
+[node name="RepairDock" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 16 )]
 transform = Transform( -0.160467, 0, -0.987041, 0, 1, 0, 0.987041, 0, -0.160467, 15.2126, 1.32227, 2.48715 )
 
-[node name="Tower" parent="World/Island02Proxy/CapureZone" instance=ExtResource( 15 )]
+[node name="Tower" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.6279, 6.10835, 41.0432 )
 
-[node name="Tower2" parent="World/Island02Proxy/CapureZone" instance=ExtResource( 15 )]
+[node name="Tower2" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.728, 3.36575, -65.5704 )
 
-[node name="GroundFlag" parent="World/Island02Proxy/CapureZone" instance=ExtResource( 18 )]
+[node name="GroundFlag" parent="World/Island02NetProxy/CapureZone" instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64.0428, 0, 18.4195 )
 
-[node name="Island03Proxy" parent="World" instance=ExtResource( 24 )]
+[node name="Island03NetProxy" parent="World" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -539.01, 0, 64.281 )
-terrain_path = ExtResource( 19 )
-_terrain_data = ExtResource( 27 )
+client_path = "res://scenes/levels/Island03/Island03.tscn"
+server_path = "res://scenes/levels/Island03/Island03Collider.tscn"
 
-[node name="CaptureZone" parent="World/Island03Proxy" instance=ExtResource( 17 )]
+[node name="CaptureZone" parent="World/Island03NetProxy" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 209.485, 0, 302.333 )
 
-[node name="RepairDock" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 16 )]
+[node name="RepairDock" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 16 )]
 transform = Transform( -0.978068, 0, -0.208287, 0, 1, 0, 0.208287, 0, -0.978068, -26.1682, 0.669469, 45.6686 )
 
-[node name="GroundFlag" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 18 )]
+[node name="GroundFlag" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53.5296, 13.2984, 71.5741 )
 
-[node name="GroundFlag2" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 18 )]
+[node name="GroundFlag2" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.936, 27.3274, -13.1158 )
 
-[node name="GroundFlag3" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 18 )]
+[node name="GroundFlag3" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 18 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.9204, 42.3806, -156.07 )
 
-[node name="Tower" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 15 )]
+[node name="Tower" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8335, 7.47003, 81.7771 )
 
-[node name="Tower2" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 15 )]
+[node name="Tower2" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -136.866, 20.3734, -91.87 )
 
-[node name="Tower3" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 15 )]
+[node name="Tower3" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.404, 15.2812, -130.235 )
 
-[node name="Tower4" parent="World/Island03Proxy/CaptureZone" instance=ExtResource( 15 )]
+[node name="Tower4" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 164.2, 7.99862, 46.228 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="World"]

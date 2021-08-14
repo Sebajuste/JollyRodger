@@ -6,6 +6,7 @@ export(String) var client_path setget set_client_path
 export(String) var server_path
 
 
+var node
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,13 +29,21 @@ func _ready():
 
 func load_node(path : String):
 	if path == null:
+		print("invalid path : ", path)
 		return
-	for child in get_children():
-		child.queue_free()
-	var scene = load(path)
-	if scene:
-		var node = scene.instance()
-		add_child(node)
+	if node != null:
+		node.queue_free()
+		node = null
+	
+	if ResourceLoader.exists(path):
+		var scene = ResourceLoader.load(path)
+		if scene:
+			node = scene.instance()
+			add_child(node)
+		else:
+			print("cannot load : ", path, " r : ", scene)
+	else:
+		print("cannot find : ", path)
 
 
 func set_client_path(path):

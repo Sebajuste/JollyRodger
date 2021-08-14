@@ -6,6 +6,15 @@ signal property_changed(id, key, value)
 
 signal kicked(cause)
 
+
+class NodeSyncInfo:
+	var path : String
+	var filename : String
+	var name : String
+	var id : int
+
+
+
 var Settings = {
 	"Version": "",
 	"Host": "",
@@ -25,11 +34,6 @@ var player_info : Dictionary = {}
 var node_sync_list := []
 
 
-class NodeSyncInfo:
-	var path : String
-	var filename : String
-	var name : String
-	var id : int
 
 
 
@@ -65,6 +69,16 @@ func _process(_delta):
 				return
 			else:
 				push_error("Cannot found %s" % node_sync_info.path)
+
+
+func is_compatible_version(version_a : String, version_b : String) -> bool:
+	
+	var version_part_a := version_a.split(".")
+	var version_part_b := version_b.split(".")
+	
+	if version_part_a[0] == version_part_b[0] and version_part_a[1] == version_part_b[1]:
+		return true
+	return false 
 
 
 func close_connection():
@@ -187,7 +201,7 @@ func _server_disconnected():
 func _check_version(id: int, key: String, value):
 	if is_server and id != 1 and key == "game_version":
 		var _p := get_own_properties()
-		if value != Settings.Version:
+		if not is_compatible_version(Settings.Version, value):
 			print("Invalid game version")
 			rpc_id(id, "rpc_kicked", "Invalid Game Version")
 			get_tree().get_network_peer().disconnect_peer(id)
