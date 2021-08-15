@@ -14,9 +14,11 @@ func _ready():
 	
 	if not "--server" in OS.get_cmdline_args() or Engine.editor_hint:
 		
-		load_node(client_path)
+		if not node or node.get_path() != client_path:
+			
+			load_node(client_path)
 		
-	elif "--server" in OS.get_cmdline_args():
+	if "--server" in OS.get_cmdline_args():
 		
 		load_node(server_path)
 		
@@ -29,7 +31,6 @@ func _ready():
 
 func load_node(path : String):
 	if path == null:
-		print("invalid path : ", path)
 		return
 	if node != null:
 		node.queue_free()
@@ -41,13 +42,14 @@ func load_node(path : String):
 			node = scene.instance()
 			add_child(node)
 		else:
-			print("cannot load : ", path, " r : ", scene)
+			push_error("[%s] Cannot load : " % [ self.name, path])
 	else:
-		print("cannot find : ", path)
+		push_error("[%s] Cannot find : " % [ self.name, path])
 
 
 func set_client_path(path):
 	if path and path != client_path:
 		client_path = path
-		load_node(path)
+		if  Engine.editor_hint:
+			load_node(path)
 
