@@ -19,6 +19,10 @@ var slave_updated := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if not Network.enabled or is_network_master():
+		$Timer.start()
+	
 	pass # Replace with function body.
 
 
@@ -28,7 +32,6 @@ func _ready():
 
 
 func integrate_forces(state : PhysicsDirectBodyState):
-	
 	
 	if Network.enabled and not is_network_master() and not slave_updated:
 		
@@ -40,6 +43,13 @@ func integrate_forces(state : PhysicsDirectBodyState):
 		slave_updated = true
 	
 	pass
+
+
+puppet func rpc_init_status(config : Dictionary):
+	var peer_id = get_tree().get_rpc_sender_id()
+	print("[%s] rpc_init_status : %d" % [owner.name, peer_id], config)
+	ship.set_faction( config.faction )
+	
 
 
 master func sync_ship():
@@ -73,12 +83,15 @@ master func sync_ship():
 	
 	# print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
 	
-	rpc_unreliable("sync_ship_reception", byte_packet)
+	#rpc_unreliable("sync_ship_reception", byte_packet)
+	
+	for peer_id in peers:
+		rpc_unreliable_id(peer_id, "rpc_sync_ship_reception", byte_packet)
 	
 	pass
 
 
-puppet func sync_ship_reception(byte_packet : PoolByteArray):
+puppet func rpc_sync_ship_reception(byte_packet : PoolByteArray):
 	
 	var last_packet_time := packet_time
 	packet_time = current_time
@@ -133,3 +146,14 @@ func _serialize(stream : NetStream, properties: Dictionary ):
 	properties.rudder_position = NetStream.serialize_float(stream, properties.rudder_position, -1.0, 1.0, 0.01)
 	properties.sail_position = NetStream.serialize_float(stream, properties.sail_position, 0.0, 1.0, 0.01)
 	
+
+
+func _on_NetSyncShip_peer_added(peer_id):
+	
+	var config := {
+		"faction": ship.faction
+	}
+	
+	rpc_id(peer_id, "rpc_init_status", config)
+	
+	pass # Replace with function body.

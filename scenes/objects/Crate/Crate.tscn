@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/3d/Crate/Crate.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/network/net_node_sync.gd" type="Script" id=2]
+[ext_resource path="res://scenes/objects/Crate/NetNodeSync.gd" type="Script" id=2]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/miscs/Inventory/Inventory.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=5]
@@ -64,6 +64,8 @@ shape = SubResource( 2 )
 [node name="NetNodeSync" type="Node" parent="."]
 script = ExtResource( 2 )
 
+[node name="Timer" type="Timer" parent="NetNodeSync"]
+
 [node name="SinkTimer" type="Timer" parent="."]
 wait_time = 300.0
 one_shot = true
@@ -75,6 +77,7 @@ autostart = true
 anims/sink = SubResource( 3 )
 
 [connection signal="inventory_updated" from="Inventory" to="." method="_on_Inventory_inventory_updated"]
+[connection signal="timeout" from="NetNodeSync/Timer" to="NetNodeSync" method="sync_node_emission"]
 [connection signal="timeout" from="SinkTimer" to="." method="_on_SinkTimer_timeout"]
 
 [editable path="SelectArea"]

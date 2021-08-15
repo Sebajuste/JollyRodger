@@ -7,11 +7,20 @@ signal property_changed(id, key, value)
 signal kicked(cause)
 
 
-class NodeSyncInfo:
+class NodeSyncInfo extends Object:
 	var path : String
 	var filename : String
 	var name : String
 	var id : int
+	var state : Dictionary
+	
+	func _init(_path : String, _filename : String, _name : String, _peer_id : int, _state : Dictionary):
+		path = _path
+		filename = _filename
+		name = _name
+		id = _peer_id
+		state = _state
+	
 
 
 
@@ -53,22 +62,35 @@ func _process(_delta):
 	
 	if not node_sync_list.empty():
 		
-		for index in range(node_sync_list.size()):
+		for index in range(node_sync_list.size()-1, -1, -1):
 			var node_sync_info: NodeSyncInfo = node_sync_list[index]
 			
 			#var parent = get_tree().get_root().get_node(node_sync_info.path)
-			var parent = get_node(node_sync_info.path)
+			var parent := get_node(node_sync_info.path)
 			
 			if parent:
 				var scene = load(node_sync_info.filename)
-				var instance = scene.instance()
+				var instance : Node = scene.instance()
 				instance.name = node_sync_info.name
 				instance.set_network_master( node_sync_info.id )
 				parent.add_child(instance)
+				
+				for child in instance.get_children():
+					if child.is_in_group("net_sync_node"):
+						child.set_state(node_sync_info.state)
+						break
+				
 				node_sync_list.remove(index)
-				return
+				node_sync_info.free()
+				
 			else:
 				push_error("Cannot found %s" % node_sync_info.path)
+
+
+func is_peer_connected(peer_id : int):
+	
+	return true if player_info.has(peer_id) else false
+	
 
 
 func is_compatible_version(version_a : String, version_b : String) -> bool:
@@ -132,16 +154,18 @@ func broadcast(res: Node, method: String, args: Array):
 			res.rpc(method, args)
 
 
-func spawn_node(parent : Node, node: Node):
+func spawn_node(parent : Node, node: Node, state := {}):
 	print("spawn_node ALL -> parent: ", parent.get_path(), ", name: ", node.name, ", filename: ", node.filename)
 	if node.filename:
-		rpc("rpc_spawn_node", parent.get_path(), node.name, node.filename)
+		rpc("rpc_spawn_node", parent.get_path(), node.name, node.filename, state)
+	else:
+		push_warning("Invalid node filemane for %s" % node.name )
 	
 
-func spawn_node_id(id: int, parent : Node, node: Node):
+func spawn_node_id(id: int, parent : Node, node: Node, state := {}):
 	print("spawn_node [%d] -> parent: " % id, parent.get_path(), ", name: ", node.name, ", filename: ", node.filename)
 	if node.filename:
-		rpc_id(id, "rpc_spawn_node", parent.get_path(), node.name, node.filename)
+		rpc_id(id, "rpc_spawn_node", parent.get_path(), node.name, node.filename, state)
 
 
 func despawn_node(node: Node):
@@ -235,15 +259,10 @@ remotesync func rpc_erase_property(key: String):
 	var _r := info.erase(key)
 
 
-remote func rpc_spawn_node(parent_path: String, name: String, filename: String):
-	var id = get_tree().get_rpc_sender_id()
-	var node_sync_info := NodeSyncInfo.new()
-	node_sync_info.path = parent_path
-	node_sync_info.name = name
-	node_sync_info.filename = filename
-	node_sync_info.id = id
+remote func rpc_spawn_node(parent_path: String, name: String, filename: String, state : Dictionary):
+	var peer_id = get_tree().get_rpc_sender_id()
+	var node_sync_info := NodeSyncInfo.new(parent_path, filename, name, peer_id, state)
 	node_sync_list.append(node_sync_info)
-	
 
 
 remote func rpc_despawn_node(node_path: String):

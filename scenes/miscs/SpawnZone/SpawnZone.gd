@@ -40,21 +40,7 @@ func _process(_delta):
 		startup = false
 		spawn()
 	set_process(false)
-"""
-func _process(delta):
-	
-	if Network.enabled and not is_network_master():
-		set_process(false)
-		return
-	
-	if (autoreload and spawn_ready) or startup:
-		clean()
-		startup = false
-		if object_spawned.empty():
-			spawn()
-	
-	set_process(autoreload)
-"""
+
 
 func spawn():
 	

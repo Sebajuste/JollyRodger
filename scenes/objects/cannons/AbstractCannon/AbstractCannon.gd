@@ -13,7 +13,7 @@ export var damage := 1 setget set_damage
 onready var muzzle = $Skin/Muzzle
 
 
-var cannon_owner
+var cannon_owner : Node
 
 
 var max_range : float = 0.0

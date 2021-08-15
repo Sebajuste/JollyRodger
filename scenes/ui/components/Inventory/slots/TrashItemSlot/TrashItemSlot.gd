@@ -38,7 +38,8 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 		
 		var pos : Vector3 = owner_node.global_transform.origin + dir*pop_distance.x + dir*randf()*pop_distance.y
 		container.transform.origin = pos
-		
+		if Network.enabled:
+			container.name = "%s_%s_%d" % [container.name, str(Network.get_self_peer_id()), randi()]
 		container.set_network_master( owner_node.get_network_master() )
 		
 		Spawner.spawn(container)
