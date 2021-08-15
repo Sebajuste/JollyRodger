@@ -120,10 +120,13 @@ func process(delta):
 	#
 	var current_target = current_target_ref.get_ref()
 	if current_target and ship.cannons.is_fire_ready():
+		
+		var target_pos : Vector3 = current_target.global_transform.origin + Vector3.UP*3.0
+		
 		if current_target is RigidBody:
-			ship.cannons.fire(current_target.global_transform.origin, current_target.linear_velocity)
+			ship.cannons.fire(target_pos, current_target.linear_velocity)
 		else:
-			ship.cannons.fire(current_target.global_transform.origin)
+			ship.cannons.fire(target_pos)
 	
 	_parent.process(delta)
 	

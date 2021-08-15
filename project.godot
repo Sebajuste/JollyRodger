@@ -293,7 +293,7 @@ _global_script_class_icons={
 config/name="JollyRoger"
 run/main_scene="res://scenes/games/MainGame/MainGame.tscn"
 config/icon="res://icon.png"
-config/version="0.0.5"
+config/version="0.1.0"
 
 [autoload]
 
@@ -303,6 +303,10 @@ Spawner="*res://scripts/singletons/Spawner.gd"
 Configuration="*res://scripts/singletons/configuration.gd"
 GameTable="*res://scripts/singletons/GameTable.gd"
 DebugOverlay="*res://scenes/miscs/DebugOverlay/DebugOverlay.tscn"
+
+[editor]
+
+main_run_args="--server"
 
 [editor_plugins]
 

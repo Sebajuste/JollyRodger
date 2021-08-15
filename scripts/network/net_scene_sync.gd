@@ -41,3 +41,5 @@ func _player_disconnected(id: int):
 	for sync_node in nodes:
 		if scene.is_a_parent_of(sync_node) and sync_node.get_network_master() == id and sync_node.replication_enabled:
 			sync_node.remove()
+		else:
+			sync_node.remove_peer(id)

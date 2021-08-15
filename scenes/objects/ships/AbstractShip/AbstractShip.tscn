@@ -148,7 +148,6 @@ script = ExtResource( 5 )
 ]]
 process_mode = 0
 wait_time = 0.1
-autostart = true
 
 [node name="SinkTween" type="Tween" parent="."]
 
@@ -161,6 +160,7 @@ autostart = true
 [connection signal="health_changed" from="DamageStats" to="." method="_on_DamageStats_health_changed"]
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
+[connection signal="peer_added" from="NetSyncShip" to="NetSyncShip" method="_on_NetSyncShip_peer_added"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]
 
 [editable path="Sticker3D"]

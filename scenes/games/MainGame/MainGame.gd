@@ -66,6 +66,7 @@ func _ready():
 		Network.enabled = true
 		Network.is_server = true
 		Network.set_property("game_version", game_version)
+		Network.set_property("username", "server_shard_01")
 		
 		print("Game Version : ", game_version)
 		

@@ -277,7 +277,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 172.0
 margin_bottom = 109.0
-boat_path = NodePath("../../../SwedishRoyalYachtAmadis")
+ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
 
 [node name="Island" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 150 )

@@ -3,6 +3,9 @@ class_name NetNodeSync
 extends Node
 
 
+signal peer_added(peer_id)
+signal peer_removed(peer_id)
+
 export var replication_enabled := true
 
 
@@ -10,7 +13,11 @@ var packet_id := 0
 var last_packet_id_received := 0
 var packet_delta := 0.0
 
-# Jitter
+# Emition list
+var peers := []
+
+
+# Jitter reception
 var current_time := 0.0
 var packet_time := 0.0
 
@@ -68,7 +75,8 @@ func _init():
 func _ready():
 	
 	sync_node = owner
-	
+	if Network.enabled and not is_network_master():
+		rpc_id(get_network_master(), "rpc_request_sync")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -84,19 +92,31 @@ func _enter_tree():
 	if not Network.enabled:
 		return
 	if replication_enabled and is_network_master():
-		Network.spawn_node(sync_node.get_parent(), sync_node)
+		Network.spawn_node(sync_node.get_parent(), sync_node, get_state() )
 	var _r := sync_node.connect("renamed", self, "_node_renamed")
 
 
 func _exit_tree():
 	if Network.enabled and replication_enabled and is_network_master():
 		Network.despawn_node(sync_node)
+	if Network.enabled and replication_enabled and not is_network_master():
+		var peer_id := get_network_master()
+		if Network.is_peer_connected(peer_id):
+			rpc_id(peer_id, "rpc_request_unsync")
+
+
+func get_state() -> Dictionary:
+	return {}
+
+
+func set_state(_state : Dictionary):
+	pass
 
 
 func spawn(id: int):
 	
 	if replication_enabled and is_network_master():
-		Network.spawn_node_id(id, sync_node.get_parent(), sync_node)
+		Network.spawn_node_id(id, sync_node.get_parent(), sync_node, get_state() )
 	
 
 
@@ -106,9 +126,21 @@ func remove():
 	
 
 
-func _player_connected(id: int):
-	if replication_enabled and is_network_master():
-		Network.spawn_node_id(id, sync_node.get_parent(), sync_node)
+func remove_peer(peer_id : int):
+	peers.erase(peer_id)
+	emit_signal("peer_removed", peer_id)
+
+
+master func rpc_request_sync():
+	var peer_id = get_tree().get_rpc_sender_id()
+	if not peers.has(peer_id):
+		peers.append(peer_id)
+		emit_signal("peer_added", peer_id)
+
+
+master func rpc_request_unsync():
+	var id = get_tree().get_rpc_sender_id()
+	remove_peer(id)
 
 
 func _node_renamed():

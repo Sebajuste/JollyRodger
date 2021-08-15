@@ -23,11 +23,11 @@ func _ready():
 	
 	pass # Replace with function body.
 
-
+"""
 func _enter_tree():
 	if Network.enabled and not is_network_master():
 		rpc("rpc_request_flag")
-
+"""
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -47,10 +47,12 @@ func set_faction(value):
 	faction = value
 	if flag_mesh:
 		load_material()
+		"""
 		if Network.enabled and is_network_master():
 			rpc("rpc_change_flag", value)
+		"""
 
-
+"""
 puppet func rpc_change_flag(value):
 	faction = value
 	load_material()
@@ -60,7 +62,7 @@ master func rpc_request_flag():
 	var peer_id := get_tree().get_rpc_sender_id()
 	rpc_id(peer_id, "rpc_change_flag", faction)
 	
-
+"""
 
 func _on_Capturable_faction_changed(new_faction, _old_faction):
 	

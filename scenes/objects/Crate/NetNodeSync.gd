@@ -1,7 +1,7 @@
 extends NetNodeSync
 
 
-onready var bullet : RigidBody = owner
+onready var crate : RigidBody = owner
 
 
 var last_properties_received := {}
@@ -21,47 +21,28 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
 func get_state() -> Dictionary:
-	
-	var source_path := ""
-	var damage_source := owner.get_node("DamageSource")
-	if damage_source.source:
-		source_path = damage_source.source.get_path()
-	else:
-		push_warning("Invalid damage source path for %s" % owner.name )
 	return {
-		"position": owner.global_transform.origin,
-		"linear_velocity": owner.linear_velocity,
-		"damage": damage_source.damage,
-		"source_path": source_path,
+		"position": owner.global_transform.origin
 	}
 
 
 func set_state(state : Dictionary):
-	bullet.global_transform.origin = state.position
-	bullet.damage_source.damage = bullet.damage_source.damage
-	bullet.apply_central_impulse(state.linear_velocity)
-	if state.source_path != "":
-		bullet.damage_source.source = get_node(state.source_path)
-
-
-func integrate_forces(state : PhysicsDirectBodyState):
 	
-	if Network.enabled and not is_network_master() and not slave_updated:
-		state.linear_velocity = last_properties_received.linear_velocity
-		state.transform.origin = NetNodeSync.update_vector3(state.transform.origin, last_properties_received.position, 0.2)
-		slave_updated = true
+	owner.global_transform.origin = state.position
+	pass
 
 
 master func sync_node_emission():
+	
+	print("sync crate")
 	
 	if not Network.is_enabled() or not is_network_master():
 		return
 	
 	var properties := {
-		"linear_velocity": bullet.linear_velocity,
-		"position": bullet.global_transform.origin
+		"linear_velocity": crate.linear_velocity,
+		"position": crate.global_transform.origin
 	}
 	
 	var byte_buffer := NetByteBuffer.new(64)
