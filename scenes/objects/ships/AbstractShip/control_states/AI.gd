@@ -85,9 +85,13 @@ func _on_ennemy_entered(_ship : AbstractShip):
 
 
 func _on_DamageStats_damage_taken(_damage, source_path):
-	var source := get_node(source_path)
-	if source and source.flag.faction != ship.flag.faction:
-		attack_target(source)
+	if source_path != "":
+		if has_node(source_path):
+			var source := get_node(source_path)
+			if source and source.flag.faction != ship.flag.faction:
+				attack_target(source)
+		else:
+			push_warning("Cannot found node %s" % source_path)
 
 
 func _on_StateSM_transitioned(state_path, _msg):

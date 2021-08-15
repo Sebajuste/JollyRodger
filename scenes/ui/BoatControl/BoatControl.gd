@@ -153,11 +153,11 @@ func _unhandled_input(event):
 			
 			var target_pos := target.global_transform.origin + Vector3.UP*3.0
 			
-			var target_velocity := Vector3.ZERO
-			if target.has_meta("linear_velocity"):
-				target_velocity = target.linear_velocity
 			
-			ship.cannons.fire(target_pos, target_velocity)
+			if target is RigidBody:
+				ship.cannons.fire(target_pos, target.linear_velocity)
+			else:
+				ship.cannons.fire(target_pos)
 	
 
 

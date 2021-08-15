@@ -41,8 +41,20 @@ func _on_ConnectButton_pressed():
 	
 	# TODO : join the game
 	
+	var arguments = {}
+	
+	for argument in OS.get_cmdline_args():
+		if argument.find("=") > -1:
+			var key_value = argument.split("=")
+			arguments[key_value[0].lstrip("--")] = key_value[1]
+	
 	var host : String = Network.Settings.Host
 	var port : int = Network.Settings.Port
+	
+	if arguments.has("host"):
+		host = arguments.host
+	
+	
 	
 	var peer = NetworkedMultiplayerENet.new()
 	var result = peer.create_client(host, port)

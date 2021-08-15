@@ -191,9 +191,9 @@ func create_player():
 		player = SHIP_SLOOP_SCENE.instance()
 	player.set_network_master( Network.get_self_peer_id() )
 	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
-	
 	player_ship_id += 1
 	
+	player.faction = faction
 	player.transform.origin = start_position + Vector3(
 		rand_range(-100, 100),
 		2.0,
@@ -207,7 +207,7 @@ func create_player():
 	camera.set_target( player.get_node("CaptainPlace") )
 	
 	var _r = player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	player.flag.faction = faction
+	
 	
 	
 	gui_control.set_ship( player )

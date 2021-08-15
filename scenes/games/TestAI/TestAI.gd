@@ -71,8 +71,15 @@ func _ready():
 	#
 	var cannon := GameTable.get_item(100001)
 	
-	for i in range(4):
+	for _i in range(4):
 		ai_ship.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
+		
+		$Player.equipment.add_item_in_free_slot({
 				"item_id": cannon.id,
 				"quantity": 1,
 				"attributes": cannon.attributes
@@ -93,10 +100,10 @@ func _on_SpawnZone_spawn_object(object):
 	
 	object.faction = "GB"
 	object.control_mode = "AI"
-	object.control_sm.get_node("Control/AI").follow_path($PathAI)
+	object.control_sm.get_node("Control/AI").follow_path($Path)
 	
 	var cannon := GameTable.get_item(100001)
-	for i in range(4):
+	for _i in range(4):
 		object.equipment.add_item_in_free_slot({
 				"item_id": cannon.id,
 				"quantity": 1,

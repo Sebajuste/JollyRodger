@@ -46,7 +46,8 @@ func sync_ocean():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	rpc_unreliable("rpc_sync_ocean", byte_packet)
+	for peer_id in peers:
+		rpc_unreliable_id(peer_id, "rpc_sync_ocean", byte_packet)
 	
 
 

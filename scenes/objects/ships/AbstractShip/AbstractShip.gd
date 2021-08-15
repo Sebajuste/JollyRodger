@@ -134,6 +134,10 @@ func set_faction(value):
 
 func _drop():
 	
+	if Network.enabled and not is_network_master():
+		push_warning("Ship drop() called on slave node")
+		return
+	
 	if (not drop_equipment or not equipment.has_items()) and (not drop_inventory or not inventory.has_items()):
 		print("no items to drop")
 		return
