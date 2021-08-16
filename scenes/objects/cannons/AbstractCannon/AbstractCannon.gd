@@ -149,7 +149,8 @@ func _on_ReloadTimer_timeout():
 
 
 remotesync func rpc_fire():
-	
+	$Particles.restart()
+	$Particles.emitting = true
 	$FireSound.pitch_scale = rand_range(0.8, 1.2)
 	$FireSound.play()
 	
