@@ -117,8 +117,9 @@ func item_transfer(source_slot):
 func item_swap(source_slot):
 	var item_a : ItemHandler = source_slot.pick()
 	var item_b : ItemHandler = pick()
-	var _r = put(item_a)
-	source_slot.put(item_b)
+	if item_a and  item_b:
+		var _r = put(item_a)
+		_r = source_slot.put(item_b)
 
 
 func item_give(source_slot):

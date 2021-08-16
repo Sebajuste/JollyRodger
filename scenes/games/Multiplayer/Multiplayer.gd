@@ -91,7 +91,11 @@ func _input(event):
 			$GUI.add_child(gui_transfert)
 			gui_transfert.set_inventory_a(player.inventory)
 			gui_transfert.set_inventory_b(target.inventory)
-			gui_transfert.show()
+			
+			gui_transfert.set_name_a(player.name)
+			gui_transfert.set_name_b(target.name)
+			
+			gui_transfert.popup_centered()
 			pass
 		
 		pass
@@ -390,12 +394,12 @@ func _on_InGameMenu_inventory_clicked():
 		
 		$GUI.add_child( player_ship_window )
 		
-		player_ship_window.ship_equipment.inventory = player.equipment
-		player_ship_window.ship_inventory.inventory = player.inventory
+		player_ship_window.ship_equipment.set_inventory( player.equipment )
+		player_ship_window.ship_inventory.set_inventory( player.inventory )
 		
 		player_ship_window.ship_ref = weakref(player)
 		
-		player_ship_window.show()
+		player_ship_window.popup_centered()
 		
 		player_ship_window_ref = weakref(player_ship_window)
 	else:

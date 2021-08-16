@@ -28,7 +28,8 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 		amount = new_item.quantity
 	
 	if result:
-		gui_inventory.inventory.add_item(slot_id, {
+		var inventory : Inventory = gui_inventory.get_inventory()
+		inventory.add_item(slot_id, {
 			"item_id": new_item.item.id,
 			"item_rarity": new_item.rarity,
 			"attributes": new_item.attributes,
@@ -40,11 +41,11 @@ func put(new_item : ItemHandler, amount : int = -1) -> bool:
 func pick(amount : int = -1) -> ItemHandler:
 	
 	var item = .pick(amount)
-	
-	if amount == -1 or amount == gui_inventory.inventory.items[slot_id].quantity:
-		gui_inventory.inventory.remove_item(slot_id)
+	var inventory : Inventory = gui_inventory.get_inventory()
+	if amount == -1 or amount == inventory.items[slot_id].quantity:
+		inventory.remove_item(slot_id)
 	else:
-		gui_inventory.inventory.change_quantity(slot_id, gui_inventory.inventory.get_quantity(slot_id) - amount)
+		inventory.change_quantity(slot_id, inventory.get_quantity(slot_id) - amount)
 	
 	return item
 
