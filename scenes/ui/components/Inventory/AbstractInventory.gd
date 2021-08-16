@@ -13,13 +13,14 @@ export(NodePath) var inventory_path
 export var slot_count := 24
 
 
-var inventory : Inventory setget set_inventory
+#var inventory : Inventory setget set_inventory
 
+var inventory_ref := weakref(null)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	var inventory : Inventory = inventory_ref.get_ref()
 	if not inventory and inventory_path:
 		set_inventory( get_node(inventory_path) )
 	
@@ -28,6 +29,13 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _exit_tree():
+	var inventory : Inventory = inventory_ref.get_ref()
+	if inventory:
+		inventory.unsubsribe()
+	
 
 
 func update_inventory():
@@ -42,7 +50,8 @@ func update_inventory():
 		var slot = container.get_child(slot_id)
 		slot.slot_id = slot_id
 		slot.remove_item_handler()
-			
+	
+	var inventory : Inventory = inventory_ref.get_ref()
 	
 	# Add items
 	for slot_id in inventory.items:
@@ -70,13 +79,22 @@ func get_container() -> Node:
 	
 
 
-func set_inventory(value):
+func set_inventory(value : Inventory):
+	var inventory : Inventory = inventory_ref.get_ref()
 	if inventory:
+		inventory.unsubsribe()
 		inventory.disconnect("inventory_updated", self, "_on_inventory_updated")
 	inventory = value
 	if inventory:
-		update_inventory()
 		var _r := inventory.connect("inventory_updated", self, "_on_inventory_updated")
+		inventory.subscribe()
+	inventory_ref = weakref(inventory)
+
+
+func get_inventory() -> Inventory:
+	
+	return inventory_ref.get_ref()
+	
 
 
 func _on_inventory_updated(_items):
