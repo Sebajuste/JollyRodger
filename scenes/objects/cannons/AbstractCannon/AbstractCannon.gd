@@ -1,4 +1,9 @@
+class_name AbstractCannon
 extends Spatial
+
+
+signal fired
+signal reloaded
 
 
 var BULLET_SCENE = preload("res://scenes/objects/Bullet/Bullet.tscn")
@@ -145,7 +150,7 @@ func set_damage(value):
 func _on_ReloadTimer_timeout():
 	
 	fire_ready = true
-	
+	emit_signal("reloaded")
 
 
 remotesync func rpc_fire():
@@ -153,4 +158,4 @@ remotesync func rpc_fire():
 	$Particles.emitting = true
 	$FireSound.pitch_scale = rand_range(0.8, 1.2)
 	$FireSound.play()
-	
+	emit_signal("fired")

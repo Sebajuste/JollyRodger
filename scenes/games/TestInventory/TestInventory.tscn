@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/ui/CannonStatus/CannonStatus.tscn" type="PackedScene" id=14]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 250.0
@@ -120,6 +121,23 @@ __meta__ = {
 margin_right = 148.0
 margin_bottom = 35.0
 text = "Drop All"
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -107.0
+margin_right = 174.0
+margin_bottom = 107.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CannonStatus" parent="CanvasLayer/MarginContainer4" instance=ExtResource( 14 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 174.0
+margin_bottom = 214.0
+ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
 
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/GameMenu/InventoryButton" to="." method="_on_InventoryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer3/DropAll" to="." method="_on_DropAll_pressed"]

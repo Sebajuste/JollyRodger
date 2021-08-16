@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ui/SimpleWindow/SimpleWindow.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/miscs/NetworkProxy/NetworkProxy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/ui/CannonStatus/CannonStatus.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/ui/FactionSelector/FactionSelector.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/games/Multiplayer/FactionManager.gd" type="Script" id=14]
 [ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=15]
@@ -223,6 +224,22 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 310.0
 margin_bottom = 175.0
+
+[node name="CannonsContainer" type="MarginContainer" parent="GUI"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -126.0
+margin_right = 176.0
+margin_bottom = 126.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CannonStatus" parent="GUI/CannonsContainer" instance=ExtResource( 12 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 176.0
+margin_bottom = 252.0
 
 [node name="SinkMenu" parent="GUI" instance=ExtResource( 10 )]
 visible = false

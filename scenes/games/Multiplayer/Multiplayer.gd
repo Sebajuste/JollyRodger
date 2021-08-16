@@ -19,6 +19,7 @@ onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
 onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
 
 onready var gui_control := $GUI/ControlContainer/BoatControl
+onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
 
 
 var start_position := Vector3.ZERO
@@ -29,7 +30,7 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
-var player_ship_window_ref = weakref(null)
+#var player_ship_window_ref = weakref(null)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -215,6 +216,7 @@ func create_player():
 	
 	
 	gui_control.set_ship( player )
+	gui_cannons.set_ship( player )
 	$GUI/InGameMenu.visible = true
 	
 	selector_handler.exclude_select.clear()
@@ -286,6 +288,14 @@ func _on_ship_destroyed():
 	camera.set_target( null )
 	
 	gui_control.set_ship( null )
+	gui_cannons.set_ship( null )
+	
+	# Remove ship destroyed
+	var savegame := read_save_file()
+	var faction : String = Network.get_self_property("faction")
+	savegame.erase(faction)
+	write_save_file(savegame)
+	
 
 
 func _on_RestartGameButton_pressed():
@@ -385,24 +395,26 @@ func _on_InGameMenu_help_clicked():
 
 func _on_InGameMenu_inventory_clicked():
 	
-	var player_ship_window = player_ship_window_ref.get_ref()
+	#var player_ship_window = player_ship_window_ref.get_ref()
 	
 	#if not gui_ship_inventory:
-	if not player_ship_window:
-		
-		player_ship_window = SHIP_WINDOW_SCENE.instance()
-		
-		$GUI.add_child( player_ship_window )
-		
-		player_ship_window.ship_equipment.set_inventory( player.equipment )
-		player_ship_window.ship_inventory.set_inventory( player.inventory )
-		
-		player_ship_window.ship_ref = weakref(player)
-		
-		player_ship_window.popup_centered()
-		
-		player_ship_window_ref = weakref(player_ship_window)
+	#if not player_ship_window:
+	
+	var player_ship_window = SHIP_WINDOW_SCENE.instance()
+	
+	$GUI.add_child( player_ship_window )
+	
+	player_ship_window.ship_equipment.set_inventory( player.equipment )
+	player_ship_window.ship_inventory.set_inventory( player.inventory )
+	
+	player_ship_window.ship_ref = weakref(player)
+	
+	player_ship_window.popup_centered()
+	
+	"""
+	player_ship_window_ref = weakref(player_ship_window)
 	else:
 		player_ship_window.queue_free()
 		player_ship_window_ref = weakref(null)
+	"""
 

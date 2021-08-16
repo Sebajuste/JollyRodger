@@ -2,7 +2,7 @@ extends Spatial
 
 
 
-onready var canon := $Canon
+onready var canon := $Cannons/Cannon
 onready var target := $Target
 
 onready var ui_range := $CanvasLayer/Status/VBoxContainer/Range
