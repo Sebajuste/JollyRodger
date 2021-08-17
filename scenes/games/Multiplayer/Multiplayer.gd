@@ -18,7 +18,9 @@ onready var selector_handler := $SelectorHandler
 onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
 onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
 
+onready var gui_ingame_menu := $GUI/InGameMenu
 onready var gui_control := $GUI/ControlContainer/BoatControl
+onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
 
 
 var start_position := Vector3.ZERO
@@ -29,7 +31,7 @@ var admin_mode := false
 var player : AbstractShip
 var player_ship_id := 0
 
-var player_ship_window_ref = weakref(null)
+#var player_ship_window_ref = weakref(null)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -181,12 +183,15 @@ func create_player():
 	var savegame := read_save_file()
 	
 	var ship_save := {}
-	var load_ship := true
+	var ship_loaded := false
 	
 	if savegame.has(faction):
 		ship_save = savegame[faction]
-	else:
-		load_ship = false
+		
+		if not ship_save.has("equipement") or ship_save.equipement.empty():
+			ship_loaded = false
+		else:
+			ship_loaded = true
 	
 	
 	if admin_mode:
@@ -215,14 +220,18 @@ func create_player():
 	
 	
 	gui_control.set_ship( player )
-	$GUI/InGameMenu.visible = true
+	gui_cannons.set_ship( player )
+	
+	gui_control.visible = true
+	gui_cannons.visible = true
+	gui_ingame_menu.visible = true
 	
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
 	
 	print("Start load inventory")
 	
-	if load_ship:
+	if ship_loaded:
 		print("load inventory")
 		for key in ship_save.equipment:
 			player.equipment.add_item(key.to_int(), ship_save.equipment[key])
@@ -281,11 +290,22 @@ func _on_server_kicked(cause):
 func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
-	$GUI/InGameMenu.visible = false
 	
 	camera.set_target( null )
 	
 	gui_control.set_ship( null )
+	gui_cannons.set_ship( null )
+	
+	gui_control.visible = false
+	gui_cannons.visible = false
+	gui_ingame_menu.visible = false
+	
+	# Remove ship destroyed
+	var savegame := read_save_file()
+	var faction : String = Network.get_self_property("faction")
+	var _r := savegame.erase(faction)
+	write_save_file(savegame)
+	
 
 
 func _on_RestartGameButton_pressed():
@@ -311,7 +331,12 @@ func _on_ChangeFactionButton_pressed():
 	
 	camera.set_target( null )
 	
+	gui_control.visible = false
+	gui_cannons.visible = false
+	gui_ingame_menu.visible = false
+	
 	gui_control.set_ship( null )
+	gui_cannons.set_ship( null )
 	
 	if player:
 		player.queue_free()
@@ -385,24 +410,26 @@ func _on_InGameMenu_help_clicked():
 
 func _on_InGameMenu_inventory_clicked():
 	
-	var player_ship_window = player_ship_window_ref.get_ref()
+	#var player_ship_window = player_ship_window_ref.get_ref()
 	
 	#if not gui_ship_inventory:
-	if not player_ship_window:
-		
-		player_ship_window = SHIP_WINDOW_SCENE.instance()
-		
-		$GUI.add_child( player_ship_window )
-		
-		player_ship_window.ship_equipment.set_inventory( player.equipment )
-		player_ship_window.ship_inventory.set_inventory( player.inventory )
-		
-		player_ship_window.ship_ref = weakref(player)
-		
-		player_ship_window.popup_centered()
-		
-		player_ship_window_ref = weakref(player_ship_window)
+	#if not player_ship_window:
+	
+	var player_ship_window = SHIP_WINDOW_SCENE.instance()
+	
+	$GUI.add_child( player_ship_window )
+	
+	player_ship_window.ship_equipment.set_inventory( player.equipment )
+	player_ship_window.ship_inventory.set_inventory( player.inventory )
+	
+	player_ship_window.ship_ref = weakref(player)
+	
+	player_ship_window.popup_centered()
+	
+	"""
+	player_ship_window_ref = weakref(player_ship_window)
 	else:
 		player_ship_window.queue_free()
 		player_ship_window_ref = weakref(null)
+	"""
 

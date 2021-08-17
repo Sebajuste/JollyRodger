@@ -2,6 +2,10 @@ class_name AbstractShipCannonsHandler
 extends Spatial
 
 
+signal cannon_added(cannon)
+signal cannon_removed(cannon)
+
+
 var cannons := []
 
 
@@ -45,6 +49,7 @@ func add_cannon(slot_id : int, cannon_info):
 			cannon.speed = cannon_info.attributes.range
 			cannon.fire_rate = cannon_info.attributes.fire_rate
 			cannons.append(cannon)
+			emit_signal("cannon_added", cannon)
 
 
 func remove_cannon(slot_id : int, _cannon_info):
@@ -54,6 +59,7 @@ func remove_cannon(slot_id : int, _cannon_info):
 		var index := find_cannon(cannon)
 		if index != -1:
 			cannons.remove( index )
+			emit_signal("cannon_removed", cannon)
 		else:
 			push_error("Invalid index for cannon")
 

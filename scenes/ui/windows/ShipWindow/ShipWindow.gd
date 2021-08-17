@@ -25,15 +25,10 @@ func _process(_delta):
 
 
 func _on_visibility_changed():
-	
 	if visible:
-		print("ship inventory visible")
 		$AnimationPlayer.play("fade_in")
-		#if ship_equipment:
 		ship_equipment.update_inventory()
-		#if ship_inventory:
 		ship_inventory.update_inventory()
-		
 
 
 func _on_popup_hide():

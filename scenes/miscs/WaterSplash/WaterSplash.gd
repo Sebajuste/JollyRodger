@@ -19,6 +19,7 @@ func _ready():
 #	pass
 
 
+
 func _on_DestroyTimer_timeout():
 	
 	queue_free()

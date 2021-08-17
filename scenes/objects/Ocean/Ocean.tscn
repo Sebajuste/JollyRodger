@@ -16,7 +16,7 @@ subdivide_depth = 24
 script = ExtResource( 1 )
 wave_direction = Vector2( 1, 0 )
 amplitude = 10.0
-steepness = 0.04
+steepness = 0.05
 
 [node name="Meshes" type="Spatial" parent="."]
 

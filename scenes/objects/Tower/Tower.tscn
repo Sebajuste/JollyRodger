@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/objects/cannons/SimpleCannon/SimpleCanon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/Tower/Tower.gd" type="Script" id=2]
@@ -7,68 +7,24 @@
 [ext_resource path="res://scenes/miscs/damage/HitBox/HitBox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/miscs/damage/DamageStats/DamageStats.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/3d/Tower/Tower.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/2d/textures/smoke.png" type="Texture" id=8]
-[ext_resource path="res://scenes/objects/Tower/SmokeGradient.tres" type="Gradient" id=9]
+[ext_resource path="res://scenes/objects/Tower/smoke_particles.tres" type="Material" id=8]
+[ext_resource path="res://scenes/objects/Tower/smoke.material" type="Material" id=9]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1.57756, 3.39766, 1.50853 )
 
 [sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="GradientTexture" id=3]
-gradient = ExtResource( 9 )
+[sub_resource type="QuadMesh" id=3]
+material = ExtResource( 9 )
 
-[sub_resource type="Curve" id=4]
-_data = [ Vector2( 0, 0.5125 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 1.74756, 3.41823, 1.60696 )
 
-[sub_resource type="CurveTexture" id=5]
-curve = SubResource( 4 )
-
-[sub_resource type="ParticlesMaterial" id=6]
-emission_shape = 1
-emission_sphere_radius = 0.3
-direction = Vector3( 0, 1, 0 )
-spread = 0.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 2.0
-initial_velocity_random = 1.0
-angular_velocity = 40.0
-angular_velocity_random = 1.0
-linear_accel = 2.0
-linear_accel_random = 1.0
-radial_accel = 0.2
-radial_accel_random = 1.0
-damping = 2.0
-damping_random = 1.0
-angle = 360.0
-angle_random = 1.0
-scale = 4.0
-scale_random = 1.0
-scale_curve = SubResource( 5 )
-color_ramp = SubResource( 3 )
-anim_speed = 1.0
-anim_offset = 1.0
-anim_offset_random = 1.0
-
-[sub_resource type="SpatialMaterial" id=7]
-flags_transparent = true
-vertex_color_use_as_albedo = true
-params_billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-albedo_texture = ExtResource( 8 )
-
-[sub_resource type="QuadMesh" id=8]
-material = SubResource( 7 )
-
-[sub_resource type="BoxShape" id=9]
-extents = Vector3( 1.74756, 4.51889, 1.60696 )
-
-[sub_resource type="SphereShape" id=10]
+[sub_resource type="SphereShape" id=5]
 radius = 150.0
 
-[sub_resource type="SphereShape" id=11]
+[sub_resource type="SphereShape" id=6]
 radius = 13.1756
 
 [node name="Tower" type="StaticBody" groups=[
@@ -99,34 +55,33 @@ damage = 5
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.191, 0 )
 visible = false
 amount = 50
-lifetime = 3.0
-process_material = SubResource( 6 )
-draw_pass_1 = SubResource( 8 )
+lifetime = 4.0
+process_material = ExtResource( 8 )
+draw_pass_1 = SubResource( 3 )
 
 [node name="HitBox" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5743, 0 )
 damage_stats_path = NodePath("../DamageStats")
 avoid_parent = true
 
 [node name="CollisionShape" parent="HitBox" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.89136, 0 )
-shape = SubResource( 9 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.00777, 0 )
+shape = SubResource( 4 )
 
 [node name="DetectionArea" type="Area" parent="."]
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-shape = SubResource( 10 )
+shape = SubResource( 5 )
 
 [node name="SelectArea" parent="." groups=[
 "tower",
 ] instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.39878, 0 )
-collision_mask = 0
-group_target = "tower"
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
-shape = SubResource( 11 )
+shape = SubResource( 6 )
 
 [node name="DamageStats" parent="." instance=ExtResource( 6 )]
 max_health = 6

@@ -67,6 +67,9 @@ func spawn():
 		
 		Spawner.spawn(instance)
 		
+		instance.username_label.player_username = false
+		instance.username_label.text = "label_ship_spain"
+		
 		emit_signal("spawn_object", instance)
 		
 		instance.connect("tree_exited", self, "_on_instance_tree_exited_or_destroyed", [instance])
