@@ -24,14 +24,14 @@ func _ready():
 
 
 #
-# Answer to a peer_id to spawn for him the owned node
+# Answer to a peer_id to spawn for him the owned nodes
 #
 remote func rpc_request_sync_nodes():
 	var peer_id = get_tree().get_rpc_sender_id()
 	var nodes : Array = get_tree().get_nodes_in_group("net_sync_node")
 	for node in nodes:
 		if scene.is_a_parent_of(node) and node.is_network_master() and node.replication_enabled:
-			Network.spawn_node_id(peer_id, node.sync_node.get_parent(), node.sync_node)
+			Network.spawn_node_id(peer_id, node.sync_node.get_parent(), node.sync_node, node.get_state() )
 
 #
 # Remove all node own by a peer_id

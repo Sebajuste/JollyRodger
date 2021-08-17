@@ -63,7 +63,6 @@ func _process(_delta):
 		for index in range(node_sync_list.size()-1, -1, -1):
 			var node_sync_info: NodeSyncInfo = node_sync_list[index]
 			
-			#var parent = get_tree().get_root().get_node(node_sync_info.path)
 			var parent := get_node(node_sync_info.path)
 			
 			if parent:
@@ -73,10 +72,11 @@ func _process(_delta):
 				instance.set_network_master( node_sync_info.id )
 				parent.add_child(instance)
 				
-				for child in instance.get_children():
-					if child.is_in_group("net_sync_node"):
-						child.set_state(node_sync_info.state)
-						break
+				if not node_sync_info.state.empty():
+					for child in instance.get_children():
+						if child.is_in_group("net_sync_node"):
+							child.set_state(node_sync_info.state)
+							break
 				
 				node_sync_list.remove(index)
 				node_sync_info.free()

@@ -51,7 +51,8 @@ func get_state() -> Dictionary:
 
 func set_state(state : Dictionary):
 	
-	owner.global_transform.origin = state.position
+	if state.has("position"):
+		owner.global_transform.origin = state.position
 	#crate.get_node("Inventory").items = state.items
 	
 

@@ -1,7 +1,6 @@
 extends Node
 
 
-
 var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
@@ -146,6 +145,8 @@ func read_save_file() -> Dictionary:
 
 func write_save_file(savegame : Dictionary):
 	
+	var username : String = Network.get_self_property("username").to_lower()
+	
 	randomize()
 	
 	var save_seed := str(randi())
@@ -168,12 +169,12 @@ func write_save_file(savegame : Dictionary):
 	}
 	
 	var fs := File.new()
-	var r = fs.open("%s.savegame" % Network.get_self_property("username").to_lower(), File.WRITE)
+	var r = fs.open("%s.savegame" % username, File.WRITE)
 	if r == OK:
 		fs.store_line( to_json(save) )
 		fs.close()
-
-
+	
+	
 
 
 func create_player():
@@ -188,11 +189,10 @@ func create_player():
 	if savegame.has(faction):
 		ship_save = savegame[faction]
 		
-		if not ship_save.has("equipement") or ship_save.equipement.empty():
+		if not ship_save.has("equipment") or ship_save.equipment.empty():
 			ship_loaded = false
 		else:
 			ship_loaded = true
-	
 	
 	if admin_mode:
 		player = SHIP_FRIGATE_SCENE.instance()
@@ -202,6 +202,7 @@ func create_player():
 	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
 	player_ship_id += 1
 	
+	player.label = Network.get_self_property("username")
 	player.faction = faction
 	player.transform.origin = start_position + Vector3(
 		rand_range(-100, 100),
@@ -211,13 +212,13 @@ func create_player():
 	
 	world.add_child(player)
 	
+	player.username_label.text = player.label
+	
 	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
 	camera.set_target( player.get_node("CaptainPlace") )
 	
 	var _r = player.damage_stats.connect("health_depleted", self, "_on_ship_destroyed")
-	
-	
 	
 	gui_control.set_ship( player )
 	gui_cannons.set_ship( player )
@@ -228,8 +229,6 @@ func create_player():
 	
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
-	
-	print("Start load inventory")
 	
 	if ship_loaded:
 		print("load inventory")
@@ -379,9 +378,17 @@ func _on_AcceptButton_pressed():
 	
 
 
-func _on_SpawnZone_spawn_object(object):
+func _on_SpawnZone_object_created(object):
 	
 	object.faction = "Spain"
+	object.label = "label_ship_spain"
+	
+	pass # Replace with function body.
+
+
+func _on_SpawnZone_spawn_object(object):
+	
+	object.label = "label_ship_spain"
 	
 	object.control_mode = "AI"
 	object.control_sm.get_node("Control/AI").follow_path($World/Path)
@@ -410,11 +417,6 @@ func _on_InGameMenu_help_clicked():
 
 func _on_InGameMenu_inventory_clicked():
 	
-	#var player_ship_window = player_ship_window_ref.get_ref()
-	
-	#if not gui_ship_inventory:
-	#if not player_ship_window:
-	
 	var player_ship_window = SHIP_WINDOW_SCENE.instance()
 	
 	$GUI.add_child( player_ship_window )
@@ -426,10 +428,6 @@ func _on_InGameMenu_inventory_clicked():
 	
 	player_ship_window.popup_centered()
 	
-	"""
-	player_ship_window_ref = weakref(player_ship_window)
-	else:
-		player_ship_window.queue_free()
-		player_ship_window_ref = weakref(null)
-	"""
+
+
 
