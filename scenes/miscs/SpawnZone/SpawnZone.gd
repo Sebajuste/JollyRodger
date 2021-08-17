@@ -1,8 +1,10 @@
 extends Spatial
 
 
+signal object_created(object)
 signal spawn_object(object)
 signal all_despawned()
+
 
 export(PackedScene) var spawn_object
 export var count_object := 1 setget set_count_object
@@ -65,10 +67,12 @@ func spawn():
 		instance.transform.origin = position
 		instance.set_network_master( self.get_network_master() )
 		
+		emit_signal("object_created", instance)
+		
 		Spawner.spawn(instance)
 		
-		instance.username_label.player_username = false
-		instance.username_label.text = "label_ship_spain"
+		#instance.get_node("Sticker3D/Control/StickerUsername").player_username = false
+		#instance.get_node("Sticker3D/Control/StickerUsername").text = "label_ship_spain"
 		
 		emit_signal("spawn_object", instance)
 		

@@ -25,6 +25,8 @@ export(String, "None", "AI") var control_mode = "None" setget set_control_mode
 
 export(String, "None", "GB", "Spain", "Pirate") var faction = "None" setget set_faction
 
+export var label : String = "" setget set_label
+
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
@@ -44,7 +46,7 @@ onready var username_label := $Sticker3D/Control/StickerUsername
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
 
-var alive := true
+var alive := true setget set_alive
 
 var speed := 0.0
 
@@ -79,8 +81,8 @@ func _physics_process(_delta):
 	
 	if Vector3.UP.dot( global_transform.basis.y ) < 0.0:
 		if not Network.enabled or is_network_master():
-			var hit := Hit.new($DamageStats.health, self.get_path())
-			$DamageStats.take_damage(hit)
+			var hit := Hit.new(damage_stats.health, self.get_path())
+			damage_stats.take_damage(hit)
 	
 	speed = linear_velocity.length()
 	
@@ -113,6 +115,12 @@ func set_sail_position(value):
 	
 
 
+func set_alive(value):
+	alive = value
+	sticker.visible = alive
+	username_label.visible = alive
+
+
 func set_selectable(value):
 	
 	selectable = value
@@ -132,6 +140,29 @@ func set_faction(value):
 	faction = value
 	if flag:
 		flag.faction = value
+
+
+func set_label(value):
+	label = value
+	if username_label:
+		username_label.text = value
+
+
+func _sink(duration := 60):
+	$SinkTween.interpolate_method($FloatManager, "set_displacement_amount",
+		displacement_amount, 0.0, duration,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$SinkTween.start()
+
+
+func _move_in_ground(duration : float = 30):
+	var start_pos := global_transform
+	var end_pos := Transform(global_transform)
+	end_pos.origin = end_pos.origin + Vector3.DOWN * 5
+	$SinkTween.interpolate_property(self, "global_transform",
+		start_pos, end_pos, duration,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$SinkTween.start()
 
 
 func _drop():
@@ -183,23 +214,15 @@ func _drop():
 			else:
 				break
 		
-	
-
-
-
-func _on_DamageStats_health_changed(_new_value, _old_value):
-	pass # Replace with function body.
 
 
 func _on_DamageStats_health_depleted():
 	
 	if sticker:
 		sticker.visible = false
+		username_label.visible = false
 	
-	$SinkTween.interpolate_method($FloatManager, "set_displacement_amount",
-		displacement_amount, 0.0, 60.0,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$SinkTween.start()
+	$AnimationPlayer.play("sink")
 	
 	alive = false
 	_drop()
