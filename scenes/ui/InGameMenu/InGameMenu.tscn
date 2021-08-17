@@ -42,15 +42,15 @@ __meta__ = {
 }
 
 [node name="InventoryButton" type="Button" parent="MarginContainer/HBoxContainer"]
-margin_right = 73.0
+margin_right = 99.0
 margin_bottom = 40.0
-text = "Inventory"
+text = "btn_inventory"
 
 [node name="HelpButton" type="Button" parent="MarginContainer/HBoxContainer"]
-margin_left = 83.0
-margin_right = 125.0
+margin_left = 109.0
+margin_right = 176.0
 margin_bottom = 40.0
-text = "Help"
+text = "btn_help"
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/InventoryButton" to="." method="_on_InventoryButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HelpButton" to="." method="_on_HelpButton_pressed"]

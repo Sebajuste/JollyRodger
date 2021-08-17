@@ -18,6 +18,7 @@ onready var selector_handler := $SelectorHandler
 onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
 onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
 
+onready var gui_ingame_menu := $GUI/InGameMenu
 onready var gui_control := $GUI/ControlContainer/BoatControl
 onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
 
@@ -220,7 +221,10 @@ func create_player():
 	
 	gui_control.set_ship( player )
 	gui_cannons.set_ship( player )
-	$GUI/InGameMenu.visible = true
+	
+	gui_control.visible = true
+	gui_cannons.visible = true
+	gui_ingame_menu.visible = true
 	
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
@@ -286,12 +290,15 @@ func _on_server_kicked(cause):
 func _on_ship_destroyed():
 	
 	$GUI/SinkMenu.open()
-	$GUI/InGameMenu.visible = false
 	
 	camera.set_target( null )
 	
 	gui_control.set_ship( null )
 	gui_cannons.set_ship( null )
+	
+	gui_control.visible = false
+	gui_cannons.visible = false
+	gui_ingame_menu.visible = false
 	
 	# Remove ship destroyed
 	var savegame := read_save_file()
@@ -324,7 +331,12 @@ func _on_ChangeFactionButton_pressed():
 	
 	camera.set_target( null )
 	
+	gui_control.visible = false
+	gui_cannons.visible = false
+	gui_ingame_menu.visible = false
+	
 	gui_control.set_ship( null )
+	gui_cannons.set_ship( null )
 	
 	if player:
 		player.queue_free()
