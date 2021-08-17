@@ -293,7 +293,7 @@ func _on_ship_destroyed():
 	# Remove ship destroyed
 	var savegame := read_save_file()
 	var faction : String = Network.get_self_property("faction")
-	savegame.erase(faction)
+	var _r := savegame.erase(faction)
 	write_save_file(savegame)
 	
 
