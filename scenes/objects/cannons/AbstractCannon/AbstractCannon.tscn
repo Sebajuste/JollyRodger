@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/objects/Tower/smoke.material" type="Material" id=1]
 [ext_resource path="res://scenes/objects/cannons/AbstractCannon/AbstractCannon.gd" type="Script" id=2]
 [ext_resource path="res://assets/sounds/cannon/cannon_fire.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/2d/textures/mist.png" type="Texture" id=4]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.612179, 1 )
@@ -44,6 +45,107 @@ anim_offset_random = 1.0
 [sub_resource type="QuadMesh" id=6]
 material = ExtResource( 1 )
 
+[sub_resource type="Animation" id=8]
+resource_name = "default"
+tracks/0/type = "value"
+tracks/0/path = NodePath("FireFlashPosition/FireFlash:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("OmniLight:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "fire"
+tracks/0/type = "value"
+tracks/0/path = NodePath("OmniLight:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("Particles")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "restart"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("FireSound")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
+tracks/4/type = "transform"
+tracks/4/path = NodePath("FireFlashPosition/FireFlash")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 0.1, 0.1, 0.1, 0.2, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0.3, 1, 0, 0, 0, 0, 0, 0, 1, 0.1, 0.1, 0.1 )
+tracks/5/type = "value"
+tracks/5/path = NodePath("FireFlashPosition/FireFlash:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [node name="Cannon" type="Spatial"]
 script = ExtResource( 2 )
 
@@ -60,17 +162,44 @@ local_coords = false
 process_material = SubResource( 5 )
 draw_pass_1 = SubResource( 6 )
 
-[node name="FireDelay" type="Timer" parent="."]
-one_shot = true
+[node name="FireFlashPosition" type="Spatial" parent="."]
 
-[node name="ReloadTimer" type="Timer" parent="."]
-one_shot = true
+[node name="FireFlash" type="Spatial" parent="FireFlashPosition"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="FireFlashPosition/FireFlash"]
+transform = Transform( 9.55343e-16, 4.37114e-08, -0.5, 0.5, -4.37114e-08, 0, -2.18557e-08, -1, -2.18557e-08, 0, 0, -1 )
+modulate = Color( 1, 0.956863, 0.760784, 1 )
+texture = ExtResource( 4 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="FireFlashPosition/FireFlash"]
+transform = Transform( -0.5, 8.74228e-08, 2.18557e-08, -2.18557e-08, 1.91069e-15, -0.5, -4.37114e-08, -1, 9.55343e-16, 0, 0, -1 )
+modulate = Color( 1, 0.956863, 0.760784, 1 )
+texture = ExtResource( 4 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+visible = false
+light_color = Color( 0.831373, 0.658824, 0.196078, 1 )
+light_energy = 2.0
+omni_range = 10.0
 
 [node name="FireSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 3 )
 unit_db = 1.0
 unit_size = 10.0
 max_distance = 500.0
+
+[node name="FireDelay" type="Timer" parent="."]
+one_shot = true
+
+[node name="ReloadTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "default"
+anims/default = SubResource( 8 )
+anims/fire = SubResource( 7 )
 
 [connection signal="timeout" from="FireDelay" to="." method="_on_fire_delayed"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_ReloadTimer_timeout"]

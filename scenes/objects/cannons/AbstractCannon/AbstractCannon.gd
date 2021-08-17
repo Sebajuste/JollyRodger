@@ -61,7 +61,7 @@ func is_in_range(target_position : Vector3, _target_velocity := Vector3.ZERO) ->
 
 
 func fire(target_position : Vector3, target_velocity := Vector3.ZERO) -> bool:
-	print("fire ", self.name)
+	
 	if not fire_ready:
 		return false
 	
@@ -154,8 +154,11 @@ func _on_ReloadTimer_timeout():
 
 
 remotesync func rpc_fire():
-	$Particles.restart()
-	$Particles.emitting = true
+	#$Particles.restart()
+	#$Particles.emitting = true
 	$FireSound.pitch_scale = rand_range(0.8, 1.2)
-	$FireSound.play()
+	#$FireSound.play()
+	
+	$AnimationPlayer.play("fire")
+	
 	emit_signal("fired")

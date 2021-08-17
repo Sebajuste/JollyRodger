@@ -19,7 +19,7 @@ extents = Vector3( 1.57756, 3.39766, 1.50853 )
 material = ExtResource( 9 )
 
 [sub_resource type="BoxShape" id=4]
-extents = Vector3( 1.74756, 4.51889, 1.60696 )
+extents = Vector3( 1.74756, 3.41823, 1.60696 )
 
 [sub_resource type="SphereShape" id=5]
 radius = 150.0
@@ -60,11 +60,12 @@ process_material = ExtResource( 8 )
 draw_pass_1 = SubResource( 3 )
 
 [node name="HitBox" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5743, 0 )
 damage_stats_path = NodePath("../DamageStats")
 avoid_parent = true
 
 [node name="CollisionShape" parent="HitBox" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.89136, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.00777, 0 )
 shape = SubResource( 4 )
 
 [node name="DetectionArea" type="Area" parent="."]

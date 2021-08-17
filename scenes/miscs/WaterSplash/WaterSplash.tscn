@@ -2,23 +2,23 @@
 
 [ext_resource path="res://assets/2d/textures/water_effect.png" type="Texture" id=1]
 [ext_resource path="res://assets/2d/textures/water_splash_v3.png" type="Texture" id=2]
-[ext_resource path="res://scenes/miscs/WaterSplash/WaterSplash.gd" type="Script" id=3]
-[ext_resource path="res://assets/2d/textures/water_mist.png" type="Texture" id=4]
+[ext_resource path="res://assets/sounds/water/water_splash.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/2d/textures/mist.png" type="Texture" id=4]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.884615, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 0.884615, 0.884615, 0.884615, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0.380682 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=5]
-curve = SubResource( 4 )
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
 
-[sub_resource type="ParticlesMaterial" id=6]
+[sub_resource type="ParticlesMaterial" id=5]
 direction = Vector3( 0, 1, 0 )
 spread = 90.0
 flatness = 0.95
@@ -34,11 +34,11 @@ angle = 360.0
 angle_random = 1.0
 scale = 6.0
 scale_random = 1.0
-scale_curve = SubResource( 5 )
-color_ramp = SubResource( 3 )
+scale_curve = SubResource( 4 )
+color_ramp = SubResource( 2 )
 anim_speed = 0.5
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
 params_billboard_mode = 3
 particles_anim_h_frames = 8
@@ -46,10 +46,10 @@ particles_anim_v_frames = 8
 particles_anim_loop = false
 albedo_texture = ExtResource( 2 )
 
-[sub_resource type="QuadMesh" id=8]
-material = SubResource( 7 )
+[sub_resource type="QuadMesh" id=7]
+material = SubResource( 6 )
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=8]
 length = 1.5
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Sprite3D")
@@ -89,11 +89,36 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("Particles:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 1.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=9]
 
 [node name="WaterSplash" type="Spatial"]
-script = ExtResource( 3 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 0, 0.5, 0, -0.5, 0, 0, 0, 0 )
@@ -109,16 +134,17 @@ emitting = false
 amount = 32
 one_shot = true
 explosiveness = 1.0
-process_material = SubResource( 6 )
-draw_pass_1 = SubResource( 8 )
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+unit_db = 1.0
+unit_size = 5.0
+max_db = 2.0
+autoplay = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "default"
-anims/default = SubResource( 11 )
-anims/test = SubResource( 12 )
-
-[node name="DestroyTimer" type="Timer" parent="."]
-wait_time = 1.5
-autostart = true
-
-[connection signal="timeout" from="DestroyTimer" to="." method="_on_DestroyTimer_timeout"]
+anims/default = SubResource( 8 )
+anims/test = SubResource( 9 )

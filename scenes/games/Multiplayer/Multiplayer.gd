@@ -182,12 +182,15 @@ func create_player():
 	var savegame := read_save_file()
 	
 	var ship_save := {}
-	var load_ship := true
+	var ship_loaded := false
 	
 	if savegame.has(faction):
 		ship_save = savegame[faction]
-	else:
-		load_ship = false
+		
+		if not ship_save.has("equipement") or ship_save.equipement.empty():
+			ship_loaded = false
+		else:
+			ship_loaded = true
 	
 	
 	if admin_mode:
@@ -224,7 +227,7 @@ func create_player():
 	
 	print("Start load inventory")
 	
-	if load_ship:
+	if ship_loaded:
 		print("load inventory")
 		for key in ship_save.equipment:
 			player.equipment.add_item(key.to_int(), ship_save.equipment[key])

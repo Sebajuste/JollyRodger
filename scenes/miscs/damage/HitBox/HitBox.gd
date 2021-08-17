@@ -59,7 +59,7 @@ func _on_damaged(damage_source : DamageSource):
 		rpc_on_damage(damage_source.damage, "")
 	"""
 	var source_path = ""
-	if damage_source:
+	if damage_source.source:
 		source_path = damage_source.source.get_path()
 	var hit: = Hit.new(damage_source.damage, source_path)
 	if damage_stats and damage_stats.has_method("take_damage"):
