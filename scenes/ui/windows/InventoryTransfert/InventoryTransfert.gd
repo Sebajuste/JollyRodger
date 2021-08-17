@@ -32,19 +32,17 @@ func set_name_b(name : String):
 
 
 func set_inventory_a(inventory : Inventory):
-	
-	gui_inventory_a.inventory = inventory
-	
+	gui_inventory_a.set_inventory( inventory )
+	var _r := inventory.connect("tree_exited", self, "_on_close_inventory")
 
 
 func set_inventory_b(inventory : Inventory):
-	
-	gui_inventory_b.inventory = inventory
-	
+	gui_inventory_b.set_inventory( inventory )
+	var _r := inventory.connect("tree_exited", self, "_on_close_inventory")
 
 
 func _on_about_to_show():
-	print("_on_about_to_show")
+	
 	gui_inventory_a.update_inventory()
 	gui_inventory_b.update_inventory()
 
@@ -63,7 +61,6 @@ func item_transfer(from : InventoryItemSlot, to : InventoryItemSlot):
 		to.item_give(from)
 
 
-
 func _on_InventoryA_slot_action(_type, slot):
 	var empty_slot := gui_inventory_b.get_first_empty_slot(slot.item_handler.item.id)
 	if empty_slot:
@@ -74,3 +71,9 @@ func _on_InventoryB_slot_action(_type, slot):
 	var empty_slot := gui_inventory_a.get_first_empty_slot(slot.item_handler.item.id)
 	if empty_slot:
 		item_transfer(slot, empty_slot)
+
+
+func _on_close_inventory():
+	
+	queue_free()
+	

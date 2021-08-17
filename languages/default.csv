@@ -6,6 +6,9 @@
 "btn_join_pirates","Rejoin Pirates","Rejoindre les pirates"
 "btn_resume","Resume","Reprendre"
 "btn_accept","OK","OK"
+"btn_close","Close","Fermer"
+"btn_inventory","Inventory","Inventaire"
+"btn_help","Help","Aide"
 "title_login","Login","Login"
 "title_main_menu","Main Menu","Menu Principal"
 "title_select_faction","Select Faction","Sélectionnez une faction"
@@ -18,6 +21,7 @@
 "label_great_britain","Great Britain","Grande Bretagne"
 "label_ship_count","Ship count","Nombre de navire"
 "label_health","Health","Vie"
+"label_ship_spain","Spain ship","Navire Espagnol"
 "info_pirates","Personne ne rejoins la piraterie. C'est elle qui vient vous chercher.
 
 Les mauvaises conditions de vie des marins, et les aléas du destin vous pousse à chercher un moyen de survire.

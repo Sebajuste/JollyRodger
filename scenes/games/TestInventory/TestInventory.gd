@@ -119,8 +119,8 @@ func _on_InventoryButton_pressed():
 		
 		gui_canvas_layer.add_child( ship_windows )
 		
-		ship_windows.ship_equipment.inventory = ship.equipment
-		ship_windows.ship_inventory.inventory = ship.inventory
+		ship_windows.ship_equipment.set_inventory( ship.equipment )
+		ship_windows.ship_inventory.set_inventory( ship.inventory )
 		
 		ship_windows.ship_ref = weakref(ship)
 		

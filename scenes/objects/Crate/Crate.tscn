@@ -77,6 +77,8 @@ autostart = true
 anims/sink = SubResource( 3 )
 
 [connection signal="inventory_updated" from="Inventory" to="." method="_on_Inventory_inventory_updated"]
+[connection signal="master_changed" from="NetNodeSync" to="NetNodeSync" method="_on_NetNodeSync_master_changed"]
+[connection signal="replication_done" from="NetNodeSync" to="NetNodeSync" method="_on_NetNodeSync_replication_done"]
 [connection signal="timeout" from="NetNodeSync/Timer" to="NetNodeSync" method="sync_node_emission"]
 [connection signal="timeout" from="SinkTimer" to="." method="_on_SinkTimer_timeout"]
 

@@ -8,10 +8,12 @@ signal faction_changed(new_faction, old_faction)
 
 # export var capture_repair := true
 export(String, "", "GB", "Pirate") var faction := FACTION_NULL setget set_faction
+export var capture_delay := 60 setget set_capture_delay
+
 
 onready var sticker_2d := $Sticker3D/Control
 onready var capture_status := $Sticker3D/Control/CaptureStatus
-
+onready var capture_timer := $CaptureTimer
 
 
 
@@ -22,7 +24,7 @@ var contested := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	set_capture_delay(capture_delay)
 	set_network_master( 1 )
 	_update_faction()
 	pass # Replace with function body.
@@ -44,22 +46,23 @@ func get_faction_capture() -> Dictionary:
 		"contested": false
 	}
 	
-	for ship in ship_list:
+	#for ship_ref in ship_list:
+	for index in range(ship_list.size()-1, -1, -1):
+		var ship_ref : WeakRef = ship_list[index]
+		var ship = ship_ref.get_ref()
+		
+		if not ship:
+			ship_list.remove(index)
+			continue
 		
 		if search_faction == FACTION_NULL:
 			search_faction = ship.flag.faction
 		
-		print("search_faction: ", search_faction, ", ship.flag.faction: ", ship.flag.faction)
-		
 		if search_faction != ship.flag.faction:
 			faction_info.contested = true
 			faction_info.capturing = false
-			#faction_info.current_capturing_faction = self.faction
 			
-			#return self.faction
 			return faction_info
-	
-	#return search_faction if search_faction != FACTION_NULL else self.faction
 	
 	if search_faction != FACTION_NULL:
 		faction_info.contested = true if search_faction != self.faction else false
@@ -69,34 +72,15 @@ func get_faction_capture() -> Dictionary:
 	else:
 		faction_info.contested = false
 		faction_info.capturing = false
-		#faction_info.current_capturing_faction = self.faction
 	
 	return faction_info
 
 
 func _update_capture():
-	print("_update_capture, current : ", self.faction)
 	var faction_info := get_faction_capture()
-	print("faction_info : ", faction_info )
-	
 	if Network.enabled and is_network_master():
 		rpc("rpc_capture_status", faction_info)
 	rpc_capture_status(faction_info)
-	
-	"""
-	if faction_capture != FACTION_NULL and faction != faction_capture and not capturing:
-		
-		print("Capturing")
-		if Network.enabled and is_network_master():
-			rpc("rpc_capture_status", self.faction, true)
-		rpc_capture_status(self.faction, true)
-	elif faction == faction_capture and capturing:
-		
-		print("No capture")
-		if Network.enabled and is_network_master():
-			rpc("rpc_capture_status", self.faction, false)
-		rpc_capture_status(self.faction, false)
-	"""
 
 
 func _update_faction():
@@ -104,14 +88,6 @@ func _update_faction():
 		if self.is_a_parent_of(node):
 			node.faction = faction
 			node.contested = contested
-	
-	"""
-	if capture_repair:
-		for node in get_tree().get_nodes_in_group("damage_stats"):
-			if self.is_a_parent_of(node):
-				node.health = node.max_health
-	"""
-	
 
 
 master func rpc_request_faction():
@@ -165,21 +141,46 @@ func set_faction(value):
 		_update_faction()
 
 
+func set_capture_delay(value):
+	capture_delay = max(0, value)
+	if capture_timer:
+		capture_timer.wait_time = capture_delay
+
+
+func find_ship_ref(ship : AbstractShip) -> WeakRef:
+	for ship_ref in ship_list:
+		if ship_ref.get_ref() == ship:
+			return ship_ref
+	return null
+
+
 func _on_CapureZone_body_entered(body : Spatial):
 	if Network.enabled and not is_network_master():
 		return
-	if body.is_in_group("ship"):
-		ship_list.append(body)
+	if body.is_in_group("ship") and body.alive:
+		ship_list.append(weakref(body))
+		var _r := body.connect("destroyed", self, "_on_ship_destroyed", [body])
 		_update_capture()
 
 
 func _on_CapureZone_body_exited(body : Spatial):
 	if Network.enabled and not is_network_master():
 		return
-	var index := ship_list.find(body)
-	if index != -1:
-		ship_list.remove(index)
+	
+	var ship_ref := find_ship_ref(body)
+	if ship_ref:
+		ship_list.erase(ship_ref)
+		body.disconnect("destroyed", self, "_on_ship_destroyed")
 		_update_capture()
+
+
+func _on_ship_destroyed(ship):
+	if ship and not ship.alive:
+		var ship_ref := find_ship_ref(ship)
+		if ship_ref:
+			ship_list.erase(ship_ref)
+			ship.disconnect("destroyed", self, "_on_ship_destroyed")
+			_update_capture()
 
 
 func _on_CaptureTimer_timeout():

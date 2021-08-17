@@ -41,7 +41,6 @@ func update_item_info():
 		description_label.text = item.description
 	
 	if rarity:
-		print("set color rarity : %s" % rarity)
 		name_label.add_color_override("font_color", RARITY_COLORS[rarity])
 	
 	# Clear olf attributes info

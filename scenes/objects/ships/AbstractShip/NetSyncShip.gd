@@ -2,10 +2,10 @@ extends NetNodeSync
 
 
 var LIMIT_TRANSFORM := NetStream.NetLimitTransform.new(
-	Vector2(-10000, 10000),
-	Vector2(-200, 50),
-	Vector2(-10000, 10000),
-	0.01
+	Vector2(-10000, 10000), 	# X Axis
+	Vector2(-200, 50),			# Y Axis
+	Vector2(-10000, 10000),		# Z Axis
+	0.01						# Precision
 )
 
 

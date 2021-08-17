@@ -14,6 +14,8 @@ export var max_slot := 24
 var items : Dictionary = {}
 
 
+var peers := []
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,6 +23,10 @@ func _ready():
 	if items.empty():
 		items = Dictionary()
 	
+	if Network.enabled and not is_network_master():
+		rpc("rpc_request_inventory")
+	
+	var _r = get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -104,6 +110,41 @@ func remove_item(slot_id : int):
 		rpc_remove_item(slot_id)
 
 
+func subscribe():
+	if Network.enabled:
+		if not is_network_master():
+			rpc("rpc_subscribe")
+	pass
+
+
+func unsubsribe():
+	if Network.enabled:
+		if not is_network_master():
+			rpc("rpc_unsubscribe")
+	pass
+
+
+func sync_inventory():
+	if Network.enabled:
+		if is_network_master():
+			for peer_id in peers:
+				rpc_id(peer_id, "rpc_sync_inventory", items)
+		else:
+			push_warning("Puppet cannot sync inventory")
+
+
+master func rpc_subscribe():
+	var peer_id = get_tree().get_rpc_sender_id()
+	if not peers.has(peer_id):
+		peers.append(peer_id)
+		rpc_id(peer_id, "rpc_sync_inventory", items)
+
+
+master func rpc_unsubsribe():
+	var peer_id = get_tree().get_rpc_sender_id()
+	peers.erase(peer_id)
+
+
 mastersync func rpc_add_item(slot_id : int, item : Dictionary):
 	
 	if items.has(slot_id):
@@ -111,10 +152,14 @@ mastersync func rpc_add_item(slot_id : int, item : Dictionary):
 			change_quantity(slot_id, items[slot_id].quantity + item.quantity)
 			emit_signal("inventory_updated", items)
 			emit_signal("item_added", slot_id, item)
+			sync_inventory()
+		else:
+			push_warning("Cannot add item in inventory slot")
 	else:
 		items[slot_id] = item
 		emit_signal("inventory_updated", items)
 		emit_signal("item_added", slot_id, item)
+		sync_inventory()
 		print("[%s] Add item [%d]" % [name, slot_id], item)
 
 
@@ -124,7 +169,10 @@ mastersync func rpc_change_quantity(slot_id : int, quantity : int):
 		items[slot_id].quantity = quantity
 		emit_signal("inventory_updated", items)
 		emit_signal("item_quantity_changed", slot_id, items[slot_id], old_quantity)
+		sync_inventory()
 		print("[%s] Change quantity [%d] : " % [name, slot_id], quantity)
+	else:
+		push_warning("Cannot change inventory slot quantity")
 
 
 mastersync func rpc_remove_item(slot_id : int):
@@ -133,21 +181,24 @@ mastersync func rpc_remove_item(slot_id : int):
 		var _r := items.erase(slot_id)
 		emit_signal("inventory_updated", items)
 		emit_signal("item_removed", slot_id, item)
+		sync_inventory()
 		print("[%s] Remove item [%d]" % [name, slot_id])
+	else:
+		push_warning("Cannot remove item in inventory slot")
 
 
 master func rpc_request_inventory():
 	var peer_id := get_tree().get_rpc_sender_id()
 	rpc_id(peer_id, "rpc_sync_inventory", items)
+	print("call rpc_request_inventory on ", peer_id, ", master is :", get_network_master())
 
 
 puppet func rpc_sync_inventory(value : Dictionary):
-	
 	items = value
 	emit_signal("inventory_updated", items)
+
+
+func _player_disconnected(peer_id : int):
+	if peers.has(peer_id):
+		peers.erase(peer_id)
 	
-
-
-func _on_tree_entered():
-	if Network.enabled and not is_network_master():
-		rpc("rpc_request_inventory")

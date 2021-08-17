@@ -20,8 +20,6 @@ class NodeSyncInfo extends Object:
 		name = _name
 		id = _peer_id
 		state = _state
-	
-
 
 
 var Settings = {
@@ -85,6 +83,18 @@ func _process(_delta):
 				
 			else:
 				push_error("Cannot found %s" % node_sync_info.path)
+
+
+func get_peers() -> Array:
+	
+	return player_info.keys()
+	
+
+
+func get_count_peers() -> int:
+	
+	return player_info.size()
+	
 
 
 func is_peer_connected(peer_id : int):
@@ -151,7 +161,7 @@ func broadcast(res: Node, method: String, args: Array):
 	var self_peer_id = get_self_peer_id()
 	for peer_id in player_info:
 		if self_peer_id != peer_id:
-			res.rpc(method, args)
+			res.rpc_id(peer_id, method, args)
 
 
 func spawn_node(parent : Node, node: Node, state := {}):
@@ -194,6 +204,10 @@ func get_self_property(key : String):
 
 func _player_connected(id: int):
 	print("New player connected [id: %d]" % id)
+	if not player_info.has(id):
+		var info := {}
+		player_info[id] = {}
+		emit_signal("properties_created", id, info)
 	rpc_id(id, "rpc_register_player", get_own_properties() )
 	
 

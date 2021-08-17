@@ -6,8 +6,10 @@ extends Area
 signal hit
 
 
-export(NodePath) var damage_stats_path
 
+
+export(NodePath) var damage_stats_path
+export(PackedScene) var particles_scene
 export var avoid_parent := true
 
 
@@ -49,16 +51,25 @@ func _on_damaged(damage_source : DamageSource):
 		rpc("rpc_on_damage", damage_source.damage)
 	else:
 		rpc_on_damage(damage_source.damage)
-	"""
+	
 	
 	if damage_source.source:
 		rpc_on_damage(damage_source.damage, damage_source.source.get_path())
 	else:
 		rpc_on_damage(damage_source.damage, "")
-	
+	"""
+	var source_path = ""
+	if damage_source.source:
+		source_path = damage_source.source.get_path()
+	var hit: = Hit.new(damage_source.damage, source_path)
+	if damage_stats and damage_stats.has_method("take_damage"):
+		damage_stats.take_damage(hit, self)
+	if Network.enabled:
+		rpc("rpc_on_hit", damage_source.global_transform.origin)
+	rpc_on_hit(damage_source.global_transform.origin)
 	pass # Replace with function body.
 
-
+"""
 master func rpc_on_damage(damage : int, source_path : String):
 	var hit: = Hit.new(damage, source_path)
 	if damage_stats and damage_stats.has_method("take_damage"):
@@ -66,18 +77,18 @@ master func rpc_on_damage(damage : int, source_path : String):
 	if Network.enabled:
 		rpc("rpc_on_hit")
 	rpc_on_hit()
+"""
 
-
-puppet func rpc_on_hit():
+puppet func rpc_on_hit(hit_position : Vector3):
 	
 	emit_signal("hit")
 	
-	"""
 	if particles_scene:
 		var particles = particles_scene.instance()
-		particles.transform.origin = global_transform.origin
-		get_tree().get_root().add_child(particles)
-	"""
+		particles.transform.origin = hit_position
+		Spawner.spawn(particles)
+		#get_tree().get_root().add_child(particles)
+	
 	
 	pass
 
