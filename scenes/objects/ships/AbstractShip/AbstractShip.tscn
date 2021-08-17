@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://scenes/objects/ships/AbstractShip/AbstractShip.gd" type="Script" id=1]
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.tscn" type="PackedScene" id=2]
@@ -34,6 +34,31 @@
 [sub_resource type="CylinderShape" id=3]
 radius = 250.0
 height = 40.0
+
+[sub_resource type="Animation" id=4]
+resource_name = "sink"
+length = 300.0
+step = 30.0
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 240, 300 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ 60 ],
+"method": "_sink"
+}, {
+"args": [ 60.0 ],
+"method": "_move_in_ground"
+}, {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
 [node name="AbstractShip" type="RigidBody" groups=[
 "ship",
@@ -153,13 +178,15 @@ wait_time = 0.1
 
 [node name="SinkTween" type="Tween" parent="."]
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/sink = SubResource( 4 )
+
 [connection signal="body_entered" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="DetectionArea" method="_on_DetectionArea_body_exited"]
 [connection signal="item_added" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_added"]
 [connection signal="item_quantity_changed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_quantity_changed"]
 [connection signal="item_removed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_removed"]
 [connection signal="damage_taken" from="DamageStats" to="ControlSM/Control/AI" method="_on_DamageStats_damage_taken"]
-[connection signal="health_changed" from="DamageStats" to="." method="_on_DamageStats_health_changed"]
 [connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
 [connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
 [connection signal="peer_added" from="NetSyncShip" to="NetSyncShip" method="_on_NetSyncShip_peer_added"]

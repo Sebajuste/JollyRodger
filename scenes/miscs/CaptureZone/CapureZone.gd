@@ -142,7 +142,7 @@ func set_faction(value):
 
 
 func set_capture_delay(value):
-	capture_delay = max(0, value)
+	capture_delay = int(max(0, value))
 	if capture_timer:
 		capture_timer.wait_time = capture_delay
 

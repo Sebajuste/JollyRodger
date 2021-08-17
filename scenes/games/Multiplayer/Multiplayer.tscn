@@ -458,6 +458,7 @@ visible = false
 stream = ExtResource( 7 )
 autoplay = true
 
+[connection signal="object_created" from="World/SpawnZone" to="." method="_on_SpawnZone_object_created"]
 [connection signal="spawn_object" from="World/SpawnZone" to="." method="_on_SpawnZone_spawn_object"]
 [connection signal="faction_data_updated" from="FactionManager" to="GUI/FactionSelector" method="_on_faction_data_updated"]
 [connection signal="pressed" from="GUI/SinkMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_RestartGameButton_pressed"]

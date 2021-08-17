@@ -45,6 +45,25 @@ func integrate_forces(state : PhysicsDirectBodyState):
 	pass
 
 
+func get_state() -> Dictionary:
+	return {
+		"alive": owner.alive,
+		"position": owner.global_transform.origin,
+		"label": owner.label
+	}
+
+
+func set_state(state : Dictionary):
+	if state.has("alive"):
+		owner.alive = state.alive
+	if state.has("position"):
+		owner.global_transform.origin = state.position
+	if state.has("label"):
+		owner.label = state.label
+		owner.username_label.text = state.label
+		owner.username_label.visible = true
+
+
 puppet func rpc_init_status(config : Dictionary):
 	var peer_id = get_tree().get_rpc_sender_id()
 	print("[%s] rpc_init_status : %d" % [owner.name, peer_id], config)

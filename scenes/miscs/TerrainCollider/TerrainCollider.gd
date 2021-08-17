@@ -179,32 +179,33 @@ func set_map_scale(p_map_scale: Vector3):
 	p_map_scale.y = max(p_map_scale.y, MIN_MAP_SCALE)
 	p_map_scale.z = max(p_map_scale.z, MIN_MAP_SCALE)
 	map_scale = p_map_scale
-	_on_transform_changed()
+	# _on_transform_changed()
 
-
+"""
 func _notification(what: int):
 	
 	
 	match what:
 		
 		NOTIFICATION_ENTER_WORLD:
-			"""
+			
 			if _collider != null:
 				_collider.set_world(get_world())
 				_collider.set_transform(get_internal_transform())
-			"""
+			
 			pass
 		
 		NOTIFICATION_EXIT_WORLD:
-			"""
+			
 			if _collider != null:
 				_collider.set_world(null)
-			"""
+			
 			pass
 		NOTIFICATION_TRANSFORM_CHANGED:
 			_on_transform_changed()
 	
 	pass
+"""
 
 
 func get_internal_transform() -> Transform:
@@ -314,7 +315,7 @@ func update_collider():
 	assert(_collider != null)
 	print("_collider.create_from_terrain_data")
 	_collider.create_from_terrain_data(_data)
-"""
+
 
 func _on_transform_changed():
 	_logger.debug("Transform changed")
@@ -324,13 +325,14 @@ func _on_transform_changed():
 		# before we enter the tree
 		return
 	
-	var gt = get_internal_transform()
+	var _gt = get_internal_transform()
 	
 	#_for_all_chunks(TransformChangedAction.new(gt))
 	
 	#_material_params_need_update = true
-	"""
+	
 	if _collider != null:
 		_collider.set_transform(gt)
-	"""
+	
 	#emit_signal("transform_changed", gt)
+"""

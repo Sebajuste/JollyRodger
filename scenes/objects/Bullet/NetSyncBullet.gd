@@ -39,10 +39,13 @@ func get_state() -> Dictionary:
 
 
 func set_state(state : Dictionary):
-	bullet.global_transform.origin = state.position
-	bullet.damage_source.damage = bullet.damage_source.damage
-	bullet.apply_central_impulse(state.linear_velocity)
-	if state.source_path != "":
+	if state.has("position"):
+		bullet.global_transform.origin = state.position
+	if state.has("damage"):
+		bullet.damage_source.damage = state.damage
+	if state.has("linear_velocity"):
+		bullet.apply_central_impulse(state.linear_velocity)
+	if state.has("source_path") and state.source_path != "":
 		bullet.damage_source.source = get_node(state.source_path)
 
 
