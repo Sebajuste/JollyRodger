@@ -2,9 +2,9 @@ tool
 extends Spatial
 
 
-const HTerrain = preload("res://addons/zylann.hterrain/hterrain.gd")
+
 const HTerrainData = preload("res://addons/zylann.hterrain/hterrain_data.gd")
-#const HTerrainCollider = preload("res://addons/zylann.hterrain/hterrain_collider.gd")
+const HTerrainCollider = preload("res://addons/zylann.hterrain/hterrain_collider.gd")
 const Logger = preload("res://addons/zylann.hterrain/util/logger.gd")
 
 const MIN_MAP_SCALE = 0.01
@@ -17,12 +17,9 @@ var _logger = Logger.get_for(self)
 var _data : HTerrainData
 
 var _collision_enabled := false
-#var _collider: HTerrainCollider = null
+var _collider: HTerrainCollider = null
 var _collision_layer := 1
 var _collision_mask := 1
-
-
-var _terrain : HTerrain
 
 
 # Called when the node enters the scene tree for the first time.
@@ -159,17 +156,13 @@ func _set(key: String, value):
 
 	elif key == "collision_layer":
 		_collision_layer = value
-		"""
 		if _collider != null:
 			_collider.set_collision_layer(value)
-		"""
 
 	elif key == "collision_mask":
 		_collision_mask = value
-		"""
 		if _collider != null:
 			_collider.set_collision_mask(value)
-		"""
 
 
 func set_map_scale(p_map_scale: Vector3):
@@ -186,21 +179,15 @@ func _notification(what: int):
 	
 	
 	match what:
-		
 		NOTIFICATION_ENTER_WORLD:
-			"""
 			if _collider != null:
 				_collider.set_world(get_world())
 				_collider.set_transform(get_internal_transform())
-			"""
-			pass
 		
 		NOTIFICATION_EXIT_WORLD:
-			"""
 			if _collider != null:
 				_collider.set_world(null)
-			"""
-			pass
+		
 		NOTIFICATION_TRANSFORM_CHANGED:
 			_on_transform_changed()
 	
@@ -240,10 +227,6 @@ func set_data(new_data: HTerrainData):
 			_normals_baker.queue_free()
 			_normals_baker = null
 		"""
-		
-		if _terrain:
-			_terrain.queue_free()
-		
 
 	_data = new_data
 
@@ -252,18 +235,14 @@ func set_data(new_data: HTerrainData):
 
 	if has_data():
 		
-		_terrain = HTerrain.new()
-		_terrain.set_data(_data)
-		add_child(_terrain)
 		
 		print("Connecting new HeightMapData")
 		_logger.debug("Connecting new HeightMapData")
 		
-		"""
+		
 		if _collider != null:
 			print("_collider.create_from_terrain_data")
 			_collider.create_from_terrain_data(_data)
-		"""
 		
 		"""
 		_data.connect("resolution_changed", self, "_on_data_resolution_changed")
@@ -292,8 +271,8 @@ func set_collision_enabled(enabled: bool):
 		_collision_enabled = enabled
 		if _collision_enabled:
 			if _check_heightmap_collider_support():
-				#print("Create collider")
-				#_collider = HTerrainCollider.new(self, _collision_layer, _collision_mask)
+				print("Create collider")
+				_collider = HTerrainCollider.new(self, _collision_layer, _collision_mask)
 				# Collision is not updated with data here,
 				# because loading is quite a mess at the moment...
 				# 1) This function can be called while no data has been set yet
@@ -301,20 +280,18 @@ func set_collision_enabled(enabled: bool):
 				#    because it's expensive
 				# 3) I would prefer not defer that to the moment the terrain is
 				#    added to the tree, because it would screw up threaded loading
-				pass
 		else:
 			# Despite this object being a Reference,
 			# this should free it, as it should be the only reference
-			#_collider = null
-			pass
+			_collider = null
 
-"""
+
 func update_collider():
 	assert(_collision_enabled)
 	assert(_collider != null)
 	print("_collider.create_from_terrain_data")
 	_collider.create_from_terrain_data(_data)
-"""
+
 
 func _on_transform_changed():
 	_logger.debug("Transform changed")
@@ -329,8 +306,8 @@ func _on_transform_changed():
 	#_for_all_chunks(TransformChangedAction.new(gt))
 	
 	#_material_params_need_update = true
-	"""
+	
 	if _collider != null:
 		_collider.set_transform(gt)
-	"""
+	
 	#emit_signal("transform_changed", gt)

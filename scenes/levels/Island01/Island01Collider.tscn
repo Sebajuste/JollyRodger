@@ -5,4 +5,3 @@
 
 [node name="Island01Collider" instance=ExtResource( 1 )]
 _terrain_data = ExtResource( 2 )
-collision_enabled = true

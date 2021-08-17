@@ -175,7 +175,7 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = -185.0
-margin_right = 314.0
+margin_right = 409.0
 margin_bottom = -10.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -184,7 +184,7 @@ __meta__ = {
 [node name="ChatBox" parent="GUI/ChatContainer" instance=ExtResource( 20 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 304.0
+margin_right = 399.0
 margin_bottom = 175.0
 
 [node name="ControlContainer" type="MarginContainer" parent="GUI"]
