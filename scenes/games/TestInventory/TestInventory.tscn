@@ -32,6 +32,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 247.763 )
 [node name="ShipAI" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
 
+[node name="HitBox" parent="ShipAI" index="10"]
+particles_scene = null
+
 [node name="CollisionShape" parent="ShipAI/DetectionArea" index="0"]
 shape = SubResource( 1 )
 
