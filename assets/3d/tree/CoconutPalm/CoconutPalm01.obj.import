@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/CoconutPalm01.obj-cf0c7564aa37c5a23916f7f4aea6f671.mesh"
+
+[deps]
+
+files=[ "res://.import/CoconutPalm01.obj-cf0c7564aa37c5a23916f7f4aea6f671.mesh" ]
+
+source_file="res://assets/3d/tree/CoconutPalm/CoconutPalm01.obj"
+dest_files=[ "res://.import/CoconutPalm01.obj-cf0c7564aa37c5a23916f7f4aea6f671.mesh", "res://.import/CoconutPalm01.obj-cf0c7564aa37c5a23916f7f4aea6f671.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
