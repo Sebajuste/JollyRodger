@@ -4,8 +4,6 @@ extends NetNodeSync
 onready var ocean : Ocean = owner
 
 
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -15,6 +13,19 @@ func _ready():
 #func _process(delta):
 #	
 #	pass
+
+
+func get_state() -> Dictionary:
+	if not ocean:
+		return {}
+	return {
+		"ocean_time": ocean.ocean_time
+	}
+
+
+func set_state(state : Dictionary):
+	if state.has("ocean_time"):
+		ocean.ocean_time = state.ocean_time
 
 
 func sync_ocean():
@@ -62,14 +73,13 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	packet_id = read_stream.serialize_bits(packet_id, 32) # frequency
 	var packet_frequency : float = read_stream.serialize_bits(0, 8) / 1000.0 # frequency
 	
-	packet_delta = packet_id - last_packet_id_received
-	if packet_delta == 0:
-		packet_delta = 1
+	packet_delta = max(packet_id - last_packet_id_received, 1)
 	
 	var except_packet_time = last_packet_time + packet_delta * packet_frequency
 	
 	var jitter_time = current_time - except_packet_time
 	
+	last_packet_time = except_packet_time
 	
 	var properties := {
 		"wave_direction": Vector2(),
@@ -82,10 +92,15 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	
 	last_packet_id_received = packet_id
 	
-	# Jitter correction
+	var ocean_time : float = properties.ocean_time / 1000
+	
+	"""
+	# Jitter correction - Not used for ocean
 	if jitter_time > 0:
-		properties.ocean_time = properties.ocean_time + jitter_time * 1000 # project out received position
-		pass
+		ocean_time = ocean_time + jitter_time # project out received position
+	"""
+	
+	ocean.ocean_time = NetNodeSync.update_float(ocean.ocean_time, ocean_time, 0.5)
 	
 	ocean.wave_direction = properties.wave_direction
 	
@@ -94,8 +109,6 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	
 	if ocean.steepness != properties.steepness:
 		ocean.set_steepness(properties.steepness)
-	
-	ocean.ocean_time = NetNodeSync.update_float(ocean.ocean_time, float(properties.ocean_time) / 1000.0, 0.1)
 	
 
 

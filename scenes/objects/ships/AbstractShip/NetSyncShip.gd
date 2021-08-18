@@ -100,10 +100,6 @@ master func sync_ship():
 	var byte_packet : PoolByteArray = byte_buffer.array()
 	byte_packet.resize( byte_buffer.limit() )
 	
-	# print("send byte_packet [%d]: " % byte_buffer.limit(), NetUtils.byte_buffer_to_str(byte_buffer) )
-	
-	#rpc_unreliable("sync_ship_reception", byte_packet)
-	
 	for peer_id in peers:
 		rpc_unreliable_id(peer_id, "rpc_sync_ship_reception", byte_packet)
 	
@@ -145,7 +141,6 @@ puppet func rpc_sync_ship_reception(byte_packet : PoolByteArray):
 	# Jitter correction
 	if jitter_time > 0:
 		properties.transform.origin = properties.transform.origin + properties.linear_velocity * jitter_time    # project out received position
-	
 	
 	ship.rudder_position = properties.rudder_position
 	ship.sail_position = properties.sail_position
