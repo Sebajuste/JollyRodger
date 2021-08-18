@@ -6,12 +6,21 @@ extends Spatial
 # var b = "text"
 
 
+onready var player := $Player
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#var iChannel = $Sky.get_viewport().get_texture()
-	#$Camera.environment=load("res://default_env.tres") as Environment
-	#$Camera.environment = $WorldEnvironment.environment
-	#$Camera.environment.background_sky.set_panorama(iChannel)
+	
+	var cannon := GameTable.get_item(100001)
+	for _i in range(4):
+		player.equipment.add_item_in_free_slot({
+				"item_id": cannon.id,
+				"item_rariry": "Common",
+				"quantity": 1,
+				"attributes": cannon.attributes
+			}
+		)
 	
 	pass # Replace with function body.
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/games/TestWeather/TestWeather.gd" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/miscs/SelectorHandler/SelectorHandler.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/objects/Tower/Tower.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.214744, 0.38141, 0.49359, 0.625, 0.801282 )
@@ -24,12 +26,12 @@ script = ExtResource( 2 )
 
 [node name="Island01" parent="." instance=ExtResource( 7 )]
 
-[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 6 )]
+[node name="Player" parent="." instance=ExtResource( 6 )]
 
 [node name="CameraRig" parent="." instance=ExtResource( 1 )]
 transform = Transform( 0.998193, 0, 0.0600904, 0, 1, 0, -0.0600904, 0, 0.998193, 0, 4.88599, 0 )
 mode = "Gimbal"
-target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPlace")
+target_path = NodePath("../Player/CaptainPlace")
 
 [node name="SceneSpawner" parent="." instance=ExtResource( 8 )]
 
@@ -43,6 +45,8 @@ clouds_coverage = 0.5056
 clouds_size = 5.0
 sunset_light = Color( 1, 0.701961, 0.54902, 1 )
 clouds_tint = Color( 1, 0.763836, 0.642646, 1 )
+
+[node name="SelectorHandler" parent="." instance=ExtResource( 10 )]
 
 [node name="TimeManager" type="Node" parent="."]
 script = ExtResource( 4 )
@@ -138,9 +142,13 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 227.0
 margin_bottom = 168.0
-ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
+ship_path = NodePath("../../../Player")
+selector_path = NodePath("../../../SelectorHandler")
 
-[editable path="SwedishRoyalYachtAmadis"]
-[editable path="SwedishRoyalYachtAmadis/SelectArea"]
-[editable path="SwedishRoyalYachtAmadis/Sticker3D"]
-[editable path="SwedishRoyalYachtAmadis/HitBox"]
+[node name="Tower" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 182.206, 5.21062, 35.6973 )
+
+[editable path="Player"]
+[editable path="Player/SelectArea"]
+[editable path="Player/Sticker3D"]
+[editable path="Player/HitBox"]
