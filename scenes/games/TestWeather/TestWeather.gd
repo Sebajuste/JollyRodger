@@ -1,10 +1,7 @@
 extends Spatial
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
+export(Resource) var next_weather
 
 onready var player := $Player
 
@@ -28,3 +25,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Timer_timeout():
+	
+	$WeatherManager.weather = next_weather
+	
+	pass # Replace with function body.

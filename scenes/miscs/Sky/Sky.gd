@@ -1,4 +1,5 @@
 tool
+class_name GameSky
 extends Spatial
 onready var env: Environment = $WorldEnvironment.environment
 onready var sun: DirectionalLight = $Sun_Moon

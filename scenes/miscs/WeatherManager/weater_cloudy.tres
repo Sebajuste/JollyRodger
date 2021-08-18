@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
-coverage = 80
-absorption = 30
-thickness = 50
-fog_begin = 50
-fog_end = 300
+coverage = 0.5
+fog_begin = 100
+fog_end = 1000
+ocean_amplitude = 10
+ocean_steepness = 0.05
+rain = 0
