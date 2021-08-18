@@ -1,0 +1,146 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/games/TestWeather/TestWeather.gd" type="Script" id=2]
+[ext_resource path="res://scenes/miscs/Sky/Sky.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/games/TestWeather/TimeManager.gd" type="Script" id=4]
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/levels/Island01/Island01.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=9]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.214744, 0.38141, 0.49359, 0.625, 0.801282 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.501961, 0.6, 0.701961, 1, 0.384314, 0.54902, 0.631373, 1, 0.45969, 0.549474, 0.642848, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[node name="TestWeather" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Ocean" parent="." instance=ExtResource( 5 )]
+
+[node name="Island01" parent="." instance=ExtResource( 7 )]
+
+[node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 6 )]
+
+[node name="CameraRig" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.998193, 0, 0.0600904, 0, 1, 0, -0.0600904, 0, 0.998193, 0, 4.88599, 0 )
+mode = "Gimbal"
+target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPlace")
+
+[node name="SceneSpawner" parent="." instance=ExtResource( 8 )]
+
+[node name="Sky" parent="." instance=ExtResource( 3 )]
+fog_gradient_texture = SubResource( 2 )
+hours = 8
+minutes = 32
+seconds = 32
+time_of_day_setup = 0.355933
+clouds_coverage = 0.5056
+clouds_size = 5.0
+sunset_light = Color( 1, 0.701961, 0.54902, 1 )
+clouds_tint = Color( 1, 0.763836, 0.642646, 1 )
+
+[node name="TimeManager" type="Node" parent="."]
+script = ExtResource( 4 )
+sky_path = NodePath("../Sky")
+day_time_speed = 1000
+night_time_speed = 1000
+
+[node name="Control" type="VBoxContainer" parent="."]
+margin_right = 87.0
+margin_bottom = 116.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Coverage" type="Label" parent="Control"]
+margin_right = 87.0
+margin_bottom = 14.0
+text = "COVERAGE"
+
+[node name="HScrollBar" type="HScrollBar" parent="Control/Coverage"]
+margin_left = 13.0243
+margin_top = 14.0
+margin_right = 105.024
+margin_bottom = 26.0
+value = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Absorption" type="Label" parent="Control"]
+margin_top = 34.0
+margin_right = 87.0
+margin_bottom = 48.0
+text = "ABSORPTION"
+
+[node name="HScrollBar" type="HScrollBar" parent="Control/Absorption"]
+margin_left = 13.0243
+margin_top = 14.0
+margin_right = 105.024
+margin_bottom = 26.0
+value = 10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Thickness" type="Label" parent="Control"]
+margin_top = 68.0
+margin_right = 87.0
+margin_bottom = 82.0
+text = "THICKNESS"
+
+[node name="HScrollBar" type="HScrollBar" parent="Control/Thickness"]
+margin_left = 13.0243
+margin_top = 14.0
+margin_right = 105.024
+margin_bottom = 26.0
+value = 25.0
+
+[node name="Steps" type="Label" parent="Control"]
+margin_top = 102.0
+margin_right = 87.0
+margin_bottom = 116.0
+text = "STEPS (1-100)"
+
+[node name="HScrollBar" type="HScrollBar" parent="Control/Steps"]
+margin_left = 13.0243
+margin_top = 14.0
+margin_right = 105.024
+margin_bottom = 26.0
+value = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -247.0
+margin_top = -188.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShipControl" parent="CanvasLayer/MarginContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 227.0
+margin_bottom = 168.0
+ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
+
+[editable path="SwedishRoyalYachtAmadis"]
+[editable path="SwedishRoyalYachtAmadis/SelectArea"]
+[editable path="SwedishRoyalYachtAmadis/Sticker3D"]
+[editable path="SwedishRoyalYachtAmadis/HitBox"]
