@@ -32,3 +32,8 @@ func _on_Timer_timeout():
 	$WeatherManager.weather = next_weather
 	
 	pass # Replace with function body.
+
+
+func _on_WeatherManager_weather_changed(_weather):
+	
+	pass # Replace with function body.

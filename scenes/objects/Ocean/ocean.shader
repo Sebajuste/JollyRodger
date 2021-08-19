@@ -3,40 +3,22 @@ render_mode cull_back, diffuse_burley, specular_schlick_ggx, blend_mix;
 
 const float PI = 3.14159265358979323846;
 
-/*
-uniform sampler2D water_color : hint_albedo;
-uniform sampler2D vector_map : hint_black;
-uniform float water_color_depth = 1.0;
 
-uniform float beach_alpha_fadeout = 0.05;
-
-uniform sampler2D bubble_albedo_map : hint_albedo;
-uniform int bubble_tiling = 3;
-uniform float bubble_ramp = 1.0;
-uniform float bubble_amount = 1.0;
-
-uniform float flow_blend_timing = 1.0;
-*/
 
 uniform vec2 wave_a_direction = vec2(1.0, 1.0);
 uniform float wave_a_steepness = 0.25;
 uniform float wave_a_wavelength = 20.0;
-// uniform vec4 wave_a = vec4(1.0, 1.0, 0.25, 20.0);
 
 
 uniform vec2 wave_b_direction = vec2(1.0, 0.6);
 uniform float wave_b_steepness = 0.25;
 uniform float wave_b_wavelength = 10.0;
-// uniform vec4 wave_b = vec4(1.0, 0.6, 0.25, 10);
 
 uniform vec2 wave_c_direction = vec2(1.0, 1.3);
 uniform float wave_c_steepness = 0.25;
 uniform float wave_c_wavelength = 5.0;
-// uniform vec4 wave_c = vec4(1.0, 1.3, 0.25, 5);
 
 uniform float ocean_time = 0.0;
-
-// uniform sampler2D foam_albedo;
 
 
 // Surface settings:
@@ -62,8 +44,14 @@ uniform float 	beers_law		 = 2.0;							// Beers law value, regulates the blendi
 uniform float 	depth_offset	 = -0.75;						// Offset for the blending
 
 // Projector for the water caustics:
-uniform mat4	projector;										// Projector matrix, mostly the matric of the sun / directlight
+// uniform mat4	projector;										// Projector matrix, mostly the matric of the sun / directlight
 uniform sampler2DArray caustic_sampler : hint_black;			// Caustic sampler, (Texture array with 16 Textures for the animation)
+
+
+
+uniform float gerstner_height = 0.4;
+uniform float gerstner_stretch = 1.0;
+
 
 
 varying float vertex_height;
@@ -72,6 +60,9 @@ varying vec3 vertex_tangent;
 varying vec3 vertex_binormal;
 
 varying mat4 inv_mvp;						// Inverse ModelViewProjection matrix -> Needed for caustic projection
+
+
+
 
 
 vec4 gerstnerWave(vec4 wave, vec3 p, inout vec3 tangent, inout vec3 binormal, float time) {
@@ -105,26 +96,41 @@ vec4 gerstnerWave(vec4 wave, vec3 p, inout vec3 tangent, inout vec3 binormal, fl
 	);
 	*/
 	return vec4(
-		d.x * (a * cos(f)),
-		a * sin(f),
-		d.y * (a * cos(f)),
+		d.x * (a * cos(f)) * gerstner_stretch,
+		a * sin(f) * gerstner_height,
+		d.y * (a * cos(f)) * gerstner_stretch,
 		0.0
 	);
 	
 }
 
 
+float get_height(sampler2D tex, vec2 uv, float offset) {
+	vec2 v1 = vec2(0.0, 1.0);
+	vec2 v2 = vec2(0.866025, 0.5);
+	vec2 v3 = vec2(0.866025, -0.5);
+	
+	float p1 = texture(tex, fract( uv + v1 * offset ) ).z;
+	float p2 = texture(tex, fract( uv + v1 * -offset ) ).z;
+	float p3 = texture(tex, fract( uv + v2 * offset ) ).z;
+	float p4 = texture(tex, fract( uv + v2 * -offset ) ).z;
+	float p5 = texture(tex, fract( uv + v3 * offset ) ).z;
+	float p6 = texture(tex, fract( uv + v3 * -offset ) ).z;
+	
+	highp float m = (p1 + p2 + p3 + p4 + p5 + p6) / 6.0;
+	
+	return m;
+}
+
 
 void vertex() {
 	
 	float time = ocean_time;
-	/*
+	
 	if( ocean_time == 0.0) {
 		time = TIME;
 	}
-	*/
 	
-	// vec4 vertex = vec4(VERTEX, 1.0);
 	vec4 vertex = vec4(VERTEX, 1.0);
 	vec3 vertex_position = (WORLD_MATRIX * vertex ).xyz;
 	
@@ -150,9 +156,7 @@ void vertex() {
 	
 	VERTEX = vertex.xyz;
 	
-	// inv_mvp = inverse( PROJECTION_MATRIX * MODELVIEW_MATRIX );
 	inv_mvp = WORLD_MATRIX * inverse( PROJECTION_MATRIX *  MODELVIEW_MATRIX );
-	
 	
 	float camera_distance = length(CAMERA_MATRIX[3].xyz - (WORLD_MATRIX[3].xyz - VERTEX)) / 1000.0;
 	COLOR[0] = camera_distance;
@@ -183,7 +187,7 @@ void fragment() {
 	float 	depth_blend 				 = exp((depth+VERTEX.z + depth_offset) * -beers_law);
 			depth_blend 				 = clamp(1.0-depth_blend, 0.0, 1.0);	
 	float	depth_blend_pow				 = clamp(pow(depth_blend, 2.5), 0.0, 1.0);
-
+	
 	// Ground color:
 	vec3 	screen_color 				 = textureLod(SCREEN_TEXTURE, ref_uv, depth_blend_pow * 2.5).rgb;
 	
@@ -197,16 +201,16 @@ void fragment() {
 	
 	vec2 	caustic_Uv 					 = caustic_localPos.xz / vec2(1024.0) + 0.5;
 	vec4	caustic_color				 = texture(caustic_sampler, vec3(caustic_Uv*300.0, mod(TIME*14.0, 16.0)));
-
+	
 			color 						*= 1.0 + pow(caustic_color.r, 1.50) * (1.0-depth_blend) * 6.0;
-
+	
 	// Foam:
-			if(depth + VERTEX.z < foam_level && depth > vertex_height-0.1)
-			{
-				float foam_noise = clamp(pow(texture(foam_sampler, (uv*4.0) - uv_offset).r, 10.0)*40.0, 0.0, 0.2);
-				float foam_mix = clamp(pow((1.0-(depth + VERTEX.z) + foam_noise), 8.0) * foam_noise * 0.4, 0.0, 1.0);
-				color = mix(color, vec3(1.0), foam_mix);
-			}
+	if(depth + VERTEX.z < foam_level && depth > vertex_height-0.1)
+	{
+		float foam_noise = clamp(pow(texture(foam_sampler, (uv*4.0) - uv_offset).r, 10.0)*40.0, 0.0, 0.2);
+		float foam_mix = clamp(pow((1.0-(depth + VERTEX.z) + foam_noise), 8.0) * foam_noise * 0.4, 0.0, 1.0);
+		color = mix(color, vec3(1.0), foam_mix);
+	}
 	
 	ALBEDO = color;
 	

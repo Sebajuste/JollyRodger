@@ -208,7 +208,7 @@ func set_clouds_dens(value: float):
 		call_deferred("set_call_deff_shader_params", clouds_tex.material, "shader_param/DENS",clouds_dens)
 
 func set_clouds_quality(value: int):
-	clouds_quality = value
+	clouds_quality = clamp(value, 0, 100)
 	if is_inside_tree():
 		call_deferred("set_call_deff_shader_params", clouds_tex.material, "shader_param/STEPS",clamp (clouds_quality,5,100))
 

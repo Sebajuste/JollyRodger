@@ -4,9 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-coverage = 1.0
+clouds_coverage = 0.9
 fog_begin = 50
 fog_end = 300
-ocean_amplitude = 50
-ocean_steepness = 0.134
+wind_strength = 0.5
 rain = 1024

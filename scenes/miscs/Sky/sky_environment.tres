@@ -8,11 +8,11 @@ panorama = SubResource( 3 )
 [resource]
 background_mode = 2
 background_sky = SubResource( 2 )
-ambient_light_color = Color( 1, 0.763836, 0.642646, 1 )
-ambient_light_energy = 0.133046
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.75
 ambient_light_sky_contribution = 0.45
 fog_enabled = true
-fog_color = Color( 0.174248, 0.208281, 0.243676, 1 )
+fog_color = Color( 0.48499, 0.592646, 0.691778, 1 )
 fog_sun_color = Color( 1, 0.901961, 0.701961, 1 )
 fog_depth_begin = 100.0
 fog_depth_end = 900.0

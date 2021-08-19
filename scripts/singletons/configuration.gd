@@ -17,7 +17,9 @@ var Settings = {
 		"FullScreen": false,
 		"Vsync": true,
 		"Antialiasing": true,
-		"Trees": "high"
+		"Trees": "high",
+		"RainDetails": "high",
+		"CloudsQuality": 25
 	},
 	"Audio":
 	{

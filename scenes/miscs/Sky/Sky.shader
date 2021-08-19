@@ -113,16 +113,21 @@ lowp vec3 get_gradient_sky(lowp vec3 rd,lowp vec3 sun)
 {
 	lowp float size_gradient_window = 0.5;
 	lowp vec3 sky_color = vec3(0.0);
-	if (sun.y >0.0) 
-	{sky_color = texture(sky_gradient_texture,vec2(sun.y*(1.0-size_gradient_window)+ rd.y*size_gradient_window,0.5)).rgb;}
-	
-	else {sky_color = texture(sky_gradient_texture,vec2(rd.y*size_gradient_window,0.5)).rgb; 
-	sky_color = mix(sky_color, vec3 (0.0),clamp (abs(sun.y)*5.0,0.0,1.0));
+	if (sun.y > 0.0) 
+	{
+		sky_color = texture(sky_gradient_texture, vec2(sun.y*(1.0-size_gradient_window) + rd.y*size_gradient_window, 0.5)).rgb;
+	}
+	else
+	{
+		sky_color = texture(sky_gradient_texture,vec2(rd.y*size_gradient_window,0.5)).rgb;
+		sky_color = mix(sky_color, vec3 (0.0),clamp (abs(sun.y)*5.0,0.0,1.0));
 	}
 	sky_color = mix(sky_color,vec3(0), smoothstep(1., 2.5, distance(rd,sun)));
 	lowp vec3 sun_color = vec3(1.0);
-	sky_color+=sun_color * min(pow(max(dot(rd, SUN_POS), 0.0), 40.0/sun_radius) * 5.0, 1.0) + sun_color * min(pow(max(dot(rd, SUN_POS), 0.0), 10.0) * .3, 1.0);
-	//sky_color+=getSunPoint(rd,sun);
+	sky_color += sun_color * min(pow(max(dot(rd, SUN_POS), 0.0), 40.0/sun_radius) * 5.0, 1.0) + sun_color * min(pow(max(dot(rd, SUN_POS), 0.0), 10.0) * .3, 1.0);
+	
+	
+	sky_color += getSunPoint(rd, sun);
 	return sky_color;
 }
 
@@ -134,8 +139,8 @@ void fragment(){
 	rd.x*=-1.0; ////The x-axis is inverted on the godot scene for unknown reasons
 		
 	lowp vec4 cld = texture(cloud_env_texture, 1.0-UV);//The axis is inverted on the godot scene for unknown reasons,so gor godrays inverted them!
-	cld.rgb *=attenuation; //lighten the clouds depending on the height of the Sun, calculated in the script
-	cld*=clouds_tint;
+	cld.rgb *= attenuation; //lighten the clouds depending on the height of the Sun, calculated in the script
+	cld *= clouds_tint;
 	lowp vec3 sky;
 	if (SCATERRING) sky = getAtmosphericScattering(rd,SUN_POS);
 	else sky = get_gradient_sky(rd,SUN_POS);

@@ -163,16 +163,18 @@ void fragment(){
 	lowp float horizonPow =1.-pow(1.0-abs(skyPow), 5.0);
 	if(rd.y>0.0)
 	{
+		
 		if (STEPS < 20) cld = clouds_2d(rd,WIND*TIME); else cld=clouds_3d(ro,rd,WIND*TIME/SIZE);
 		cld=clamp(cld,0.0,1.0);
 		cld.rgb+=0.04*cld.rgb*horizonPow;
 		cld*=clamp((  1.0 - exp(-2.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);//Here we dissolve the clouds in the horizon for a smooth transition to the horizon line.
+		
 	}
 	else
 	{
-	cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5),TIME);
-	cld.a=1.;
-	cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
+		cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5),TIME);
+		cld.a=1.;
+		cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
 	}
 	COLOR = vec4(cld.rgb/(0.0001+cld.a), cld.a);
 }
