@@ -4,13 +4,14 @@
 [ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsVideo.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsGame.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsWindow.gd" type="Script" id=4]
-[ext_resource path="res://assets/themes/default_sans_serif.theme" type="Theme" id=5]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=5]
 [ext_resource path="res://assets/themes/classic_sans_serif.theme" type="Theme" id=6]
 
-[node name="Options" type="WindowDialog"]
+[node name="OptionsWindow" type="WindowDialog"]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 5 )
+theme = ExtResource( 6 )
 popup_exclusive = true
 window_title = "title_options"
 script = ExtResource( 4 )
@@ -117,25 +118,26 @@ anchor_bottom = 0.0
 margin_right = 936.0
 margin_bottom = 412.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 510.0
 margin_right = 984.0
 margin_bottom = 560.0
 rect_min_size = Vector2( 0, 50 )
+theme = ExtResource( 5 )
 custom_constants/separation = 20
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Footer"]
 visible = false
 margin_right = 314.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="RestoreDefaultButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="RestoreDefaultButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer"]
 margin_left = 107.0
 margin_right = 207.0
 margin_bottom = 50.0
@@ -145,16 +147,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 334.0
-margin_right = 649.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Footer"]
+margin_right = 482.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 107.0
-margin_right = 207.0
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer2"]
+margin_left = 191.0
+margin_right = 291.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 100, 0 )
 text = "btn_save"
@@ -162,16 +163,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 669.0
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Footer"]
+margin_left = 502.0
 margin_right = 984.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer3"]
-margin_left = 107.0
-margin_right = 207.0
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer3"]
+margin_left = 191.0
+margin_right = 291.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 100, 0 )
 text = "btn_close"
@@ -180,6 +181,6 @@ __meta__ = {
 }
 
 [connection signal="about_to_show" from="." to="." method="_on_about_to_show"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/RestoreDefaultButton" to="." method="_on_RestoreDefaultButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/SaveButton" to="." method="_on_SaveButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer3/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer/RestoreDefaultButton" to="." method="_on_RestoreDefaultButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer2/SaveButton" to="." method="_on_SaveButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer3/CloseButton" to="." method="_on_CloseButton_pressed"]
