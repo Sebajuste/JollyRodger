@@ -3,7 +3,7 @@ extends Node
 
 
 onready var login_input := $CanvasLayer/Control/TextureRect/MarginContainer/VBoxContainer/Login
-
+onready var options_window := $CanvasLayer/Options
 
 var password = null
 
@@ -93,3 +93,9 @@ func _on_ExitButton_pressed():
 	get_tree().quit()
 	
 	pass # Replace with function body.
+
+
+func _on_OptionsButton_pressed():
+	
+	options_window.popup_centered()
+	
