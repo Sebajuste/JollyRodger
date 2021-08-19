@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=1]
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=2]
 [ext_resource path="res://scenes/levels/Island02/t_data/data.hterrain" type="Resource" id=3]
 [ext_resource path="res://assets/2d/textures/grass.png" type="Texture" id=4]
+[ext_resource path="res://addons/zylann.scatter/scatter3d.gd" type="Script" id=5]
 [ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=6]
 [ext_resource path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" type="Texture" id=7]
 [ext_resource path="res://assets/2d/textures/terrain/Ground037_1K-JPG/Ground037_1K_Color.jpg" type="Texture" id=8]
@@ -14,6 +15,7 @@
 [ext_resource path="res://scenes/levels/Island02/t_texture/Island02_slot2_albedo_bump.packed_tex" type="Texture" id=13]
 [ext_resource path="res://scenes/levels/Island02/t_texture/Island02_slot3_albedo_bump.packed_tex" type="Texture" id=14]
 [ext_resource path="res://scenes/levels/Island02/t_texture/Island02_slot2_normal_roughness.packed_tex" type="Texture" id=15]
+[ext_resource path="res://scenes/objects/trees/CoconutPalm01.tscn" type="PackedScene" id=16]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
@@ -153,3 +155,532 @@ shader_params/u_globalmap_tint_bottom = 0.144
 shader_params/u_globalmap_tint_top = 0.091
 shader_params/u_bottom_ao = 0.679
 shader_params/u_instance_scale = Vector3( 2, 2, 2 )
+
+[node name="Scatter3D" type="Spatial" parent="."]
+script = ExtResource( 5 )
+_scenes = [ ExtResource( 16 ) ]
+
+[node name="CoconutPalm01" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0330063, 0, -0.999455, 0, 1, 0, 0.999455, 0, -0.0330063, 206.874, 3.83339, 364.508 )
+
+[node name="CoconutPalm02" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.252978, 0, -0.967472, 0, 1, 0, 0.967472, 0, -0.252978, 239.017, 1.01052, 379.694 )
+
+[node name="CoconutPalm03" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.439875, 0, -0.898059, 0, 1, 0, 0.898059, 0, -0.439875, 204.344, 5.22542, 347.315 )
+
+[node name="CoconutPalm04" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.851372, 0, -0.524562, 0, 1, 0, 0.524562, 0, 0.851372, 208.706, 7.58512, 332.958 )
+
+[node name="CoconutPalm05" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.372419, 0, -0.928065, 0, 1, 0, 0.928065, 0, 0.372419, 180.63, 5.55848, 336.737 )
+
+[node name="CoconutPalm06" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.999911, 0, 0.0133305, 0, 1, 0, -0.0133305, 0, 0.999911, 195.114, 6.25407, 326.956 )
+
+[node name="CoconutPalm07" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.872517, 0, -0.488583, 0, 1, 0, 0.488583, 0, -0.872517, 241.78, 11.2344, 306.288 )
+
+[node name="CoconutPalm08" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0674524, 0, -0.997723, 0, 1, 0, 0.997723, 0, 0.0674524, 236.32, 9.4404, 298.857 )
+
+[node name="CoconutPalm09" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.128895, 0, -0.991658, 0, 1, 0, 0.991658, 0, -0.128895, 216.58, 6.37572, 313.161 )
+
+[node name="CoconutPalm10" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.759827, 0, -0.650125, 0, 1, 0, 0.650125, 0, -0.759827, 265.233, 4.8235, 338.502 )
+
+[node name="CoconutPalm11" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.749791, 0, 0.661675, 0, 1, 0, -0.661675, 0, 0.749791, 246.466, 1.14805, 385.041 )
+
+[node name="CoconutPalm12" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.742259, 0, 0.670113, 0, 1, 0, -0.670113, 0, 0.742259, 240.734, 1.41379, 358.887 )
+
+[node name="CoconutPalm13" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.259315, 0, -0.965793, 0, 1, 0, 0.965793, 0, 0.259315, 212.581, 5.48907, 348.056 )
+
+[node name="CoconutPalm14" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.996443, 0, 0.0842643, 0, 1, 0, -0.0842643, 0, -0.996443, 230.628, 3.06811, 360.198 )
+
+[node name="CoconutPalm15" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0607695, 0, -0.998152, 0, 1, 0, 0.998152, 0, 0.0607695, 254.127, 10.1429, 322.41 )
+
+[node name="CoconutPalm16" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.272311, 0, 0.962209, 0, 1, 0, -0.962209, 0, 0.272311, 266.246, 3.82219, 378.116 )
+
+[node name="CoconutPalm17" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.678965, 0, -0.734171, 0, 1, 0, 0.734171, 0, -0.678965, 266.448, 3.83546, 377.997 )
+
+[node name="CoconutPalm18" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.547386, 0, 0.83688, 0, 1, 0, -0.83688, 0, -0.547386, 296.554, 3.86087, 377.1 )
+
+[node name="CoconutPalm19" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.840036, 0, -0.542531, 0, 1, 0, 0.542531, 0, -0.840036, 286.615, 4.56244, 410.736 )
+
+[node name="CoconutPalm20" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.937304, 0, 0.348512, 0, 1, 0, -0.348512, 0, -0.937304, 309.398, 5.80926, 404.959 )
+
+[node name="CoconutPalm21" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.902734, 0, -0.430199, 0, 1, 0, 0.430199, 0, 0.902734, 322.801, 5.271, 403.55 )
+
+[node name="CoconutPalm22" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.338926, 0, -0.940813, 0, 1, 0, 0.940813, 0, 0.338926, 302.877, 4.24738, 381.15 )
+
+[node name="CoconutPalm23" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.306195, 0, 0.951969, 0, 1, 0, -0.951969, 0, -0.306195, 298.251, 6.46305, 395.421 )
+
+[node name="CoconutPalm24" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0518563, 0, -0.998655, 0, 1, 0, 0.998655, 0, -0.0518563, 250.241, 12.9827, 440.884 )
+
+[node name="CoconutPalm25" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.196103, 0, 0.980583, 0, 1, 0, -0.980583, 0, -0.196103, 255.792, 9.45087, 421.349 )
+
+[node name="CoconutPalm26" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.947048, 0, -0.321093, 0, 1, 0, 0.321093, 0, 0.947048, 250.421, 6.08485, 407.329 )
+
+[node name="CoconutPalm27" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.491119, 0, -0.871093, 0, 1, 0, 0.871093, 0, 0.491119, 281.11, 4.75044, 406.771 )
+
+[node name="CoconutPalm28" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.850394, 0, 0.526147, 0, 1, 0, -0.526147, 0, -0.850394, 268.214, 12.8403, 440.107 )
+
+[node name="CoconutPalm29" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.894726, 0, -0.446616, 0, 1, 0, 0.446616, 0, 0.894726, 273.753, 7.09308, 416.549 )
+
+[node name="CoconutPalm30" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.390654, 0, -0.920538, 0, 1, 0, 0.920538, 0, 0.390654, 238.1, 14.1844, 446.509 )
+
+[node name="CoconutPalm31" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.747979, 0, -0.663723, 0, 1, 0, 0.663723, 0, -0.747979, 224.54, 4.01247, 412.204 )
+
+[node name="CoconutPalm32" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.592353, 0, 0.805679, 0, 1, 0, -0.805679, 0, -0.592353, 231.147, 8.99593, 441.012 )
+
+[node name="CoconutPalm33" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.997176, 0, 0.0751018, 0, 1, 0, -0.0751018, 0, -0.997176, 204.781, 8.35453, 443.026 )
+
+[node name="CoconutPalm34" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.999824, 0, 0.0187368, 0, 1, 0, -0.0187368, 0, 0.999824, 169.596, 5.45327, 474.43 )
+
+[node name="CoconutPalm35" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.970577, 0, -0.240791, 0, 1, 0, 0.240791, 0, 0.970577, 172.618, 7.20242, 457.805 )
+
+[node name="CoconutPalm36" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.850614, 0, 0.52579, 0, 1, 0, -0.52579, 0, 0.850614, 210.102, 13.4336, 461.494 )
+
+[node name="CoconutPalm37" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0757529, 0, -0.997127, 0, 1, 0, 0.997127, 0, 0.0757529, 194.762, 3.13342, 432.829 )
+
+[node name="CoconutPalm38" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.121165, 0, 0.992632, 0, 1, 0, -0.992632, 0, 0.121165, 212.441, 3.41382, 428.791 )
+
+[node name="CoconutPalm39" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.966538, 0, -0.256524, 0, 1, 0, 0.256524, 0, 0.966538, 240.494, 1.91715, 390.385 )
+
+[node name="CoconutPalm40" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.995993, 0, -0.0894345, 0, 1, 0, 0.0894345, 0, 0.995993, 268.905, 17.8919, 458.722 )
+
+[node name="CoconutPalm41" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.952253, 0, -0.305311, 0, 1, 0, 0.305311, 0, 0.952253, 243.774, 17.1315, 467.008 )
+
+[node name="CoconutPalm42" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.867204, 0, 0.497953, 0, 1, 0, -0.497953, 0, 0.867204, 305.168, 1.75585, 455.624 )
+
+[node name="CoconutPalm43" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.386142, 0, -0.922439, 0, 1, 0, 0.922439, 0, 0.386142, 289.61, 5.71256, 436.855 )
+
+[node name="CoconutPalm44" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.947354, 0, -0.320189, 0, 1, 0, 0.320189, 0, -0.947354, 358.204, 4.97969, 429.379 )
+
+[node name="CoconutPalm45" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.422639, 0, -0.906298, 0, 1, 0, 0.906298, 0, -0.422639, 362.65, 7.59176, 437.972 )
+
+[node name="CoconutPalm46" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.383756, 0, 0.923435, 0, 1, 0, -0.923435, 0, -0.383756, 369.633, 6.33678, 431.454 )
+
+[node name="CoconutPalm47" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.226069, 0, -0.974111, 0, 1, 0, 0.974111, 0, 0.226069, 454.706, 12.554, 392.981 )
+
+[node name="CoconutPalm48" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.417086, 0, 0.908867, 0, 1, 0, -0.908867, 0, -0.417086, 468.096, 11.631, 423.744 )
+
+[node name="CoconutPalm49" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.292161, 0, -0.956369, 0, 1, 0, 0.956369, 0, 0.292161, 465.994, 11.0794, 416.579 )
+
+[node name="CoconutPalm50" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.82689, 0, -0.562363, 0, 1, 0, 0.562363, 0, 0.82689, 471.736, 10.6934, 408.039 )
+
+[node name="CoconutPalm51" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.777566, 0, -0.628801, 0, 1, 0, 0.628801, 0, 0.777566, 454.265, 12.3633, 404.777 )
+
+[node name="CoconutPalm52" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.800271, 0, 0.599638, 0, 1, 0, -0.599638, 0, -0.800271, 480.98, 10.8447, 437.753 )
+
+[node name="CoconutPalm53" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.699826, 0, -0.714313, 0, 1, 0, 0.714313, 0, -0.699826, 480.625, 11.7758, 420.83 )
+
+[node name="CoconutPalm54" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.677677, 0, 0.73536, 0, 1, 0, -0.73536, 0, 0.677677, 477.208, 13.2295, 381.37 )
+
+[node name="CoconutPalm55" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.972397, 0, -0.233331, 0, 1, 0, 0.233331, 0, 0.972397, 476.135, 13.4153, 389.929 )
+
+[node name="CoconutPalm56" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.879284, 0, -0.476298, 0, 1, 0, 0.476298, 0, -0.879284, 470.847, 13.4621, 376.09 )
+
+[node name="CoconutPalm57" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0814445, 0, -0.996678, 0, 1, 0, 0.996678, 0, -0.0814445, 468.51, 5.17058, 356.808 )
+
+[node name="CoconutPalm58" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.999661, 0, -0.0260242, 0, 1, 0, 0.0260242, 0, -0.999661, 463.885, 4.5276, 334.737 )
+
+[node name="CoconutPalm59" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.734376, 0, -0.678742, 0, 1, 0, 0.678742, 0, -0.734376, 472.7, 1.35275, 319.129 )
+
+[node name="CoconutPalm60" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0379018, 0, -0.999281, 0, 1, 0, 0.999281, 0, -0.0379018, 445.77, 3.67605, 318.866 )
+
+[node name="CoconutPalm61" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.409993, 0, 0.912089, 0, 1, 0, -0.912089, 0, -0.409993, 425.304, 4.75453, 305.166 )
+
+[node name="CoconutPalm62" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.89128, 0, 0.453453, 0, 1, 0, -0.453453, 0, 0.89128, 424.792, 5.15433, 335.402 )
+
+[node name="CoconutPalm63" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.998293, 0, 0.0584071, 0, 1, 0, -0.0584071, 0, 0.998293, 445.661, 6.40265, 352.987 )
+
+[node name="CoconutPalm64" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.19325, 0, -0.98115, 0, 1, 0, 0.98115, 0, 0.19325, 453.15, 12.0051, 420.956 )
+
+[node name="CoconutPalm65" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.753385, 0, -0.657579, 0, 1, 0, 0.657579, 0, 0.753385, 443.941, 10.857, 398.07 )
+
+[node name="CoconutPalm66" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.351239, 0, 0.936286, 0, 1, 0, -0.936286, 0, -0.351239, 417.229, 3.92831, 354.329 )
+
+[node name="CoconutPalm68" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.183939, 0, 0.982938, 0, 1, 0, -0.982938, 0, -0.183939, 441.247, 7.93648, 428.751 )
+
+[node name="CoconutPalm67" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.500867, 0, 0.865524, 0, 1, 0, -0.865524, 0, -0.500867, 80.4235, 5.93641, 103.796 )
+
+[node name="CoconutPalm69" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.562295, 0, -0.826937, 0, 1, 0, 0.826937, 0, -0.562295, 36.9617, 12.6806, 70.8039 )
+
+[node name="CoconutPalm70" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.297267, 0, 0.954794, 0, 1, 0, -0.954794, 0, -0.297267, 48.4471, 5.30721, 92.4292 )
+
+[node name="CoconutPalm71" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.494802, 0, -0.869006, 0, 1, 0, 0.869006, 0, 0.494802, 82.202, 13.0553, 77.0619 )
+
+[node name="CoconutPalm72" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.504786, 0, -0.863245, 0, 1, 0, 0.863245, 0, -0.504786, 101.028, 17.6295, 84.3246 )
+
+[node name="CoconutPalm73" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.995834, 0, -0.0911845, 0, 1, 0, 0.0911845, 0, 0.995834, 118.814, 7.99193, 37.9544 )
+
+[node name="CoconutPalm74" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.196068, 0, -0.98059, 0, 1, 0, 0.98059, 0, 0.196068, 98.8044, 9.22328, 46.1912 )
+
+[node name="CoconutPalm75" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.19526, 0, 0.980752, 0, 1, 0, -0.980752, 0, 0.19526, 98.5534, 16.82, 74.2086 )
+
+[node name="CoconutPalm76" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0413856, 0, -0.999143, 0, 1, 0, 0.999143, 0, 0.0413856, 88.2467, 12.2468, 59.1944 )
+
+[node name="CoconutPalm77" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.561365, 0, -0.827568, 0, 1, 0, 0.827568, 0, -0.561365, 95.2744, 7.52118, 35.2639 )
+
+[node name="CoconutPalm78" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.949186, 0, -0.314717, 0, 1, 0, 0.314717, 0, 0.949186, 82.6075, 8.19713, 45.4424 )
+
+[node name="CoconutPalm79" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.633111, 0, -0.774061, 0, 1, 0, 0.774061, 0, 0.633111, 77.348, 10.0984, 57.0416 )
+
+[node name="CoconutPalm80" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.578823, 0, -0.815453, 0, 1, 0, 0.815453, 0, 0.578823, 61.7354, 11.5376, 61.9817 )
+
+[node name="CoconutPalm81" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.696638, 0, 0.717423, 0, 1, 0, -0.717423, 0, 0.696638, 46.6863, 11.9732, 62.0863 )
+
+[node name="CoconutPalm82" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.980497, 0, -0.196533, 0, 1, 0, 0.196533, 0, 0.980497, 59.8462, 4.61772, 42.9981 )
+
+[node name="CoconutPalm83" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.217178, 0, -0.976132, 0, 1, 0, 0.976132, 0, -0.217178, 45.8115, 3.97352, 42.691 )
+
+[node name="CoconutPalm84" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.948628, 0, -0.316394, 0, 1, 0, 0.316394, 0, -0.948628, 55.4295, 0.926355, 33.0825 )
+
+[node name="CoconutPalm85" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.27579, 0, -0.961218, 0, 1, 0, 0.961218, 0, -0.27579, 29.6405, 10.5862, 57.1587 )
+
+[node name="CoconutPalm86" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.965243, 0, 0.261354, 0, 1, 0, -0.261354, 0, -0.965243, 29.2569, 6.93311, 46.8676 )
+
+[node name="CoconutPalm87" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.696282, 0, 0.717768, 0, 1, 0, -0.717768, 0, -0.696282, 160.242, 33.7345, 52.3598 )
+
+[node name="CoconutPalm88" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.163513, 0, 0.986541, 0, 1, 0, -0.986541, 0, -0.163513, 153.078, 26.877, 44.7843 )
+
+[node name="CoconutPalm89" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.78598, 0, 0.618253, 0, 1, 0, -0.618253, 0, -0.78598, 139.47, 19.8553, 45.1764 )
+
+[node name="CoconutPalm90" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.979897, 0, 0.199505, 0, 1, 0, -0.199505, 0, -0.979897, 135.227, 19.7426, 58.6452 )
+
+[node name="CoconutPalm91" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.970043, 0, -0.242933, 0, 1, 0, 0.242933, 0, 0.970043, 112.75, 16.3186, 68.9028 )
+
+[node name="CoconutPalm92" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.888294, 0, 0.459275, 0, 1, 0, -0.459275, 0, -0.888294, 126.944, 13.3987, 85.1922 )
+
+[node name="CoconutPalm93" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.7523, 0, -0.658821, 0, 1, 0, 0.658821, 0, 0.7523, 114.342, 9.97969, 109.067 )
+
+[node name="CoconutPalm94" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0243199, 0, -0.999704, 0, 1, 0, 0.999704, 0, 0.0243199, 97.381, 7.8439, 116.307 )
+
+[node name="CoconutPalm95" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.720897, 0, -0.693042, 0, 1, 0, 0.693042, 0, -0.720897, 116.026, 8.15193, 135.314 )
+
+[node name="CoconutPalm96" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.681714, 0, 0.731618, 0, 1, 0, -0.731618, 0, -0.681714, 127.399, 8.79673, 161.588 )
+
+[node name="CoconutPalm97" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0347539, 0, 0.999396, 0, 1, 0, -0.999396, 0, -0.0347539, 164.229, 6.34721, 177.319 )
+
+[node name="CoconutPalm98" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.84281, 0, 0.538211, 0, 1, 0, -0.538211, 0, -0.84281, 177.411, 15.1817, 151.385 )
+
+[node name="CoconutPalm99" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0552924, 0, 0.99847, 0, 1, 0, -0.99847, 0, 0.0552924, 195.42, 13.6873, 126.223 )
+
+[node name="CoconutPalm100" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.00998369, 0, -0.99995, 0, 1, 0, 0.99995, 0, 0.00998369, 205.347, 16.6793, 106.307 )
+
+[node name="CoconutPalm101" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.60269, 0, 0.797976, 0, 1, 0, -0.797976, 0, 0.60269, 208.847, 15.9011, 87.6586 )
+
+[node name="CoconutPalm102" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.645775, 0, 0.763528, 0, 1, 0, -0.763528, 0, -0.645775, 216.904, 18.6951, 59.8843 )
+
+[node name="CoconutPalm103" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.240311, 0, 0.970696, 0, 1, 0, -0.970696, 0, 0.240311, 236.497, 12.4059, 65.3996 )
+
+[node name="CoconutPalm104" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.990728, 0, 0.135859, 0, 1, 0, -0.135859, 0, 0.990728, 257.313, 10.2024, 68.2599 )
+
+[node name="CoconutPalm105" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.465823, 0, 0.884878, 0, 1, 0, -0.884878, 0, -0.465823, 287.296, 10.3671, 84.2414 )
+
+[node name="CoconutPalm106" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.780673, 0, 0.62494, 0, 1, 0, -0.62494, 0, 0.780673, 303.305, 4.35156, 61.424 )
+
+[node name="CoconutPalm107" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.254876, 0, 0.966974, 0, 1, 0, -0.966974, 0, -0.254876, 331.992, 11.2168, 46.0091 )
+
+[node name="CoconutPalm108" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.597483, 0, -0.801881, 0, 1, 0, 0.801881, 0, 0.597483, 337.7, 17.625, 101.103 )
+
+[node name="CoconutPalm109" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.111052, 0, -0.993815, 0, 1, 0, 0.993815, 0, 0.111052, 310.812, 15.1118, 97.9309 )
+
+[node name="CoconutPalm110" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.485445, 0, 0.874267, 0, 1, 0, -0.874267, 0, 0.485445, 311.007, 16.0529, 118.298 )
+
+[node name="CoconutPalm111" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.948509, 0, 0.316751, 0, 1, 0, -0.316751, 0, 0.948509, 378.37, 7.13776, 118.272 )
+
+[node name="CoconutPalm112" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.294353, 0, -0.955697, 0, 1, 0, 0.955697, 0, -0.294353, 327.765, 18.7192, 127.211 )
+
+[node name="CoconutPalm113" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0479763, 0, -0.998848, 0, 1, 0, 0.998848, 0, 0.0479763, 297.79, 15.9494, 114.123 )
+
+[node name="CoconutPalm114" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.457291, 0, -0.889317, 0, 1, 0, 0.889317, 0, 0.457291, 275.398, 19.6478, 108.6 )
+
+[node name="CoconutPalm115" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.562667, 0, -0.826684, 0, 1, 0, 0.826684, 0, -0.562667, 285.092, 24.0127, 138.964 )
+
+[node name="CoconutPalm116" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.9417, 0, -0.336454, 0, 1, 0, 0.336454, 0, -0.9417, 315.655, 20.9367, 146.059 )
+
+[node name="CoconutPalm117" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.696369, 0, -0.717684, 0, 1, 0, 0.717684, 0, -0.696369, 304.392, 17.9097, 167.825 )
+
+[node name="CoconutPalm118" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.973571, 0, 0.228384, 0, 1, 0, -0.228384, 0, -0.973571, 281.216, 11.1464, 179.261 )
+
+[node name="CoconutPalm119" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.999923, 0, 0.0123945, 0, 1, 0, -0.0123945, 0, -0.999923, 236.108, 19.0494, 140.332 )
+
+[node name="CoconutPalm120" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.107688, 0, -0.994185, 0, 1, 0, 0.994185, 0, 0.107688, 221.649, 15.5624, 150.452 )
+
+[node name="CoconutPalm121" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.708306, 0, 0.705905, 0, 1, 0, -0.705905, 0, 0.708306, 195.548, 7.76183, 165.045 )
+
+[node name="CoconutPalm122" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.304984, 0, 0.952357, 0, 1, 0, -0.952357, 0, 0.304984, 209.66, 3.92059, 178.558 )
+
+[node name="CoconutPalm123" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.813192, 0, 0.581995, 0, 1, 0, -0.581995, 0, -0.813192, 250.416, 8.46178, 174.315 )
+
+[node name="CoconutPalm124" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.12128, 0, 0.992618, 0, 1, 0, -0.992618, 0, -0.12128, 235.776, 8.90973, 169.975 )
+
+[node name="CoconutPalm125" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.440894, 0, -0.897559, 0, 1, 0, 0.897559, 0, 0.440894, 244.974, 27.0393, 108.59 )
+
+[node name="CoconutPalm126" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.974765, 0, 0.223233, 0, 1, 0, -0.223233, 0, 0.974765, 247.807, 27.2402, 116.314 )
+
+[node name="CoconutPalm127" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.953684, 0, -0.300811, 0, 1, 0, 0.300811, 0, 0.953684, 254.485, 27.3722, 122.977 )
+
+[node name="CoconutPalm128" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.724779, 0, -0.688981, 0, 1, 0, 0.688981, 0, 0.724779, 270.238, 27.3421, 126.639 )
+
+[node name="CoconutPalm129" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.381551, 0, -0.924348, 0, 1, 0, 0.924348, 0, 0.381551, 263.908, 31.0123, 132.848 )
+
+[node name="CoconutPalm130" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.519782, 0, 0.854299, 0, 1, 0, -0.854299, 0, -0.519782, 346.315, 15.707, 128.423 )
+
+[node name="CoconutPalm131" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.291707, 0, -0.956508, 0, 1, 0, 0.956508, 0, 0.291707, 349.208, 10.607, 164.209 )
+
+[node name="CoconutPalm132" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.827634, 0, -0.561268, 0, 1, 0, 0.561268, 0, -0.827634, 349.21, 10.58, 164.397 )
+
+[node name="CoconutPalm133" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.036162, 0, -0.999346, 0, 1, 0, 0.999346, 0, 0.036162, 328.826, 15.7102, 182.822 )
+
+[node name="CoconutPalm134" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0876254, 0, 0.996153, 0, 1, 0, -0.996153, 0, -0.0876254, 353.771, 6.88012, 204.203 )
+
+[node name="CoconutPalm135" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.521027, 0, 0.85354, 0, 1, 0, -0.85354, 0, -0.521027, 340.1, 7.66198, 212.783 )
+
+[node name="CoconutPalm136" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.244151, 0, 0.969737, 0, 1, 0, -0.969737, 0, -0.244151, 304.581, 15.0764, 178.438 )
+
+[node name="CoconutPalm137" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.725484, 0, 0.688239, 0, 1, 0, -0.688239, 0, 0.725484, 298.393, 10.1476, 186.773 )
+
+[node name="CoconutPalm138" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.932292, 0, 0.361707, 0, 1, 0, -0.361707, 0, 0.932292, 289.377, 8.5134, 186.093 )
+
+[node name="CoconutPalm139" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.993246, 0, 0.116025, 0, 1, 0, -0.116025, 0, 0.993246, 311.138, 9.76771, 201.861 )
+
+[node name="CoconutPalm140" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0479908, 0, 0.998848, 0, 1, 0, -0.998848, 0, 0.0479908, 297.254, 6.29556, 201.368 )
+
+[node name="CoconutPalm141" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.95773, 0, -0.287668, 0, 1, 0, 0.287668, 0, 0.95773, 437.03, 18.6717, 80.3391 )
+
+[node name="CoconutPalm142" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.231326, 0, -0.972876, 0, 1, 0, 0.972876, 0, -0.231326, 427.735, 19.2535, 82.781 )
+
+[node name="CoconutPalm143" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.578442, 0, -0.815723, 0, 1, 0, 0.815723, 0, 0.578442, 444.455, 12.0194, 96.397 )
+
+[node name="CoconutPalm144" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.9809, 0, -0.194511, 0, 1, 0, 0.194511, 0, -0.9809, 431.995, 12.1059, 102.4 )
+
+[node name="CoconutPalm145" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.152506, 0, 0.988302, 0, 1, 0, -0.988302, 0, 0.152506, 429.526, 14.7493, 93.9598 )
+
+[node name="CoconutPalm146" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.270587, 0, -0.962695, 0, 1, 0, 0.962695, 0, 0.270587, 417.857, 4.82738, 114.55 )
+
+[node name="CoconutPalm147" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.262567, 0, -0.964914, 0, 1, 0, 0.964914, 0, 0.262567, 409.963, 8.90175, 101.407 )
+
+[node name="CoconutPalm148" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.00715639, 0, 0.999974, 0, 1, 0, -0.999974, 0, 0.00715639, 392.197, 10.6056, 97.3806 )
+
+[node name="CoconutPalm149" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0137353, 0, 0.999906, 0, 1, 0, -0.999906, 0, 0.0137353, 395.967, 15.1605, 74.7087 )
+
+[node name="CoconutPalm150" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.112148, 0, 0.993692, 0, 1, 0, -0.993692, 0, -0.112148, 423.028, 17.9109, 68.9129 )
+
+[node name="CoconutPalm151" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.249619, 0, -0.968344, 0, 1, 0, 0.968344, 0, 0.249619, 374.474, 13.7486, 102.021 )
+
+[node name="CoconutPalm152" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.537383, 0, 0.843338, 0, 1, 0, -0.843338, 0, -0.537383, 347.199, 18.5171, 85.7452 )
+
+[node name="CoconutPalm153" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.932823, 0, 0.360336, 0, 1, 0, -0.360336, 0, 0.932823, 357.191, 26.504, 60.6476 )
+
+[node name="CoconutPalm154" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.461164, 0, 0.887315, 0, 1, 0, -0.887315, 0, 0.461164, 383.74, 14.9189, 44.7446 )
+
+[node name="CoconutPalm155" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0643515, 0, -0.997927, 0, 1, 0, 0.997927, 0, 0.0643515, 393.907, 16.966, 53.8269 )
+
+[node name="CoconutPalm156" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.474741, 0, -0.880126, 0, 1, 0, 0.880126, 0, -0.474741, 429.855, 15.2094, 51.8631 )
+
+[node name="CoconutPalm157" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.375013, 0, -0.92702, 0, 1, 0, 0.92702, 0, -0.375013, 416.71, 15.7989, 61.9664 )
+
+[node name="CoconutPalm158" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.574272, 0, -0.818664, 0, 1, 0, 0.818664, 0, 0.574272, 416.367, 15.7757, 61.225 )
+
+[node name="CoconutPalm159" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.686438, 0, 0.727188, 0, 1, 0, -0.727188, 0, -0.686438, 434.439, 16.7655, 60.684 )
+
+[node name="CoconutPalm160" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.800335, 0, 0.599553, 0, 1, 0, -0.599553, 0, -0.800335, 450.836, 13.3431, 59.7661 )
+
+[node name="CoconutPalm161" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.841518, 0, 0.540229, 0, 1, 0, -0.540229, 0, 0.841518, 436.638, 2.95757, 135.915 )
+
+[node name="CoconutPalm162" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.607597, 0, 0.794245, 0, 1, 0, -0.794245, 0, -0.607597, 442.994, 4.62299, 119.977 )
+
+[node name="CoconutPalm163" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.983926, 0, -0.178577, 0, 1, 0, 0.178577, 0, -0.983926, 462.825, 7.2346, 82.9726 )
+
+[node name="CoconutPalm164" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.994232, 0, -0.107248, 0, 1, 0, 0.107248, 0, 0.994232, 459.494, 9.62678, 66.9669 )
+
+[node name="CoconutPalm165" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.995601, 0, -0.0936909, 0, 1, 0, 0.0936909, 0, 0.995601, 460.001, 2.47854, 119.474 )
+
+[node name="CoconutPalm166" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.993944, 0, 0.109888, 0, 1, 0, -0.109888, 0, 0.993944, 78.8753, 2.83775, 302.049 )
+
+[node name="CoconutPalm167" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.759086, 0, 0.650991, 0, 1, 0, -0.650991, 0, 0.759086, 68.3263, 4.31605, 258.935 )
+
+[node name="CoconutPalm168" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.139671, 0, 0.990198, 0, 1, 0, -0.990198, 0, 0.139671, 48.4058, 5.28654, 224.911 )
+
+[node name="CoconutPalm169" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.118402, 0, 0.992966, 0, 1, 0, -0.992966, 0, -0.118402, 32.2228, 11.2951, 278.029 )
+
+[node name="CoconutPalm170" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.84152, 0, 0.540226, 0, 1, 0, -0.540226, 0, -0.84152, 53.8242, 9.53067, 288.986 )
+
+[node name="CoconutPalm171" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.865771, 0, -0.50044, 0, 1, 0, 0.50044, 0, 0.865771, 62.8106, 4.88231, 288.984 )
+
+[node name="CoconutPalm172" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.452367, 0, 0.891832, 0, 1, 0, -0.891832, 0, 0.452367, 33.9821, 9.28144, 315.711 )
+
+[node name="CoconutPalm173" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.971375, 0, 0.237553, 0, 1, 0, -0.237553, 0, 0.971375, 45.25, 10.9974, 337.907 )
+
+[node name="CoconutPalm174" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.996225, 0, 0.0868082, 0, 1, 0, -0.0868082, 0, -0.996225, 50.8085, 12.5094, 322.196 )
+
+[node name="CoconutPalm175" type="StaticBody" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.679, 0, -0.734138, 0, 1, 0, 0.734138, 0, 0.679, 80.4753, 2.42967, 328.518 )

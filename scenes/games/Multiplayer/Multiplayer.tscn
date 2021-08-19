@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://scenes/objects/RepairDock/RepairDock.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/miscs/CaptureZone/CapureZone.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/objects/GroundFlag/GroundFlag.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsWindow.tscn" type="PackedScene" id=19]
 [ext_resource path="res://scenes/ui/ChatBox/ChatBox.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=22]
@@ -425,16 +426,36 @@ margin_right = 285.0
 margin_right = 285.0
 margin_bottom = 344.0
 
-[node name="ChangeFactionButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChangeFactionButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer"]
 margin_right = 285.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
 text = "btn_change_faction"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="QuitGameButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content" index="1"]
+[node name="OptionsButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer"]
 margin_top = 44.0
 margin_right = 285.0
 margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+text = "btn_options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitGameButton" type="Button" parent="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer"]
+margin_top = 88.0
+margin_right = 285.0
+margin_bottom = 128.0
 rect_min_size = Vector2( 0, 40 )
 text = "btn_quit"
 
@@ -454,6 +475,16 @@ text = "btn_resume"
 [node name="InGameMenu" parent="GUI" instance=ExtResource( 23 )]
 visible = false
 
+[node name="OptionsWindow" parent="GUI" instance=ExtResource( 19 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -411.0
+margin_top = -268.0
+margin_right = 411.0
+margin_bottom = 268.0
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
@@ -465,8 +496,9 @@ autoplay = true
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinButton" to="." method="_on_JoinUnitedKingdom_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer/JoinButton" to="." method="_on_JoinPirate_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="return_login_screen"]
-[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
-[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Content/VBoxContainer/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
 [connection signal="pressed" from="GUI/GameMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_AcceptButton_pressed"]
 [connection signal="help_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_help_clicked"]
 [connection signal="inventory_clicked" from="GUI/InGameMenu" to="." method="_on_InGameMenu_inventory_clicked"]
