@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/themes/default.theme" type="Theme" id=1]
 [ext_resource path="res://scenes/ui/GameMenu/GameMenu.gd" type="Script" id=2]
+[ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsWindow.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0.0705882, 0.0980392, 0.121569, 1, 0.0705882, 0.0980392, 0.121569, 1 )
@@ -75,7 +76,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 71.0
 margin_right = 984.0
 margin_bottom = 101.0
@@ -95,4 +96,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="OptionsWindow" parent="." instance=ExtResource( 3 )]
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsGame.gd" type="Script" id=1]
+
+[node name="OptionsGame" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+text = "label_language"
+valign = 1
+
+[node name="languageList" type="OptionButton" parent="HBoxContainer"]
+margin_left = 204.0
+margin_right = 1024.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[connection signal="item_selected" from="HBoxContainer/languageList" to="." method="_on_languageList_item_selected"]
