@@ -21,6 +21,7 @@ onready var gui_ingame_menu := $GUI/InGameMenu
 onready var gui_control := $GUI/ControlContainer/BoatControl
 onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
 
+onready var options_window := $GUI/OptionsWindow
 
 var start_position := Vector3.ZERO
 
@@ -345,6 +346,11 @@ func _on_ChangeFactionButton_pressed():
 	$GUI/GameMenu.close()
 
 
+func _on_OptionsButton_pressed():
+	
+	options_window.popup_centered()
+	
+
 func on_inventory_changed(_items):
 	
 	var savegame := read_save_file()
@@ -428,6 +434,4 @@ func _on_InGameMenu_inventory_clicked():
 	
 	player_ship_window.popup_centered()
 	
-
-
 
