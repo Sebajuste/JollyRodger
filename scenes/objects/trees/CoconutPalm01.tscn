@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://assets/3d/tree/CoconutPalm/trunk_lod1.material" type="Material" id=1]
 [ext_resource path="res://assets/3d/tree/CoconutPalm/leaf_lod1.material" type="Material" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/3d/tree/CoconutPalm/coconut palm leaf_n.png" type="Texture" id=7]
 [ext_resource path="res://assets/3d/tree/CoconutPalm/coconut palm leaf.png" type="Texture" id=8]
 [ext_resource path="res://assets/3d/tree/CoconutPalm/coconut palm leaf_s.png" type="Texture" id=9]
+[ext_resource path="res://scenes/objects/trees/CoconutPalm01.gd" type="Script" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.311499
@@ -120,6 +121,7 @@ shader_param/texture_metallic = ExtResource( 9 )
 shader_param/texture_normal = ExtResource( 7 )
 
 [node name="CoconutPalm01" type="StaticBody"]
+script = ExtResource( 10 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.895779, 0.164406, 0.412977, -0.180519, 0.983571, 0, -0.406193, -0.0745503, 0.910741, 0.340006, 2.14273, -0.11745 )
@@ -161,6 +163,14 @@ material/1 = ExtResource( 5 )
 [node name="MeshInstance-shadow-lod2" type="MeshInstance" parent="Skin"]
 visible = false
 cast_shadow = 3
+lod_min_distance = 510.0
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 5 )
+
+[node name="MeshInstance-lod3" type="MeshInstance" parent="Skin"]
+visible = false
+cast_shadow = 0
 lod_min_distance = 510.0
 mesh = ExtResource( 6 )
 material/0 = ExtResource( 1 )

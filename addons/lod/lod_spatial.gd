@@ -63,14 +63,14 @@ func _physics_process(delta: float) -> void:
 
 	timer = 0.0
 
-	var distance := camera.global_transform.origin.distance_to(global_transform.origin) + lod_bias
+	var distance := camera.global_transform.origin.distance_squared_to(global_transform.origin)
 	# The LOD level to choose (lower is more detailed).
 	var lod: int
-	if distance < lod_0_max_distance:
+	if distance + lod_bias < lod_0_max_distance*lod_0_max_distance:
 		lod = 0
-	elif distance < lod_1_max_distance:
+	elif distance + lod_bias < lod_1_max_distance*lod_1_max_distance:
 		lod = 1
-	elif distance < lod_2_max_distance:
+	elif distance + lod_bias < lod_2_max_distance*lod_2_max_distance:
 		lod = 2
 	else:
 		# Hide the LOD object entirely.
@@ -79,9 +79,13 @@ func _physics_process(delta: float) -> void:
 	for node in get_children():
 		# `-lod` also matches `-lod0`, `-lod1`, `-lod2`, …
 		if node.has_method("set_visible"):
-			if "-lod0" in node.name:
+			if node.name.ends_with("-lod0"):
 				node.visible = lod == 0
-			if "-lod1" in node.name:
+			elif node.name.ends_with("-lod1"):
 				node.visible = lod == 1
-			if "-lod2" in node.name:
+			elif node.name.ends_with("-lod2"):
 				node.visible = lod == 2
+			elif node.name.ends_with("-lod3"):
+				node.visible = lod == 3
+			else:
+				node.visible = false
