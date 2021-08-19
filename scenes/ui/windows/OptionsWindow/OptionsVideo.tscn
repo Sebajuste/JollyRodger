@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/ui/windows/OptionsWindow/OptionsVideo.gd" type="Script" id=1]
+[ext_resource path="res://assets/themes/classic_sans_serif.theme" type="Theme" id=2]
+
+[node name="OptionsVideo" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+text = "label_resolution"
+valign = 1
+
+[node name="ResolutionList" type="OptionButton" parent="HBoxContainer"]
+margin_left = 204.0
+margin_right = 1024.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+margin_top = 34.0
+margin_right = 1024.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+align = 2
+valign = 1
+
+[node name="Fullscreen" type="CheckBox" parent="HBoxContainer2"]
+margin_left = 204.0
+margin_right = 331.0
+margin_bottom = 30.0
+text = "label_fullscreen"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+margin_top = 68.0
+margin_right = 1024.0
+margin_bottom = 98.0
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+align = 2
+valign = 1
+
+[node name="Vsync" type="CheckBox" parent="HBoxContainer3"]
+margin_left = 204.0
+margin_right = 306.0
+margin_bottom = 30.0
+text = "label_vsync"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+margin_top = 102.0
+margin_right = 1024.0
+margin_bottom = 132.0
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+align = 2
+valign = 1
+
+[node name="Antialiasing" type="CheckBox" parent="HBoxContainer4"]
+margin_left = 204.0
+margin_right = 341.0
+margin_bottom = 30.0
+text = "label_antialiasing"
+
+[connection signal="item_selected" from="HBoxContainer/ResolutionList" to="." method="_on_ResolutionList_item_selected"]
+[connection signal="toggled" from="HBoxContainer2/Fullscreen" to="." method="_on_Fullscreen_toggled"]
+[connection signal="toggled" from="HBoxContainer3/Vsync" to="." method="_on_Vsync_toggled"]
+[connection signal="toggled" from="HBoxContainer4/Antialiasing" to="." method="_on_Antialiasing_toggled"]
