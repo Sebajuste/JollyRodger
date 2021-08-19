@@ -84,7 +84,35 @@ margin_right = 339.0
 margin_bottom = 30.0
 text = "label_antialiasing"
 
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 136.0
+margin_right = 1024.0
+margin_bottom = 140.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+margin_top = 144.0
+margin_right = 1024.0
+margin_bottom = 174.0
+
+[node name="Label" type="Label" parent="HBoxContainer5"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+text = "label_trees_details"
+valign = 1
+
+[node name="TreesDetailsList" type="OptionButton" parent="HBoxContainer5"]
+margin_left = 204.0
+margin_right = 1024.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+text = "label_ultra"
+items = [ "label_ultra", null, false, 0, null, "label_high", null, false, 1, null, "label_medium", null, false, 2, null, "label_low", null, false, 3, null ]
+selected = 0
+
 [connection signal="item_selected" from="HBoxContainer/ResolutionList" to="." method="_on_ResolutionList_item_selected"]
 [connection signal="toggled" from="HBoxContainer2/Fullscreen" to="." method="_on_Fullscreen_toggled"]
 [connection signal="toggled" from="HBoxContainer3/Vsync" to="." method="_on_Vsync_toggled"]
 [connection signal="toggled" from="HBoxContainer4/Antialiasing" to="." method="_on_Antialiasing_toggled"]
+[connection signal="item_selected" from="HBoxContainer5/TreesDetailsList" to="." method="_on_TreesDetailsList_item_selected"]
