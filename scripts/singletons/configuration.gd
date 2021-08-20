@@ -14,7 +14,7 @@ var Settings = {
 	{
 		"WIDTH": 1600,
 		"HEIGHT": 900,
-		"FullScreen": false,
+		"FullScreen": true,
 		"Vsync": true,
 		"Antialiasing": true,
 		"Trees": "high",
