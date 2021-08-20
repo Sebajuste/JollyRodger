@@ -199,7 +199,9 @@ func get_own_properties() -> Dictionary:
 
 func get_self_property(key : String):
 	var properties := get_own_properties()
-	return properties[key]
+	if properties.has(key):
+		return properties[key]
+	return null
 
 
 func _player_connected(id: int):

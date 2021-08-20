@@ -1,0 +1,9 @@
+{
+	"contains_albedo": false,
+	"resolution": 512,
+	"src": {
+		"a": "res://assets/2d/textures/terrain/Rocks007_1K-JPG/Rocks007_1K_Roughness.jpg",
+		"normalmap_flip_y": true,
+		"rgb": "res://assets/2d/textures/terrain/Rocks007_1K-JPG/Rocks007_1K_Normal.jpg"
+	}
+}

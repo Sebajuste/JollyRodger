@@ -4,10 +4,11 @@ extends StaticBody
 export var heal_value := 5
 
 
+export(String, "None", "GB", "Spain", "Pirate") var faction := "None"
+
+
 onready var detection_area := $DetectionArea
 onready var faction_handler := $Capturable
-
-
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,6 +20,8 @@ func _ready():
 		
 		$RepairTimer.start()
 		
+	
+	faction_handler.faction = faction
 	
 	pass # Replace with function body.
 

@@ -13,7 +13,7 @@ const TEXTURE_MAP := {
 export(String, "None", "GB", "Spain", "Pirate") var faction := "None" setget set_faction
 
 
-onready var flag_texture := $Pivot/Viewport/FlagTexture
+onready var flag_texture := $Viewport/FlagTexture
 
 
 # Called when the node enters the scene tree for the first time.
@@ -21,7 +21,6 @@ func _ready():
 	
 	set_faction(faction)
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,6 +35,7 @@ func load_texture():
 		var texture : Texture = load(texture_path)
 		if texture:
 			flag_texture.texture = texture
+			print("load flag texture : ", faction)
 
 
 func set_faction(value):
