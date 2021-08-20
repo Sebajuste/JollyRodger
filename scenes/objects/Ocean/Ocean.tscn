@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/objects/Ocean/Ocean.gd" type="Script" id=1]
 [ext_resource path="res://assets/3d/waterplane/waterplane_ultra.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://scenes/objects/Ocean/ocean2.material" type="Material" id=3]
 [ext_resource path="res://scenes/objects/Ocean/NetSyncOcean.gd" type="Script" id=4]
+[ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=5]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 800, 800 )
@@ -258,5 +259,10 @@ margin_right = 40.0
 margin_bottom = 40.0
 texture = SubResource( 4 )
 expand = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = 0.8
+autoplay = true
 
 [connection signal="timeout" from="NetNodeSync/Timer" to="NetNodeSync" method="sync_ocean"]

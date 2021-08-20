@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/objects/Floater/Floater.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/3d/ships/swedish_royal_yacht_amadis/SwedishRoyalTachtAmadis.tscn" type="PackedScene" id=2]
@@ -11,6 +11,22 @@ height = 14.1367
 
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 2.44609, 0.134787, 8.3606 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 1, 0.933333, 0.572549, 1 )
+emission_enabled = true
+emission = Color( 1, 0.956863, 0.729412, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="QuadMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 0.85, 0.6 )
+
+[sub_resource type="QuadMesh" id=7]
+material = SubResource( 5 )
+size = Vector2( 3.3, 0.7 )
 
 [sub_resource type="SphereShape" id=3]
 radius = 12.5004
@@ -39,6 +55,35 @@ transform = Transform( -0.01, 0, -8.74228e-10, 0, 0.01, 0, 8.74228e-10, 0, -0.01
 [node name="Flag" parent="." index="3"]
 transform = Transform( -0.00774917, 0, -0.99997, 0, 1, 0, 0.99997, 0, -0.00774917, 0, 25.755, -2.104 )
 
+[node name="Lights" parent="." index="4"]
+visible = false
+
+[node name="OmniLight" type="OmniLight" parent="Lights" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141708, 3.1213, 6.34083 )
+omni_range = 5.12334
+
+[node name="OmniLight2" type="OmniLight" parent="Lights" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141708, 2.77066, -5.68616 )
+light_energy = 0.5
+omni_range = 30.0
+omni_attenuation = 6.0629
+omni_shadow_detail = 0
+
+[node name="Window1" type="MeshInstance" parent="Lights" index="2"]
+transform = Transform( 0.117208, 0, 0.993107, 0, 1, 0, -0.993107, 0, 0.117208, 2.19997, 1.62308, 6.19814 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="Window2" type="MeshInstance" parent="Lights" index="3"]
+transform = Transform( 0.114712, 0, -0.993399, 0, 1, 0, 0.993399, 0, 0.114712, -2.17226, 1.62308, 6.1934 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="Window3" type="MeshInstance" parent="Lights" index="4"]
+transform = Transform( 0.999927, 0.0120865, 0.000342529, -0.0115628, 0.964114, -0.265238, -0.00353605, 0.265214, 0.964183, -0.00209104, 2.66758, 8.60546 )
+mesh = SubResource( 7 )
+material/0 = null
+
 [node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
 
@@ -51,10 +96,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -8 )
 [node name="Floater4" parent="FloatManager" index="3" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, -8 )
 
-[node name="Rudder" parent="." index="5"]
+[node name="Rudder" parent="." index="6"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949787, 7.81677 )
 
-[node name="CaptainPlace" parent="." index="6"]
+[node name="CaptainPlace" parent="." index="7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21393, 2.74632, 3.27008 )
 
 [node name="Cannon" parent="Cannons" index="0" instance=ExtResource( 4 )]
@@ -81,22 +126,22 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.81797
 [node name="Cannon8" parent="Cannons" index="7" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.7035, 1.85146, -4.1278 )
 
-[node name="SelectArea" parent="." index="8"]
+[node name="SelectArea" parent="." index="9"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.32715, -0.943612 )
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
 shape = SubResource( 3 )
 
-[node name="Sticker3D" parent="." index="9"]
+[node name="Sticker3D" parent="." index="10"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.6567, 0 )
 
-[node name="HitBox" parent="." index="10"]
+[node name="HitBox" parent="." index="11"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )
 
 [node name="CollisionShape" parent="HitBox" index="0"]
 shape = SubResource( 4 )
 
-[node name="DamageStats" parent="." index="15"]
+[node name="DamageStats" parent="." index="16"]
 max_health = 40
 
 [editable path="SelectArea"]

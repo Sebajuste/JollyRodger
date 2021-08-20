@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-clouds_coverage = 0.3
+clouds_coverage = 0.6
 fog_begin = 100
 fog_end = 1000
 wind_strength = 1.0

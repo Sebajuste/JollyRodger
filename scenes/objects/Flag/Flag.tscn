@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/2d/textures/flag_united_kingdom.png" type="Texture" id=3]
 [ext_resource path="res://scenes/objects/Flag/flag.shader" type="Shader" id=4]
 
-[sub_resource type="ViewportTexture" id=10]
+[sub_resource type="ViewportTexture" id=13]
 viewport_path = NodePath("Pivot/Viewport")
 
 [sub_resource type="OpenSimplexNoise" id=11]
@@ -13,7 +13,7 @@ viewport_path = NodePath("Pivot/Viewport")
 [sub_resource type="NoiseTexture" id=12]
 noise = SubResource( 11 )
 
-[sub_resource type="ShaderMaterial" id=9]
+[sub_resource type="ShaderMaterial" id=14]
 resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/albedo = Color( 1, 1, 1, 1 )
@@ -28,7 +28,7 @@ shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/uv_offset_scale = Vector2( -0.2, -0.1 )
 shader_param/face_distortion = 0.5
 shader_param/time_scale = Vector2( 0.1, 0 )
-shader_param/texture_albedo = SubResource( 10 )
+shader_param/texture_albedo = SubResource( 13 )
 shader_param/uv_offset_texture = SubResource( 12 )
 
 [sub_resource type="PlaneMesh" id=1]
@@ -38,13 +38,12 @@ subdivide_depth = 32
 
 [node name="Flag" type="Spatial"]
 script = ExtResource( 1 )
-faction = "Spain"
 
 [node name="Pivot" type="Spatial" parent="."]
 
 [node name="FlagMesh" type="MeshInstance" parent="Pivot"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.5, 0, 0 )
-material_override = SubResource( 9 )
+material_override = SubResource( 14 )
 mesh = SubResource( 1 )
 material/0 = null
 

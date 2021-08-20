@@ -21,9 +21,16 @@ onready var rain_2 := $Rain2
 onready var rain_3 := $Rain3
 
 
+var steps := []
 var weather : GameWeater setget set_weather
 var weather_offset := 0.0
 
+
+var clouds_coverage := 0.0
+var wind_strength := 0.0
+var fog_depth_begin := 0.0
+var fog_depth_end := 0.0
+var rain := 0.0
 
 func _init():
 	
@@ -36,6 +43,10 @@ func _ready():
 	rain_1.set_as_toplevel(true)
 	rain_2.set_as_toplevel(true)
 	rain_3.set_as_toplevel(true)
+	
+	steps.append(weather_step0)
+	steps.append(weather_step1)
+	steps.append(weather_step2)
 	
 	update_cloud_config()
 	
@@ -50,45 +61,15 @@ func _process(delta):
 	
 	var weather_value := (noise_1d+1) / 2.0
 	
-	var weather_pow := weather_value*weather_value
-	
-	var clouds_coverage := 0.0
-	var wind_strength := 0.0
-	var rain := 0
-	
-	
-	if weather_pow > 0.5:
-		var val := weather_pow - 0.5
-		
-		var clouds_coverage_delta : float = weather_step2.clouds_coverage - weather_step1.clouds_coverage
-		clouds_coverage = (val * clouds_coverage_delta) / 0.5 + weather_step1.clouds_coverage
-		
-		var wind_strength_delta : float = weather_step2.wind_strength - weather_step1.wind_strength
-		wind_strength = (val * wind_strength_delta) / 0.5 + weather_step1.wind_strength
-		
-	else:
-		var val := weather_pow
-		
-		var clouds_coverage_delta : float = weather_step2.clouds_coverage - weather_step1.clouds_coverage
-		clouds_coverage = (val * clouds_coverage_delta) / 0.5 + weather_step1.clouds_coverage
-		
-		var wind_strength_delta : float = weather_step2.wind_strength - weather_step1.wind_strength
-		wind_strength = (val * wind_strength_delta) / 0.5 + weather_step1.wind_strength
-	
-	
-	if weather_pow > 0.60:
-		rain = weather_step2.rain
-		#set_weather(weather_step2)
-	elif weather_pow > 0.30:
-		rain = weather_step1.rain
-		#set_weather(weather_step1)
-	else:
-		rain = weather_step0.rain
-		#set_weather(weather_step0)
+	update_values(weather_value*weather_value)
 	
 	
 	if sky is GameSky:
 		sky.clouds_coverage = lerp(sky.clouds_coverage, clouds_coverage, delta * weather_interpolation_speed)
+		
+		sky.env.fog_depth_begin = lerp(sky.env.fog_depth_begin, fog_depth_begin, delta * weather_interpolation_speed * 100)
+		sky.env.fog_depth_end = lerp(sky.env.fog_depth_end, fog_depth_end, delta * weather_interpolation_speed * 100)
+		
 	
 	if ocean is Ocean:
 		ocean.wind_strength = lerp(ocean.wind_strength, wind_strength, delta * weather_interpolation_speed)
@@ -123,7 +104,11 @@ func _process(delta):
 			rain_3.visible = false
 			rain_3.emitting = false
 	
-	$RainSound.playing = true if rain > 0 else false
+	if rain > 0:
+		if not $RainSound.playing:
+			$RainSound.playing = true
+	else:
+		$RainSound.playing = false
 	
 	pass
 
@@ -146,6 +131,36 @@ func update_cloud_config():
 	if sky:
 		sky.clouds_quality = Configuration.Settings.Display.CloudsQuality
 	
+
+
+func update_values(weather_value : float):
+	
+	var step_size := ( 1.0 / (steps.size()-1) )
+	
+	if step_size == 0:
+		return
+	
+	var step_index := int(weather_value / step_size)
+	
+	var from = steps[step_index]
+	var to = steps[step_index+1]
+	
+	var step_value := weather_value - step_index*step_size
+	
+	clouds_coverage = _calcul_step(from, to, "clouds_coverage", step_value)
+	
+	rain = _calcul_step(from, to, "rain", step_value)
+	
+	wind_strength = _calcul_step(from, to, "wind_strength", step_value)
+	
+	fog_depth_begin = _calcul_step(from, to, "fog_begin", step_value)
+	fog_depth_end = _calcul_step(from, to, "fog_end", step_value)
+	
+
+
+func _calcul_step(from : Object, to : Object, property : String, value : float) -> float:
+	var delta : float = to.get(property) - from.get(property)
+	return (value * delta) / 0.5 + from.get(property)
 
 
 func set_weather(value):

@@ -155,6 +155,24 @@ text = "label_high"
 items = [ "label_ultra", null, false, 0, null, "label_high", null, false, 1, null, "label_medium", null, false, 2, null, "label_low", null, false, 3, null ]
 selected = 1
 
+[node name="GodRays" type="HBoxContainer" parent="."]
+margin_top = 246.0
+margin_right = 1024.0
+margin_bottom = 276.0
+
+[node name="Label" type="Label" parent="GodRays"]
+margin_right = 200.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 200, 30 )
+align = 2
+valign = 1
+
+[node name="GodRaysCheckbox" type="CheckBox" parent="GodRays"]
+margin_left = 204.0
+margin_right = 327.0
+margin_bottom = 30.0
+text = "label_god_rays"
+
 [connection signal="item_selected" from="HBoxContainer/ResolutionList" to="." method="_on_ResolutionList_item_selected"]
 [connection signal="toggled" from="HBoxContainer2/Fullscreen" to="." method="_on_Fullscreen_toggled"]
 [connection signal="toggled" from="HBoxContainer3/Vsync" to="." method="_on_Vsync_toggled"]
@@ -162,3 +180,4 @@ selected = 1
 [connection signal="item_selected" from="TreeDetails/TreesDetailsList" to="." method="_on_TreesDetailsList_item_selected"]
 [connection signal="item_selected" from="RainDetails/RainDetailsList" to="." method="_on_RainDetailsList_item_selected"]
 [connection signal="item_selected" from="CloudsQuality/CloudsQualityList" to="." method="_on_CloudsQualityList_item_selected"]
+[connection signal="toggled" from="GodRays/GodRaysCheckbox" to="." method="_on_GodRays_toggled"]

@@ -51,7 +51,8 @@ export (Color, RGBA) var clouds_tint :Color = Color(1.0,1.0,1.0,1.0) setget set_
 export (float, 0.0,1.0,0.0001) var sun_radius: float = 0.04 setget set_sun_radius#from 0 to 1
 export (float, 0.0,0.5,0.0001) var moon_radius: float = 0.1 setget set_moon_radius#from 0 to 0.5
 export (float, -1.0,1.0,0.0001) var moon_phase: float =0.0 setget set_moon_phase#from 0 to 1
-export var night_level_light: float=0.05 setget set_night_level_light
+#export var day_level_light: float = 1.0 setget set_day_level_light
+export var night_level_light: float = 0.05 setget set_night_level_light
 export var wind_dir: Vector2=Vector2(1.0,0.0) setget set_wind_dir
 export (float, 0.0,1.0,0.0001) var wind_strength: float = 0.1 setget set_wind_strength#from 0 to 1
 export var lighting_pos: Vector3=Vector3(0.0,1.0,1.0) setget set_lighting_pos
@@ -106,9 +107,14 @@ func set_sky_gradient(value: GradientTexture):
 		call_deferred("set_call_deff_shader_params", sky_tex.material, "shader_param/sky_gradient_texture",sky_gradient_texture)
 		
 
+"""
+func set_day_level_light(value : float):
+	day_level_light = max(value, 0.0)
+	set_time()
+"""
 
 func set_night_level_light(value: float):
-	night_level_light = clamp(value,0.0,1.0)
+	night_level_light = clamp(value, 0.0, 1.0)
 	set_time()
 
 func set_hours(value: int):
@@ -138,6 +144,7 @@ func set_time_of_day(value: float):
 	#print (hours,":",minutes,":",seconds)
 	set_time()
 
+
 func set_time():
 	if !is_inside_tree():
 		return
@@ -147,17 +154,27 @@ func set_time():
 	moon_pos = Vector3(0.0,1.0,0.0).normalized().rotated(Vector3(1.0,0.0,0.0).normalized(),phi) #Same for Moon
 	var moon_tex_pos: Vector3 = Vector3(0.0,1.0,0.0).normalized().rotated(Vector3(1.0,0.0,0.0).normalized(),(phi+PI)*0.5) #This magical formula for shader
 	call_deferred("set_call_deff_shader_params", sky_tex.material, "shader_param/MOON_TEX_POS",moon_tex_pos)
+	
+	
+	
 	var light_energy: float = smoothstep(sunset_offset, 0.8, sun_pos.y);# light intensity depending on the height of the sun
+	
+	#var light_energy: float = smoothstep(0.0, 1.0, sun_pos.y)
+	"""
+	if sun_pos.y > 0.0:
+		light_energy *= day_level_light
+		pass
+	"""
 	call_deferred("set_call_deff_shader_params", sky_tex.material, "shader_param/SUN_POS",sun_pos)
 	call_deferred("set_call_deff_shader_params", sky_tex.material, "shader_param/MOON_POS",moon_pos)
 	call_deferred("set_call_deff_shader_params", clouds_tex.material, "shader_param/SUN_POS",-sun_pos)
 	call_deferred("set_call_deff_shader_params", sky_tex.material, "shader_param/attenuation",clamp(light_energy,night_level_light*0.25,1.00))#clouds to bright with night_level_light
-	light_energy = clamp(light_energy,night_level_light,1.00);
+	light_energy = clamp(light_energy, night_level_light, 1.0);
 	var sun_height: float = sun_pos.y-sunset_offset
 	if sun_height < sunset_range:
-		light_color=lerp(moon_light, sunset_light, clamp(sun_height/sunset_range,0.0,1.0))
+		light_color = lerp(moon_light, sunset_light, clamp(sun_height/sunset_range,0.0,1.0))
 	else:
-		light_color=lerp(sunset_light, day_light, clamp((sun_height-sunset_range)/sunset_range,0.0,1.0))
+		light_color = lerp(sunset_light, day_light, clamp((sun_height-sunset_range)/sunset_range,0.0,1.0))
 	if sun_pos.y < 0.0:
 		if moon_pos.normalized() != Vector3.UP:# error  Up vector and direction between node origin and target are aligned, look_at() failed.
 			sun.look_at_from_position(moon_pos,Vector3.ZERO,Vector3.UP); # move sun to position and look at center scene from position
@@ -165,8 +182,9 @@ func set_time():
 		if sun_pos.normalized() != Vector3.UP:
 			sun.look_at_from_position(sun_pos,Vector3.ZERO,Vector3.UP); # move sun to position and look at center scene from position
 	set_clouds_tint(light_color) # comment this, if you need custom clouds tint
-	light_energy = light_energy *(1-clouds_coverage*0.5)
+	light_energy = light_energy * (1-clouds_coverage*0.5)
 	sun.light_energy = light_energy
+	
 	sun.light_color = light_color
 	env.ambient_light_energy = light_energy
 	env.ambient_light_color = light_color

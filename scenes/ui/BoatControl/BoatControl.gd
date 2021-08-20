@@ -110,6 +110,40 @@ func _physics_process(_delta):
 			ship.sail_position = sails_control.value
 
 
+func _input(event):
+	if event.is_action_pressed("fire_order") and selector_handler:
+		
+		var ship = ship_ref.get_ref()
+		
+		if not ship:
+			return
+		
+		var target : Spatial = selector_handler.get_select()
+		
+		if target:
+			
+			var target_pos := target.global_transform.origin + Vector3.UP*3.0
+			
+			
+			if target is RigidBody:
+				ship.cannons.fire(target_pos, target.linear_velocity)
+			else:
+				ship.cannons.fire(target_pos)
+	
+	if event.is_action_pressed("enable_lights"):
+		var ship = ship_ref.get_ref()
+		if ship:
+			if not ship.lights.visible:
+				ship.lights.visible = true
+			else:
+				ship.lights.visible = false
+		
+		pass
+
+
+
+
+
 func _unhandled_input(event):
 	
 	if event.is_action_pressed("move_forward"):
@@ -139,26 +173,9 @@ func _unhandled_input(event):
 	
 	if event.is_action_released("move_left"):
 		move_left = false
-	
-	if event.is_action_pressed("fire_order") and selector_handler:
-		
-		var ship = ship_ref.get_ref()
-		
-		if not ship:
-			return
-		
-		var target : Spatial = selector_handler.get_select()
-		
-		if target:
-			
-			var target_pos := target.global_transform.origin + Vector3.UP*3.0
-			
-			
-			if target is RigidBody:
-				ship.cannons.fire(target_pos, target.linear_velocity)
-			else:
-				ship.cannons.fire(target_pos)
-	
+
+
+
 
 
 func set_ship(value):

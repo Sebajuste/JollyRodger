@@ -9,6 +9,7 @@ onready var antialiasing_checkbox = $HBoxContainer4/Antialiasing
 onready var trees_details_select = $TreeDetails/TreesDetailsList
 onready var rain_details_select = $RainDetails/RainDetailsList
 onready var clouds_quality_select = $CloudsQuality/CloudsQualityList
+onready var god_rays_checkbox = $GodRays/GodRaysCheckbox
 
 
 const OPTIONS_LEVELS_4 := {
@@ -33,8 +34,8 @@ var vsync = true
 
 var trees_detail_level : String
 var rain_detail_level : String
-var clouds_quality
-
+var clouds_quality : int
+var god_rays := false
 
 func reload():
 	
@@ -48,6 +49,7 @@ func reload():
 	trees_detail_level = Configuration.Settings.Display.Trees
 	rain_detail_level = Configuration.Settings.Display.RainDetails
 	clouds_quality = Configuration.Settings.Display.CloudsQuality
+	god_rays = Configuration.Settings.Display.GodRays
 	
 	# Update UI selectors
 	for index in resolution_select.get_item_count():
@@ -76,6 +78,8 @@ func reload():
 			clouds_quality_select.select(index)
 			break
 	
+	god_rays_checkbox.pressed = god_rays
+	
 
 
 func apply():
@@ -89,6 +93,8 @@ func apply():
 	Configuration.Settings.Display.Trees = trees_detail_level
 	Configuration.Settings.Display.Rain = rain_detail_level
 	Configuration.Settings.Display.CloudsQuality = clouds_quality
+	Configuration.Settings.Display.GodRays = god_rays
+	
 	
 	Configuration.apply_settings()
 
@@ -149,4 +155,9 @@ func _on_RainDetailsList_item_selected(index):
 func _on_CloudsQualityList_item_selected(index):
 	var quality : String = OPTIONS_LEVELS_4[index]
 	clouds_quality = CLOUDS_QUALITY[quality]
-	pass # Replace with function body.
+	apply()
+
+
+func _on_GodRays_toggled(button_pressed):
+	god_rays = button_pressed
+	apply()

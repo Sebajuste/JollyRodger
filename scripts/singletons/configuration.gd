@@ -19,7 +19,8 @@ var Settings = {
 		"Antialiasing": true,
 		"Trees": "high",
 		"RainDetails": "high",
-		"CloudsQuality": 25
+		"CloudsQuality": 25,
+		"GodRays": true
 	},
 	"Audio":
 	{

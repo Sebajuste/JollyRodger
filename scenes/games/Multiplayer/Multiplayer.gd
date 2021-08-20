@@ -20,6 +20,7 @@ onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
 onready var gui_ingame_menu := $GUI/InGameMenu
 onready var gui_control := $GUI/ControlContainer/BoatControl
 onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
+onready var gui_weather_forecast = $GUI/ForecastContainer
 
 onready var options_window := $GUI/OptionsWindow
 
@@ -101,6 +102,16 @@ func _input(event):
 			pass
 		
 		pass
+	
+	if event.is_action_pressed("show_forecast"):
+		
+		if not gui_weather_forecast.visible:
+			gui_weather_forecast.visible = true
+		else:
+			gui_weather_forecast.visible = false
+		
+		pass
+	
 
 
 func read_save_file() -> Dictionary:

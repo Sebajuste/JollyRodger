@@ -1,9 +1,8 @@
+tool
 extends MeshInstance
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+export var deep_offset := 30
 
 
 # Called when the node enters the scene tree for the first time.
@@ -16,10 +15,9 @@ func _ready():
 #func _process(delta):
 #	pass
 
+
 func _physics_process(_delta):
 	var camera := get_viewport().get_camera()
 	if camera:
 		global_transform.origin = camera.global_transform.origin
-		global_transform.origin.y = -50
-		
-	
+		global_transform.origin.y = -deep_offset
