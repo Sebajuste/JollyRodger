@@ -34,8 +34,8 @@ gradient = ExtResource( 27 )
 
 [sub_resource type="Curve3D" id=2]
 _data = {
-"points": PoolVector3Array( 227.613, 0, 163.108, -227.613, 0, -163.108, 382.5, 0.00421143, -700.249, 229.858, -6.10352e-05, -275.108, -229.858, 6.10352e-05, 275.108, -706.955, -6.10352e-05, -732.785, -177.615, 0, -37.0749, 177.615, 0, 37.0749, -620.957, 0, 24.0755, -51.2599, 0.322906, -33.5518, 51.2599, -0.322906, 33.5518, -46.9549, 0, 56.5519, -248.958, 0, -217.041, 248.958, 0, 217.041, 125.335, 6.10352e-05, 780.738, -189.911, 6.10352e-05, 193.102, 189.911, -6.10352e-05, -193.102, 774.861, 0, 675.409, 484.153, 6.10352e-05, 317.254, -484.153, -6.10352e-05, -317.254, 382.5, 0.00421143, -700.249 ),
-"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0 )
+"points": PoolVector3Array( 279.577, -0.820313, 280.252, -279.577, 0.820313, -280.252, 650.783, -1.0542, -547.898, 416.704, 0.0974731, -288.984, -416.704, -0.0974731, 288.984, -663.139, -0.710815, -630.956, -428.765, 1.63037, -345.62, 428.765, -1.63037, 345.62, -675.017, -3.03271, 804.017, -365.384, -1.52112, 410.489, 365.384, 1.52112, -410.489, 781.176, -0.25769, 712.516, 346.017, -1.49377, 377.181, -346.017, 1.49377, -377.181, 650.783, -1.0542, -547.898 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0 )
 }
 
 [sub_resource type="OpenSimplexNoise" id=3]
@@ -60,7 +60,6 @@ time_of_day_setup = 0.416667
 clouds_tint = Color( 1, 1, 1, 1 )
 
 [node name="Ocean" parent="World" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.248171, -0.562365, -1.28068 )
 wave_direction = Vector2( 1, 1 )
 amplitude = 30.0
 steepness = 0.134
@@ -72,9 +71,6 @@ current = true
 [node name="Island01NetProxy" parent="World" instance=ExtResource( 11 )]
 client_path = "res://scenes/levels/Island01/Island01.tscn"
 server_path = "res://scenes/levels/Island01/Island01Collider.tscn"
-
-[node name="SpawnPositionA" type="Position3D" parent="World/Island01NetProxy"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 122.995, 0, 642.187 )
 
 [node name="CapureZone" parent="World/Island01NetProxy" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 91.1372, 0, 170.143 )
@@ -96,9 +92,6 @@ transform = Transform( 0.915684, 0, 0.4019, 0, 1, 0, -0.4019, 0, 0.915684, 32.03
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -500, 0, -500 )
 client_path = "res://scenes/levels/Island02/Island02.tscn"
 server_path = "res://scenes/levels/Island02/Island02Collider.tscn"
-
-[node name="SpawnPositionB" type="Position3D" parent="World/Island02NetProxy"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 11.6987 )
 
 [node name="CapureZone" parent="World/Island02NetProxy" instance=ExtResource( 17 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 119.206, 0, 430.653 )
@@ -148,8 +141,74 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.404, 15.2812, -130.235 )
 [node name="Tower4" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 164.2, 7.99862, 46.228 )
 
+[node name="Island04NetProxy" parent="World" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1500, 0, 1500 )
+client_path = "res://scenes/levels/Island04/Island04.tscn"
+server_path = "res://scenes/levels/Island04/Island04Collider.tscn"
+
+[node name="SpawnPositionA" type="Position3D" parent="World/Island04NetProxy"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.952, 0, 248.172 )
+
+[node name="RepairDock" parent="World/Island04NetProxy" instance=ExtResource( 16 )]
+transform = Transform( -0.21257, 0, -0.977146, 0, 1, 0, 0.977146, 0, -0.21257, 208.456, 1.50436, 266.132 )
+faction = "GB"
+
+[node name="Tower" parent="World/Island04NetProxy" instance=ExtResource( 15 )]
+transform = Transform( 0.0346379, 0, -0.9994, 0, 1, 0, 0.9994, 0, 0.0346379, 55.3043, 10.7874, 58.1118 )
+faction = "GB"
+invincible = true
+
+[node name="Tower2" parent="World/Island04NetProxy" instance=ExtResource( 15 )]
+transform = Transform( 0.0346379, 0, -0.9994, 0, 1, 0, 0.9994, 0, 0.0346379, 256.076, 16.8255, 32.705 )
+faction = "GB"
+invincible = true
+
+[node name="Tower3" parent="World/Island04NetProxy" instance=ExtResource( 15 )]
+transform = Transform( -0.686961, 0, 0.726695, 0, 1, 0, -0.726695, 0, -0.686961, 238.776, 7.11529, 460.846 )
+faction = "GB"
+invincible = true
+
+[node name="Tower4" parent="World/Island04NetProxy" instance=ExtResource( 15 )]
+transform = Transform( 0.611002, 0, -0.791629, 0, 1, 0, 0.791629, 0, 0.611002, 122.304, 29.3011, 372.511 )
+faction = "GB"
+invincible = true
+
+[node name="Tower5" parent="World/Island04NetProxy" instance=ExtResource( 15 )]
+transform = Transform( -0.686961, 0, 0.726695, 0, 1, 0, -0.726695, 0, -0.686961, 469.848, 17.2386, 378.501 )
+faction = "GB"
+invincible = true
+
+[node name="Island05NetProxy" parent="World" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1500, 0, -1500 )
+client_path = "res://scenes/levels/Island05/Island05.tscn"
+server_path = "res://scenes/levels/Island05/Island05Collider.tscn"
+
+[node name="SpawnPositionB" type="Position3D" parent="World/Island05NetProxy"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 188.62, 0, 276.303 )
+
+[node name="RepairDock" parent="World/Island05NetProxy" instance=ExtResource( 16 )]
+transform = Transform( 0.111937, 0, 0.993715, 0, 1, 0, -0.993715, 0, 0.111937, 123.556, 0.579837, 249.744 )
+faction = "Pirate"
+
+[node name="Tower" parent="World/Island05NetProxy" instance=ExtResource( 15 )]
+transform = Transform( -0.258178, 0, 0.966097, 0, 1, 0, -0.966097, 0, -0.258178, 406.392, 2.45997, 255.33 )
+faction = "Pirate"
+invincible = true
+
+[node name="Tower2" parent="World/Island05NetProxy" instance=ExtResource( 15 )]
+transform = Transform( -0.258178, 0, 0.966097, 0, 1, 0, -0.966097, 0, -0.258178, 346.265, 16.7749, 383.781 )
+faction = "Pirate"
+invincible = true
+
 [node name="SpawnZone" parent="World" instance=ExtResource( 22 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 933.457, 0, -981.944 )
+spawn_object = ExtResource( 21 )
+area = Vector3( 50, 0, 50 )
+respawn_timer = 30
+autoreload = true
+
+[node name="SpawnZone2" parent="World" instance=ExtResource( 22 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1116.84, 0, 1129.98 )
 spawn_object = ExtResource( 21 )
 area = Vector3( 50, 0, 50 )
 respawn_timer = 30
@@ -234,13 +293,12 @@ margin_bottom = 142.0
 selector_path = NodePath("../../../SelectorHandler")
 
 [node name="HelpContainer" type="MarginContainer" parent="GUI"]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -331.0
 margin_top = 20.0
 margin_right = -20.0
-margin_bottom = 224.0
+margin_bottom = 252.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -249,7 +307,7 @@ __meta__ = {
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 311.0
-margin_bottom = 204.0
+margin_bottom = 232.0
 
 [node name="CannonsContainer" type="MarginContainer" parent="GUI"]
 anchor_top = 0.5
@@ -511,6 +569,8 @@ margin_bottom = 268.0
 
 [connection signal="object_created" from="World/SpawnZone" to="." method="_on_SpawnZone_object_created"]
 [connection signal="spawn_object" from="World/SpawnZone" to="." method="_on_SpawnZone_spawn_object"]
+[connection signal="object_created" from="World/SpawnZone2" to="." method="_on_SpawnZone_object_created"]
+[connection signal="spawn_object" from="World/SpawnZone2" to="." method="_on_SpawnZone_spawn_object"]
 [connection signal="faction_data_updated" from="FactionManager" to="GUI/FactionSelector" method="_on_faction_data_updated"]
 [connection signal="pressed" from="GUI/SinkMenu/MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_RestartGameButton_pressed"]
 [connection signal="pressed" from="GUI/FactionSelector/MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinButton" to="." method="_on_JoinUnitedKingdom_pressed"]

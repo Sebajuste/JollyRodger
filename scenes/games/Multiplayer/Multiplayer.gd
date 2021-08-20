@@ -14,8 +14,8 @@ onready var faction_manager := $FactionManager
 
 onready var selector_handler := $SelectorHandler
 
-onready var start_position_a := $World/Island01NetProxy/SpawnPositionA
-onready var start_position_b := $World/Island02NetProxy/SpawnPositionB
+onready var start_position_a := $World/Island04NetProxy/SpawnPositionA
+onready var start_position_b := $World/Island05NetProxy/SpawnPositionB
 
 onready var gui_ingame_menu := $GUI/InGameMenu
 onready var gui_control := $GUI/ControlContainer/BoatControl
@@ -57,6 +57,7 @@ func _ready():
 		print("Game ready")
 	else:
 		
+		var _r = get_tree().connect("network_peer_connected", self, "_on_player_connected")
 		
 		# $AudioStreamPlayer.queue_free()
 		pass
@@ -217,9 +218,9 @@ func create_player():
 	player.label = Network.get_self_property("username")
 	player.faction = faction
 	player.transform.origin = start_position + Vector3(
-		rand_range(-100, 100),
+		rand_range(-30, 30),
 		2.0,
-		rand_range(-100, 100)
+		rand_range(-30, 30)
 	)
 	
 	world.add_child(player)
@@ -296,6 +297,18 @@ func _on_server_disconnected():
 func _on_server_kicked(cause):
 	print("Kicked from server. Cause : ", cause)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
+
+
+func _on_player_connected():
+	
+	var peer_count := Network.get_count_peers()
+	
+	var count_ship_spawn := int(max(peer_count / 2.0, 1.0))
+	
+	$World/SpawnZone.count_object = count_ship_spawn
+	$World/SpawnZone2.count_object = count_ship_spawn
+	
+	pass
 
 
 func _on_ship_destroyed():
@@ -408,7 +421,7 @@ func _on_SpawnZone_spawn_object(object):
 	object.label = "label_ship_spain"
 	
 	object.control_mode = "AI"
-	object.control_sm.get_node("Control/AI").follow_path($World/Path)
+	object.control_sm.get_node("Control/AI").follow_path($World/Path, true)
 	
 	var cannon := GameTable.get_item(100001)
 	for _i in range(4):

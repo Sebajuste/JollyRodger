@@ -118,15 +118,15 @@ func set_night_level_light(value: float):
 	set_time()
 
 func set_hours(value: int):
-	hours = clamp(value,0,23)
+	hours = int(clamp(value,0,23))
 	set_time_of_day((hours*3600+minutes*60+seconds)*one_second)
 		
 func set_minutes(value: int):
-	minutes = clamp(value,0,59)
+	minutes = int(clamp(value,0,59))
 	set_time_of_day((hours*3600+minutes*60+seconds)*one_second)
 	
 func set_seconds(value: int):
-	seconds = clamp(value,0,59)
+	seconds = int(clamp(value,0,59))
 	set_time_of_day((hours*3600+minutes*60+seconds)*one_second)
 		
 func set_time_of_day(value: float):
@@ -226,7 +226,7 @@ func set_clouds_dens(value: float):
 		call_deferred("set_call_deff_shader_params", clouds_tex.material, "shader_param/DENS",clouds_dens)
 
 func set_clouds_quality(value: int):
-	clouds_quality = clamp(value, 0, 100)
+	clouds_quality = int(clamp(value, 0, 100))
 	if is_inside_tree():
 		call_deferred("set_call_deff_shader_params", clouds_tex.material, "shader_param/STEPS",clamp (clouds_quality,5,100))
 

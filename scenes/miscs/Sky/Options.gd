@@ -9,7 +9,7 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	Configuration.connect("configuration_changed", self, "_on_configuration_changed")
+	var _r := Configuration.connect("configuration_changed", self, "_on_configuration_changed")
 	
 	update_options()
 	
@@ -26,7 +26,7 @@ func update_options():
 		god_rays.visible = Configuration.Settings.Display.GodRays
 
 
-func _on_configuration_changed(config):
+func _on_configuration_changed(_config):
 	
 	update_options()
 	

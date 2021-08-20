@@ -20,7 +20,7 @@
 [sub_resource type="GradientTexture" id=1]
 gradient = ExtResource( 13 )
 
-[sub_resource type="OpenSimplexNoise" id=4]
+[sub_resource type="OpenSimplexNoise" id=2]
 octaves = 1
 period = 200.0
 persistence = 0.3
@@ -48,10 +48,11 @@ target_path = NodePath("../Player/CaptainPlace")
 [node name="Sky" parent="." instance=ExtResource( 3 )]
 fog_gradient_texture = SubResource( 1 )
 SCATERRING = false
-hours = 11
+hours = 10
+minutes = 59
+seconds = 59
 time_of_day_setup = 0.458333
 sunset_light = Color( 1, 0.701961, 0.54902, 1 )
-sunset_offset = -0.1
 clouds_tint = Color( 1, 1, 1, 1 )
 sun_radius = 0.02
 
@@ -67,7 +68,7 @@ global_time_speed = 1000
 night_time_speed = 4
 
 [node name="WeatherManager" parent="." instance=ExtResource( 12 )]
-weather_noise = SubResource( 4 )
+weather_noise = SubResource( 2 )
 sky_path = NodePath("../Sky")
 ocean_path = NodePath("../Ocean")
 weather_change_speed = 10.0

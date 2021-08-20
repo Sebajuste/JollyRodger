@@ -77,7 +77,7 @@ puppet func rpc_sync_ocean(byte_packet : PoolByteArray):
 	
 	var except_packet_time = last_packet_time + packet_delta * packet_frequency
 	
-	var jitter_time = current_time - except_packet_time
+	var _jitter_time = current_time - except_packet_time
 	
 	last_packet_time = except_packet_time
 	

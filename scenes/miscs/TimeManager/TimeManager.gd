@@ -22,6 +22,7 @@ var seconds := 0.0
 
 func _init():
 	
+	add_to_group("game_time")
 	set_network_master(1)
 	
 

@@ -86,6 +86,13 @@ func _physics_process(_delta):
 			var hit := Hit.new(damage_stats.health, self.get_path())
 			damage_stats.take_damage(hit)
 	
+	for water_mesh in get_tree().get_nodes_in_group("water_mesh"):
+		
+		var wave_height : float = water_mesh.get_wave_height( self.global_transform.origin )
+		
+		if global_transform.origin.y - wave_height < -2.0:
+			lights.visible = false
+	
 	speed = linear_velocity.length()
 	
 	if global_transform.origin.y < -200.0:

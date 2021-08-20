@@ -84,6 +84,13 @@ func _process(delta):
 	
 	ocean_time += delta
 	
+	if meshes:
+		for ocean_mesh in meshes.get_children():
+			ocean_mesh.material_override.set_shader_param("ocean_time", ocean_time)
+
+
+func _physics_process(delta):
+	
 	var camera := get_viewport().get_camera()
 	if camera and not Engine.editor_hint:
 		self.global_transform.origin = Vector3(
@@ -92,16 +99,7 @@ func _process(delta):
 			camera.global_transform.origin.z
 		)
 	
-	if meshes:
-		for ocean_mesh in meshes.get_children():
-			ocean_mesh.material_override.set_shader_param("ocean_time", ocean_time)
-
-func _physics_process(delta):
-	
 	wind_modified = wind_modified + ((wind_strength + sin(delta) * 0.2) - wind_modified) * delta * 0.5
-	
-	# DEBUG WIND VAR
-	#print(wind_modified)
 	
 	update_water(wind_modified)
 

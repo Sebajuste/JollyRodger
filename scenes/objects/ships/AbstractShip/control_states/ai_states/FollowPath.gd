@@ -22,7 +22,12 @@ func enter(msg := {}):
 	if msg.has("curve"):
 		patrol_points = msg.curve.get_baked_points()
 	if msg.has("reset") and msg.reset:
-		patrol_index = 0
+		
+		var point : Vector3 = msg.curve.get_closest_point( ship.global_transform.origin )
+		
+		patrol_index = int(max(find_point(point), 0))
+		
+		#patrol_index = 0
 
 
 func process(_delta):
@@ -45,3 +50,16 @@ func process(_delta):
 	})
 	
 	pass
+
+
+func find_point(point : Vector3):
+	if patrol_points.empty():
+		return -1
+	var near_distance := point.distance_squared_to(patrol_points[0])
+	var near_index := 0
+	for index in range(patrol_points.size()):
+		var new_distance := point.distance_squared_to(patrol_points[index])
+		if new_distance < near_distance:
+			near_distance = new_distance
+			near_index = index
+	return near_index

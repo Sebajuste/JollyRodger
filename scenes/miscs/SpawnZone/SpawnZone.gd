@@ -71,9 +71,6 @@ func spawn():
 		
 		Spawner.spawn(instance)
 		
-		#instance.get_node("Sticker3D/Control/StickerUsername").player_username = false
-		#instance.get_node("Sticker3D/Control/StickerUsername").text = "label_ship_spain"
-		
 		emit_signal("spawn_object", instance)
 		
 		instance.connect("tree_exited", self, "_on_instance_tree_exited_or_destroyed", [instance])
@@ -84,24 +81,6 @@ func spawn():
 	spawn_ready = false
 	
 	pass
-
-"""
-func clean():
-	
-	if object_spawned.empty():
-		return
-	
-	for index in range(object_spawned.size()-1, -1, -1):
-		var instance_ref = object_spawned[index]
-		var instance = instance_ref.get_ref()
-		if not instance or (instance.has_method("is_alive") and not instance.is_alive()):
-			object_spawned.remove(index)
-	
-	if object_spawned.empty():
-		if autoreload:
-			timer.start()
-		emit_signal("all_despawned")
-"""
 
 
 func set_count_object(value):
@@ -124,7 +103,8 @@ func _on_instance_tree_exited_or_destroyed(instance):
 	instance.disconnect("destroyed", self, "_on_instance_tree_exited_or_destroyed")
 	if object_spawned.empty():
 		if autoreload:
-			timer.start()
+			if timer.is_inside_tree():
+				timer.start()
 		emit_signal("all_despawned")
 
 

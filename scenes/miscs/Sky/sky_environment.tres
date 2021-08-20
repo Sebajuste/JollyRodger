@@ -21,5 +21,4 @@ fog_transmit_enabled = true
 fog_height_enabled = true
 fog_height_min = 20.0
 fog_height_max = -100.0
-glow_enabled = true
 adjustment_saturation = 0.75
