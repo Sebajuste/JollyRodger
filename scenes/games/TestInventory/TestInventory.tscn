@@ -28,9 +28,11 @@ script = ExtResource( 9 )
 
 [node name="SwedishRoyalYachtAmadis" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 247.763 )
+faction = "Spain"
 
 [node name="ShipAI" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
+faction = "GB"
 
 [node name="HitBox" parent="ShipAI" index="10"]
 particles_scene = null
@@ -142,6 +144,7 @@ margin_right = 174.0
 margin_bottom = 214.0
 ship_path = NodePath("../../../SwedishRoyalYachtAmadis")
 
+[connection signal="object_created" from="SpawnZone" to="." method="_on_SpawnZone_object_created"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer2/GameMenu/InventoryButton" to="." method="_on_InventoryButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer3/DropAll" to="." method="_on_DropAll_pressed"]
 

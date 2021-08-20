@@ -136,3 +136,10 @@ func _on_DropAll_pressed():
 	ship._drop()
 	
 	pass # Replace with function body.
+
+
+func _on_SpawnZone_object_created(ship):
+	
+	ship.faction = "Pirate"
+	
+	pass # Replace with function body.

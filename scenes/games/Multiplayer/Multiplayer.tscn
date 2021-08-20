@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scripts/network/net_scene_sync.gd" type="Script" id=1]
 [ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/miscs/SelectorHandler/SelectorHandler.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/ui/BoatControl/BoatControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/miscs/CameraRig/CameraRig.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/sounds/ocean_waves_crisp.wav" type="AudioStream" id=7]
+[ext_resource path="res://scenes/ui/panels/WeatherForecast/WeatherForecast.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/miscs/SceneSpawner/SceneSpawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/ui/InputHelper/InputHelper.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/ui/SimpleWindow/SimpleWindow.tscn" type="PackedScene" id=10]
@@ -23,40 +23,47 @@
 [ext_resource path="res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/miscs/SpawnZone/SpawnZone.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/ui/InGameMenu/InGameMenu.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/miscs/WeatherManager/WeatherManager.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/miscs/Sky/Sky.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/miscs/TimeManager/TimeManager.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/miscs/WeatherManager/fog_gradient.tres" type="Gradient" id=27]
+[ext_resource path="res://scenes/miscs/DeepOcean/DeepOcean.tscn" type="PackedScene" id=28]
 
-[sub_resource type="Curve3D" id=1]
+[sub_resource type="GradientTexture" id=1]
+gradient = ExtResource( 27 )
+
+[sub_resource type="Curve3D" id=2]
 _data = {
 "points": PoolVector3Array( 227.613, 0, 163.108, -227.613, 0, -163.108, 382.5, 0.00421143, -700.249, 229.858, -6.10352e-05, -275.108, -229.858, 6.10352e-05, 275.108, -706.955, -6.10352e-05, -732.785, -177.615, 0, -37.0749, 177.615, 0, 37.0749, -620.957, 0, 24.0755, -51.2599, 0.322906, -33.5518, 51.2599, -0.322906, 33.5518, -46.9549, 0, 56.5519, -248.958, 0, -217.041, 248.958, 0, 217.041, 125.335, 6.10352e-05, 780.738, -189.911, 6.10352e-05, 193.102, 189.911, -6.10352e-05, -193.102, 774.861, 0, 675.409, 484.153, 6.10352e-05, 317.254, -484.153, -6.10352e-05, -317.254, 382.5, 0.00421143, -700.249 ),
 "tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0 )
 }
 
-[sub_resource type="ProceduralSky" id=2]
-ground_bottom_color = Color( 0.501961, 0.6, 0.701961, 1 )
-ground_horizon_color = Color( 0.501961, 0.6, 0.701961, 1 )
-
-[sub_resource type="Environment" id=3]
-background_mode = 2
-background_sky = SubResource( 2 )
-fog_enabled = true
-fog_color = Color( 0.501961, 0.6, 0.701961, 1 )
-fog_depth_begin = 100.0
-fog_depth_end = 1300.0
-fog_depth_curve = 1.99999
-fog_height_enabled = true
-fog_height_min = 20.0
-fog_height_max = -100.0
-tonemap_mode = 3
-ssao_enabled = true
+[sub_resource type="OpenSimplexNoise" id=3]
+octaves = 1
+period = 200.0
+persistence = 0.3
 
 [node name="Multiplayer" type="Node"]
 script = ExtResource( 3 )
 
 [node name="World" type="Spatial" parent="."]
 
+[node name="DeepOcean" parent="World" instance=ExtResource( 28 )]
+transform = Transform( 5000, 0, 0, 0, -0.000218557, 1, 0, -5000, -4.37114e-08, 0, -15, 0 )
+deep_offset = 15
+
+[node name="Sky" parent="World" instance=ExtResource( 25 )]
+fog_gradient_texture = SubResource( 1 )
+color_sky = Color( 0.25098, 0.501961, 1, 1 )
+hours = 10
+time_of_day_setup = 0.416667
+clouds_tint = Color( 1, 1, 1, 1 )
+
 [node name="Ocean" parent="World" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.248171, -0.562365, -1.28068 )
 wave_direction = Vector2( 1, 1 )
-amplitude = 20.0
+amplitude = 30.0
+steepness = 0.134
 
 [node name="CameraRig" parent="World" instance=ExtResource( 6 )]
 mode = "Gimbal"
@@ -141,11 +148,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.404, 15.2812, -130.235 )
 [node name="Tower4" parent="World/Island03NetProxy/CaptureZone" instance=ExtResource( 15 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 164.2, 7.99862, 46.228 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="World"]
-transform = Transform( 1, 0, 0, 0, -0.819152, 0.573576, 0, -0.573576, -0.819152, 0, 41.5843, 0 )
-light_color = Color( 1, 0.913725, 0.682353, 1 )
-shadow_enabled = true
-
 [node name="SpawnZone" parent="World" instance=ExtResource( 22 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 933.457, 0, -981.944 )
 spawn_object = ExtResource( 21 )
@@ -154,9 +156,19 @@ respawn_timer = 30
 autoreload = true
 
 [node name="Path" type="Path" parent="World"]
-curve = SubResource( 1 )
+curve = SubResource( 2 )
 
 [node name="SceneSpawner" parent="World" instance=ExtResource( 8 )]
+
+[node name="WeatherManager" parent="." instance=ExtResource( 24 )]
+weather_noise = SubResource( 3 )
+sky_path = NodePath("../World/Sky")
+ocean_path = NodePath("../World/Ocean")
+
+[node name="TimeManager" parent="." instance=ExtResource( 26 )]
+sky_path = NodePath("../World/Sky")
+global_time_speed = 100
+night_time_speed = 4
 
 [node name="FactionManager" type="Node" parent="."]
 script = ExtResource( 14 )
@@ -166,10 +178,21 @@ script = ExtResource( 1 )
 
 [node name="SelectorHandler" parent="." instance=ExtResource( 4 )]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 3 )
-
 [node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="ForecastContainer" type="MarginContainer" parent="GUI"]
+visible = false
+anchor_right = 1.0
+margin_bottom = 206.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WeatherForecast" parent="GUI/ForecastContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+margin_right = 1024.0
+margin_bottom = 206.0
+weather_manager_path = NodePath("../../../WeatherManager")
 
 [node name="ChatContainer" type="MarginContainer" parent="GUI"]
 anchor_top = 1.0
@@ -231,6 +254,7 @@ margin_bottom = 204.0
 [node name="CannonsContainer" type="MarginContainer" parent="GUI"]
 anchor_top = 0.5
 anchor_bottom = 0.5
+margin_left = 20.0
 margin_top = -126.0
 margin_right = 176.0
 margin_bottom = 126.0
@@ -241,7 +265,7 @@ __meta__ = {
 [node name="CannonStatus" parent="GUI/CannonsContainer" instance=ExtResource( 12 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 176.0
+margin_right = 156.0
 margin_bottom = 252.0
 
 [node name="SinkMenu" parent="GUI" instance=ExtResource( 10 )]
@@ -484,10 +508,6 @@ margin_left = -411.0
 margin_top = -268.0
 margin_right = 411.0
 margin_bottom = 268.0
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
-autoplay = true
 
 [connection signal="object_created" from="World/SpawnZone" to="." method="_on_SpawnZone_object_created"]
 [connection signal="spawn_object" from="World/SpawnZone" to="." method="_on_SpawnZone_spawn_object"]

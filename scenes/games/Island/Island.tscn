@@ -248,6 +248,7 @@ target_path = NodePath("../SwedishRoyalYachtAmadis/CaptainPosition")
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.819152, 0.573576, 0, -0.573576, -0.819152, 0, 41.5843, 0 )
+visible = false
 light_color = Color( 1, 0.913725, 0.682353, 1 )
 shadow_enabled = true
 

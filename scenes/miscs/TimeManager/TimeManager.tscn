@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/miscs/TimeManager/TimeManager.gd" type="Script" id=1]
+[ext_resource path="res://scenes/miscs/TimeManager/NetTimeSync.gd" type="Script" id=2]
+
+[node name="TimeManager" type="Node"]
+script = ExtResource( 1 )
+
+[node name="NetTimeSync" type="Node" parent="."]
+script = ExtResource( 2 )
+replication_enabled = false
+
+[node name="Timer" type="Timer" parent="NetTimeSync"]
+
+[connection signal="timeout" from="NetTimeSync/Timer" to="NetTimeSync" method="sync_time"]

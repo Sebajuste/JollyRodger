@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/miscs/DeepOcean/DeepOcean.gd" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+params_line_width = 0.1
+params_point_size = 0.1
+albedo_color = Color( 0.501961, 0.6, 0.701961, 1 )
+
+[sub_resource type="QuadMesh" id=2]
+
+[node name="DeepOcean" type="MeshInstance"]
+transform = Transform( 5000, 0, 0, 0, -0.000218557, 1, 0, -5000, -4.37114e-08, 0, -50, 0 )
+material_override = SubResource( 1 )
+mesh = SubResource( 2 )
+material/0 = null
+script = ExtResource( 1 )

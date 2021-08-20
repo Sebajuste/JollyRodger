@@ -1,0 +1,123 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://scenes/miscs/Sky/noise.png" type="Texture" id=1]
+[ext_resource path="res://scenes/miscs/Sky/Moon_1k.png" type="Texture" id=2]
+[ext_resource path="res://assets/2d/textures/lightning.png" type="Texture" id=3]
+[ext_resource path="res://scenes/miscs/Sky/Sky.shader" type="Shader" id=4]
+[ext_resource path="res://scenes/miscs/Sky/Clouds.shader" type="Shader" id=5]
+[ext_resource path="res://addons/SIsilicon.vfx.godrays/GodRays.gd" type="Script" id=6]
+[ext_resource path="res://scenes/miscs/Sky/sky_environment.tres" type="Environment" id=7]
+[ext_resource path="res://scenes/miscs/Sky/Sky.gd" type="Script" id=8]
+[ext_resource path="res://scenes/miscs/WeatherManager/fog_gradient_texture.tres" type="Gradient" id=9]
+[ext_resource path="res://scenes/miscs/Sky/Options.gd" type="Script" id=10]
+
+[sub_resource type="GradientTexture" id=1]
+gradient = ExtResource( 9 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 5 )
+shader_param/WIND = Vector3( 0.1, 0, 0 )
+shader_param/SUN_POS = Vector3( 0, -0.707107, 0.707107 )
+shader_param/SIZE = 2.0
+shader_param/SOFTNESS = 1.0
+shader_param/COVERAGE = 0.55
+shader_param/HEIGHT = 0.35
+shader_param/THICKNESS = 15.0
+shader_param/ABSORPTION = 1.25
+shader_param/STEPS = 100
+shader_param/Noise = ExtResource( 1 )
+
+[sub_resource type="ImageTexture" id=3]
+flags = 4
+lossy_quality = 1.0
+flags = 4
+size = Vector2( 1024, 1024 )
+
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("clouds_viewport")
+
+[sub_resource type="ShaderMaterial" id=5]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/SCATERRING = false
+shader_param/SUN_POS = Vector3( 0, -1, 0 )
+shader_param/MOON_POS = Vector3( 0, 1, 0 )
+shader_param/MOON_TEX_POS = Vector3( 0, -4.37114e-08, 1 )
+shader_param/MOON_PHASE = -1.0
+shader_param/moon_radius = 0.05
+shader_param/sun_radius = 0.04
+shader_param/attenuation = 0.025
+shader_param/LIGHTING_STRENGTH = Vector3( 0, 0, 0 )
+shader_param/LIGHTTING_POS = Vector3( 2, 2, 2 )
+shader_param/sky_tone = 3.5
+shader_param/sky_density = 0.5
+shader_param/sky_rayleig_coeff = 1.0
+shader_param/sky_mie_coeff = 0.5
+shader_param/multiScatterPhase = 0.0
+shader_param/anisotropicIntensity = 1.5
+shader_param/color_sky = Color( 0.760784, 0.909804, 1, 1 )
+shader_param/moon_tint = Color( 1, 0.7, 0.35, 1 )
+shader_param/clouds_tint = Color( 0.6, 0.6, 0.8, 1 )
+shader_param/MOON = ExtResource( 2 )
+shader_param/cloud_env_texture = SubResource( 4 )
+shader_param/lighting_texture = ExtResource( 3 )
+shader_param/sky_gradient_texture = SubResource( 1 )
+
+[sub_resource type="ImageTexture" id=6]
+flags = 0
+lossy_quality = 1.0
+flags = 0
+size = Vector2( 1024, 1024 )
+
+[node name="Sky" type="Spatial"]
+script = ExtResource( 8 )
+sky_resolution = 1024
+sky_gradient_texture = SubResource( 1 )
+SCATERRING = true
+color_sky = Color( 0.760784, 0.909804, 1, 1 )
+clouds_quality = 100
+clouds_tint = Color( 0.6, 0.6, 0.8, 1 )
+moon_radius = 0.05
+moon_phase = -1.0
+night_level_light = 0.1
+lighting_pos = Vector3( 0.57735, 0.57735, 0.57735 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 7 )
+
+[node name="Sun_Moon" type="DirectionalLight" parent="."]
+transform = Transform( -1, 8.45501e-08, -2.22271e-08, 0, 0.254251, 0.967133, 8.74228e-08, 0.96714, -0.254249, 0, 0.967138, -0.25425 )
+light_color = Color( 0.6, 0.6, 0.8, 1 )
+light_energy = 0.075
+shadow_enabled = true
+directional_shadow_depth_range = 1
+
+[node name="clouds_viewport" type="Viewport" parent="."]
+size = Vector2( 1024, 1024 )
+transparent_bg = true
+render_target_update_mode = 3
+
+[node name="clouds_texture" type="Sprite" parent="clouds_viewport"]
+material = SubResource( 2 )
+texture = SubResource( 3 )
+centered = false
+
+[node name="sky_viewport" type="Viewport" parent="."]
+size = Vector2( 1024, 1024 )
+render_target_update_mode = 3
+
+[node name="sky_texture" type="Sprite" parent="sky_viewport"]
+material = SubResource( 5 )
+texture = SubResource( 6 )
+centered = false
+
+[node name="thunder" type="AudioStreamPlayer" parent="."]
+
+[node name="GodRays" type="Spatial" parent="."]
+script = ExtResource( 6 )
+exposure = 1.0
+attenuation = 3.0
+light_size = 0.2
+
+[node name="Options" type="Node" parent="."]
+script = ExtResource( 10 )
