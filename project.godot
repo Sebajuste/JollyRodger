@@ -109,6 +109,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/game/game_item_generation.gd"
 }, {
+"base": "Spatial",
+"class": "GameSky",
+"language": "GDScript",
+"path": "res://scenes/miscs/Sky/Sky.gd"
+}, {
+"base": "Resource",
+"class": "GameWeater",
+"language": "GDScript",
+"path": "res://scripts/game/game_weather.gd"
+}, {
 "base": "ResourceFormatLoader",
 "class": "HTerrainDataLoader",
 "language": "GDScript",
@@ -143,6 +153,31 @@ _global_script_classes=[ {
 "class": "ItemHandler",
 "language": "GDScript",
 "path": "res://scenes/ui/components/Inventory/ItemHandler/ItemHandler.gd"
+}, {
+"base": "CPUParticles",
+"class": "LODCPUParticles",
+"language": "GDScript",
+"path": "res://addons/lod/lod_cpu_particles.gd"
+}, {
+"base": "OmniLight",
+"class": "LODOmniLight",
+"language": "GDScript",
+"path": "res://addons/lod/lod_omni_light.gd"
+}, {
+"base": "Particles",
+"class": "LODParticles",
+"language": "GDScript",
+"path": "res://addons/lod/lod_particles.gd"
+}, {
+"base": "Spatial",
+"class": "LODSpatial",
+"language": "GDScript",
+"path": "res://addons/lod/lod_spatial.gd"
+}, {
+"base": "SpotLight",
+"class": "LODSpotLight",
+"language": "GDScript",
+"path": "res://addons/lod/lod_spot_light.gd"
 }, {
 "base": "Reference",
 "class": "NetBitPacker",
@@ -265,6 +300,8 @@ _global_script_class_icons={
 "GUIInventory": "",
 "GameItem": "",
 "GameItemGeneration": "",
+"GameSky": "",
+"GameWeater": "",
 "HTerrainDataLoader": "",
 "HTerrainDataSaver": "",
 "Hit": "",
@@ -272,6 +309,11 @@ _global_script_class_icons={
 "Inventory": "",
 "InventoryItemSlot": "",
 "ItemHandler": "",
+"LODCPUParticles": "res://addons/lod/lod_cpu_particles.svg",
+"LODOmniLight": "res://addons/lod/lod_omni_light.svg",
+"LODParticles": "res://addons/lod/lod_particles.svg",
+"LODSpatial": "res://addons/lod/lod_spatial.svg",
+"LODSpotLight": "res://addons/lod/lod_spot_light.svg",
 "NetBitPacker": "",
 "NetBitPackerReader": "",
 "NetBitPackerWriter": "",
@@ -299,7 +341,7 @@ _global_script_class_icons={
 config/name="JollyRoger"
 run/main_scene="res://scenes/games/MainGame/MainGame.tscn"
 config/icon="res://icon.png"
-config/version="0.2.1"
+config/version="0.3.0"
 
 [autoload]
 
@@ -310,13 +352,9 @@ Configuration="*res://scripts/singletons/configuration.gd"
 GameTable="*res://scripts/singletons/GameTable.gd"
 DebugOverlay="*res://scenes/miscs/DebugOverlay/DebugOverlay.tscn"
 
-[editor]
-
-main_run_args="--server"
-
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/zylann.hterrain/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/SIsilicon.vfx.godrays/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg", "res://addons/zylann.scatter/plugin.cfg" )
 
 [input]
 
@@ -379,6 +417,16 @@ use={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
  ]
 }
+enable_lights={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":76,"unicode":0,"echo":false,"script":null)
+ ]
+}
+show_forecast={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777255,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -399,3 +447,6 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 environment/default_environment="res://default_env.tres"
+quality/godrays/sample_number=50
+quality/godrays/use_pcf5=false
+quality/godrays/dither_amount=1.0

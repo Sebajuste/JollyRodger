@@ -1,12 +1,14 @@
 extends Spatial
 
 
+export(String, "None", "GB", "Spain", "Pirate") var faction
+export var invincible := false setget set_invincible
+
 onready var cannon := $Cannon
 onready var search_await_timer : Timer = $SearchAwaitTimer
-
 onready var capturable := $Capturable
-
 onready var damage_stats := $DamageStats
+
 
 var ships := []
 
@@ -16,6 +18,13 @@ var ready_to_target := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	
+	capturable.faction = faction
+	
+	set_invincible(invincible)
+	damage_stats.invincible = invincible
+	
 	pass # Replace with function body.
 
 
@@ -71,6 +80,13 @@ func get_nearest_target() -> Spatial:
 				near_distance_squared = distance_squared
 	
 	return near_target
+
+
+func set_invincible(value):
+	if is_inside_tree() and (not Network.enabled or is_network_master() ):
+		invincible = value
+		if damage_stats:
+			damage_stats.invincible = invincible
 
 
 func _on_DetectionArea_body_entered(body):

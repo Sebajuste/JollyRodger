@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://scripts/game/game_weather.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+clouds_coverage = 0.6
+fog_begin = 100
+fog_end = 1000
+wind_strength = 1.0
+rain = 0

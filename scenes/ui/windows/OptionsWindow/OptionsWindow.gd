@@ -9,7 +9,7 @@ onready var game_tab := $MarginContainer/VBoxContainer/TabContainer/Game
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	Configuration.connect("configuration_changed", self, "_on_configuration_changed")
+	var _r := Configuration.connect("configuration_changed", self, "_on_configuration_changed")
 	
 	update_title_translation()
 	
@@ -29,7 +29,7 @@ func update_title_translation():
 	
 
 
-func _on_configuration_changed():
+func _on_configuration_changed(_config):
 	
 	update_title_translation()
 	

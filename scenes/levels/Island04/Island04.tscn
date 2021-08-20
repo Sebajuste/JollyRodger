@@ -1,0 +1,553 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=1]
+[ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=2]
+[ext_resource path="res://scenes/levels/Island04/t_data/data.hterrain" type="Resource" id=3]
+[ext_resource path="res://scenes/objects/Ocean/Ocean.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot0_albedo_bump.packed_tex" type="Texture" id=5]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot0_normal_roughness.packed_tex" type="Texture" id=6]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot1_albedo_bump.packed_tex" type="Texture" id=7]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot1_normal_roughness.packed_tex" type="Texture" id=8]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot3_normal_roughness.packed_tex" type="Texture" id=9]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot2_normal_roughness.packed_tex" type="Texture" id=10]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot2_albedo_bump.packed_tex" type="Texture" id=11]
+[ext_resource path="res://scenes/levels/Island04/t_textures/Island04_slot3_albedo_bump.packed_tex" type="Texture" id=12]
+[ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=13]
+[ext_resource path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" type="Texture" id=14]
+[ext_resource path="res://assets/2d/textures/grass.png" type="Texture" id=15]
+[ext_resource path="res://scenes/levels/grass.gdshader" type="Shader" id=16]
+[ext_resource path="res://addons/zylann.scatter/scatter3d.gd" type="Script" id=17]
+[ext_resource path="res://scenes/objects/trees/CoconutPalm01.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/objects/trees/CoconutPalm01.gd" type="Script" id=19]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 1 )
+mode = 0
+textures = [ [ ExtResource( 5 ), ExtResource( 7 ), ExtResource( 11 ), ExtResource( 12 ) ], [ ExtResource( 6 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 9 ) ] ]
+
+[node name="Island04" type="Spatial"]
+
+[node name="HTerrain" type="Spatial" parent="."]
+script = ExtResource( 2 )
+_terrain_data = ExtResource( 3 )
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource( 1 )
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = false
+shader_params/u_tile_reduction = Plane( 0, 0, 0, 0 )
+
+[node name="HTerrainDetailLayer" type="Spatial" parent="HTerrain"]
+script = ExtResource( 13 )
+__meta__ = {
+"_editor_icon": ExtResource( 14 )
+}
+texture = ExtResource( 15 )
+view_distance = 500.0
+custom_shader = ExtResource( 16 )
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = Vector3( 1, 1, 1 )
+
+[node name="Scatter3D" type="Spatial" parent="."]
+script = ExtResource( 17 )
+_scenes = [ ExtResource( 18 ) ]
+
+[node name="CoconutPalm01" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.129948, 0, -0.991521, 0, 1, 0, 0.991521, 0, 0.129948, 55.4587, 0, 388.692 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm02" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.981138, 0, 0.193308, 0, 1, 0, -0.193308, 0, -0.981138, 39.4554, 0, 66.0673 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm03" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.0523423, 0, -0.998629, 0, 1, 0, 0.998629, 0, 0.0523423, 52.2528, 4.52684, 83.1749 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm04" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.751961, 0, -0.659208, 0, 1, 0, 0.659208, 0, -0.751961, 44.1971, 6.63115, 85.6383 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm05" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.939948, 0, 0.341319, 0, 1, 0, -0.341319, 0, -0.939948, 53.3319, 0, 41.6668 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm06" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.984847, 0, 0.173423, 0, 1, 0, -0.173423, 0, 0.984847, 64.0765, 7.76638, 106.065 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm07" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.715751, 0, -0.698355, 0, 1, 0, 0.698355, 0, 0.715751, 64.3717, 11.9875, 113.966 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm08" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.180625, 0, 0.983552, 0, 1, 0, -0.983552, 0, 0.180625, 64.1125, 9.92088, 132.427 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm09" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.967748, 0, 0.25192, 0, 1, 0, -0.25192, 0, 0.967748, 52.8304, 11.7015, 148.716 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm10" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.991485, 0, -0.130222, 0, 1, 0, 0.130222, 0, -0.991485, 38.3065, 8.79703, 128.636 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm11" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.313982, 0, -0.949429, 0, 1, 0, 0.949429, 0, 0.313982, 55.6212, 13.6682, 132.452 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm12" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.118565, 0, -0.992946, 0, 1, 0, 0.992946, 0, -0.118565, 32.1268, 14.9586, 149.696 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm13" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.830508, 0, -0.557006, 0, 1, 0, 0.557006, 0, 0.830508, 32.4283, 0, 173.308 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm14" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.833764, 0, 0.55212, 0, 1, 0, -0.55212, 0, -0.833764, 49.7676, -4.76837e-07, 174.787 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm15" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.881705, 0, -0.4718, 0, 1, 0, 0.4718, 0, 0.881705, 40.4714, 12.4644, 199.752 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm16" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.893038, 0, 0.449982, 0, 1, 0, -0.449982, 0, 0.893038, 62.4539, 6.42628, 195.991 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm17" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.471094, 0, 0.882083, 0, 1, 0, -0.882083, 0, -0.471094, 29.4855, 11.8624, 220.832 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm18" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.965934, 0, -0.258788, 0, 1, 0, 0.258788, 0, -0.965934, 42.133, 3.55898, 275.987 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm19" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.99397, 0, 0.109651, 0, 1, 0, -0.109651, 0, 0.99397, 39.1908, 5.88194, 328.379 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm20" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.256153, 0, 0.966636, 0, 1, 0, -0.966636, 0, 0.256153, 42.7746, 7.49967, 312.431 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm21" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.874588, 0, 0.484867, 0, 1, 0, -0.484867, 0, 0.874588, 52.8742, 3.67688, 338.985 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm22" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.161476, 0, -0.986877, 0, 1, 0, 0.986877, 0, -0.161476, 64.6479, 2.11568, 336.659 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm23" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.613354, 0, -0.789808, 0, 1, 0, 0.789808, 0, 0.613354, 42.2093, 8.31575, 349.233 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm24" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.331316, 0, -0.94352, 0, 1, 0, 0.94352, 0, 0.331316, 33.379, 6.72315, 345.979 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm25" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.985969, 0, -0.166927, 0, 1, 0, 0.166927, 0, -0.985969, 37.9381, 4.01944, 377.149 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm26" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.0193076, 0, -0.999814, 0, 1, 0, 0.999814, 0, 0.0193076, 43.1491, 9.06752, 364.539 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm27" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.362146, 0, 0.932121, 0, 1, 0, -0.932121, 0, 0.362146, 58.7711, 7.35263, 357.673 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm28" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.434778, 0, 0.900538, 0, 1, 0, -0.900538, 0, 0.434778, 96.2805, 19.2324, 369.279 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm29" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.884028, 0, -0.467434, 0, 1, 0, 0.467434, 0, 0.884028, 104.726, 19.0443, 383.198 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm30" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.52969, 0, 0.848191, 0, 1, 0, -0.848191, 0, -0.52969, 109.756, 16.2988, 350.326 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm31" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.345685, 0, 0.93835, 0, 1, 0, -0.93835, 0, -0.345685, 105.903, 8.9331, 413.945 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm32" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.973267, 0, 0.229676, 0, 1, 0, -0.229676, 0, -0.973267, 111.638, 5.24798, 436.653 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm33" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.291405, 0, -0.9566, 0, 1, 0, 0.9566, 0, 0.291405, 143.921, 7.72618, 433.301 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm34" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.511238, 0, -0.859439, 0, 1, 0, 0.859439, 0, 0.511238, 129.982, 8.38832, 461.241 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm35" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.844261, 0, -0.535932, 0, 1, 0, 0.535932, 0, -0.844261, 148.729, 9.34015, 475.842 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm36" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.962982, 0, 0.269566, 0, 1, 0, -0.269566, 0, 0.962982, 155.323, 6.02641, 456.373 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm37" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.970149, 0, -0.242508, 0, 1, 0, 0.242508, 0, 0.970149, 136.393, 6.68976, 446.464 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm38" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.00281982, 0, -0.999996, 0, 1, 0, 0.999996, 0, -0.00281982, 121.227, 10.387, 418.627 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm39" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.580595, 0, -0.814193, 0, 1, 0, 0.814193, 0, -0.580595, 145.391, 18.2875, 341.52 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm40" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.550189, 0, -0.83504, 0, 1, 0, 0.83504, 0, -0.550189, 151.062, 22.985, 390.451 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm41" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.133831, 0, -0.991004, 0, 1, 0, 0.991004, 0, 0.133831, 135.976, 27.257, 379.782 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm42" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.963795, 0, 0.266646, 0, 1, 0, -0.266646, 0, 0.963795, 213.916, 10.0261, 368.143 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm43" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.793153, 0, -0.609022, 0, 1, 0, 0.609022, 0, -0.793153, 215.794, 11.2853, 338.976 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm44" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.70122, 0, 0.712945, 0, 1, 0, -0.712945, 0, -0.70122, 177.248, 12.7371, 328.696 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm45" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.989622, 0, -0.143694, 0, 1, 0, 0.143694, 0, 0.989622, 139.07, 14.7088, 322.732 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm46" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.893352, 0, 0.449357, 0, 1, 0, -0.449357, 0, -0.893352, 231.033, 5.40485, 297.939 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm47" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.721653, 0, -0.692255, 0, 1, 0, 0.692255, 0, 0.721653, 250.794, 6.17524, 351.053 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm48" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.863055, 0, -0.50511, 0, 1, 0, 0.50511, 0, 0.863055, 249.964, 5.92519, 323.856 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm49" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.736536, 0, -0.676399, 0, 1, 0, 0.676399, 0, 0.736536, 255.681, 8.15468, 282.271 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm50" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.870561, 0, 0.49206, 0, 1, 0, -0.49206, 0, 0.870561, 279.793, 19.0995, 298.794 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm51" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.0634, 0, -0.997988, 0, 1, 0, 0.997988, 0, 0.0634, 247.6, 5.854, 241.264 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm52" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.798182, 0, 0.602416, 0, 1, 0, -0.602416, 0, 0.798182, 295.676, 21.1746, 290.353 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm53" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.746951, 0, -0.664879, 0, 1, 0, 0.664879, 0, 0.746951, 336.198, 30.8836, 310.059 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm54" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.876577, 0, 0.481262, 0, 1, 0, -0.481262, 0, -0.876577, 357.929, 26.0457, 322.811 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm55" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.165527, 0, -0.986205, 0, 1, 0, 0.986205, 0, -0.165527, 194.036, 6.95371, 125.293 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm56" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.111822, 0, -0.993728, 0, 1, 0, 0.993728, 0, -0.111822, 189.045, 3.80082, 137.645 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm57" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.669735, 0, -0.742601, 0, 1, 0, 0.742601, 0, -0.669735, 199.611, 4.92156, 145.922 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm58" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.805425, 0, 0.592698, 0, 1, 0, -0.592698, 0, -0.805425, 209.115, 5.77674, 144.495 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm59" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.995872, 0, -0.0907737, 0, 1, 0, 0.0907737, 0, 0.995872, 223.144, 7.82529, 152.6 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm60" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.97395, 0, -0.226762, 0, 1, 0, 0.226762, 0, 0.97395, 232.202, 9.56737, 159.3 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm61" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.544609, 0, -0.83869, 0, 1, 0, 0.83869, 0, 0.544609, 206.989, 3.3168, 170.387 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm62" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.823706, 0, 0.567017, 0, 1, 0, -0.567017, 0, -0.823706, 253.719, 16.6798, 192.264 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm63" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.969941, 0, -0.24334, 0, 1, 0, 0.24334, 0, -0.969941, 243.963, 10.3605, 224.708 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm64" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.983175, 0, -0.182666, 0, 1, 0, 0.182666, 0, 0.983175, 264.014, 19.5418, 206.391 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm65" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.260751, 0, 0.965406, 0, 1, 0, -0.965406, 0, 0.260751, 309.572, 16.8638, 167.032 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm66" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.380667, 0, 0.924712, 0, 1, 0, -0.924712, 0, -0.380667, 284.605, 8.297, 155.508 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm67" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.438387, 0, 0.898786, 0, 1, 0, -0.898786, 0, -0.438387, 269.751, 9.72678, 174.701 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm68" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.395146, 0, -0.918618, 0, 1, 0, 0.918618, 0, 0.395146, 256.124, 6.47954, 157.489 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm69" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.701893, 0, 0.712283, 0, 1, 0, -0.712283, 0, -0.701893, 251.5, 6.5059, 152.775 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm70" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.769818, 0, 0.638264, 0, 1, 0, -0.638264, 0, 0.769818, 305.543, 11.1861, 142.191 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm71" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.969406, 0, -0.245463, 0, 1, 0, 0.245463, 0, 0.969406, 305.475, 12.6369, 147.365 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm72" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.661075, 0, 0.75032, 0, 1, 0, -0.75032, 0, 0.661075, 308.458, 20.7584, 192.977 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm73" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.999956, 0, 0.00939895, 0, 1, 0, -0.00939895, 0, -0.999956, 331.014, 18.8645, 152.026 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm74" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.175849, 0, -0.984417, 0, 1, 0, 0.984417, 0, -0.175849, 358.451, 14.2151, 142.451 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm75" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.792006, 0, 0.610513, 0, 1, 0, -0.610513, 0, -0.792006, 350.199, 14.7985, 117.468 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm76" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.460879, 0, -0.887463, 0, 1, 0, 0.887463, 0, 0.460879, 320.509, 11.5979, 126.544 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm77" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.999657, 0, -0.0261759, 0, 1, 0, 0.0261759, 0, 0.999657, 322.673, 9.34694, 119.865 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm78" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.999992, 0, 0.00406247, 0, 1, 0, -0.00406247, 0, 0.999992, 333.146, 10.565, 111.424 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm79" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.509948, 0, 0.860205, 0, 1, 0, -0.860205, 0, -0.509948, 327.726, 8.6614, 89.5976 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm80" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.135586, 0, 0.990766, 0, 1, 0, -0.990766, 0, -0.135586, 340.321, 8.67539, 54.2103 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm81" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.90333, 0, -0.428946, 0, 1, 0, 0.428946, 0, -0.90333, 332.826, 6.44881, 45.3108 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm82" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.716871, 0, 0.697206, 0, 1, 0, -0.697206, 0, 0.716871, 311.456, 7.60405, 41.7185 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm83" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.987429, 0, 0.158063, 0, 1, 0, -0.158063, 0, -0.987429, 323.131, 6.55269, 68.6112 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm84" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.660475, 0, -0.750848, 0, 1, 0, 0.750848, 0, 0.660475, 239.75, 6.02881, 37.1076 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm85" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.989322, 0, -0.145749, 0, 1, 0, 0.145749, 0, -0.989322, 264.05, 12.4921, 22.8284 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm86" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.396847, 0, -0.917885, 0, 1, 0, 0.917885, 0, 0.396847, 288.497, 9.57885, 25.2548 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm87" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.898779, 0, 0.438401, 0, 1, 0, -0.438401, 0, -0.898779, 268.054, 8.19405, 45.9475 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm88" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.690821, 0, 0.723026, 0, 1, 0, -0.723026, 0, 0.690821, 295.966, 6.01961, 42.7532 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm89" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.408152, 0, -0.912914, 0, 1, 0, 0.912914, 0, 0.408152, 287.483, 5.03823, 47.1858 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm90" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.795666, 0, -0.605736, 0, 1, 0, 0.605736, 0, 0.795666, 356.928, 9.25665, 87.0836 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm91" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.612454, 0, 0.790506, 0, 1, 0, -0.790506, 0, -0.612454, 374.209, 8.22654, 115.478 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm92" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.72854, 0, -0.685003, 0, 1, 0, 0.685003, 0, -0.72854, 378.159, 9.17722, 137.614 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm93" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.637411, 0, 0.770524, 0, 1, 0, -0.770524, 0, -0.637411, 386.196, 10.7639, 168.447 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm94" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.0394495, 0, -0.999222, 0, 1, 0, 0.999222, 0, 0.0394495, 402.448, 2.31984, 186.107 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm95" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.975159, 0, -0.221507, 0, 1, 0, 0.221507, 0, 0.975159, 422.916, 4.76193, 216.14 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm96" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.859516, 0, 0.51111, 0, 1, 0, -0.51111, 0, 0.859516, 435.36, 11.2961, 247.051 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm97" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.836338, 0, 0.548214, 0, 1, 0, -0.548214, 0, -0.836338, 408.773, 8.30226, 231.526 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm98" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.285298, 0, 0.958439, 0, 1, 0, -0.958439, 0, 0.285298, 415.057, 12.7348, 254.324 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm99" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.79764, 0, 0.603134, 0, 1, 0, -0.603134, 0, -0.79764, 454.593, 21.2133, 326.87 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm100" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.0112336, 0, 0.999937, 0, 1, 0, -0.999937, 0, -0.0112336, 446.565, 23.1772, 306.146 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm101" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.140108, 0, -0.990136, 0.00186636, 0.999998, -0.000264097, 0.990134, -0.00188495, -0.140108, 440.507, 24.2251, 316.629 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm102" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.845396, 0, 0.53414, 0, 1, 0, -0.53414, 0, 0.845396, 424.646, 19.6689, 288.113 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm103" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.518429, 0, 0.855121, 0, 1, 0, -0.855121, 0, 0.518429, 411.961, 17.0201, 280.793 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm104" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.517167, 0, -0.855884, 0, 1, 0, 0.855884, 0, 0.517167, 390.55, 16.222, 321.641 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm105" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.398883, 0, 0.917002, 0, 1, 0, -0.917002, 0, -0.398883, 409.742, 13.1197, 336.358 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm106" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.45186, 0, -0.892089, 0, 1, 0, 0.892089, 0, -0.45186, 399.572, 11.8189, 352.802 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm107" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.966612, 0, -0.256243, 0, 1, 0, 0.256243, 0, 0.966612, 436.435, 3.22123, 390.466 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm108" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.782172, 0, 0.623063, 0, 1, 0, -0.623063, 0, 0.782172, 440.753, 3.09776, 420.877 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm109" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.343773, 0, 0.939053, 0, 1, 0, -0.939053, 0, -0.343773, 471.017, 7.31648, 419.004 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm110" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.762308, 0, 0.647215, 0, 1, 0, -0.647215, 0, 0.762308, 478.625, 15.7376, 375.079 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm111" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.0556304, 0, 0.998451, 0, 1, 0, -0.998451, 0, -0.0556304, 474.679, 13.0493, 347.162 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm112" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.192274, 0, 0.981341, 0, 1, 0, -0.981341, 0, -0.192274, 478.23, 13.2912, 325.901 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm113" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.280777, 0, 0.959773, 0, 1, 0, -0.959773, 0, -0.280777, 464.649, 12.2504, 289.246 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm114" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.942844, 0, -0.333235, 0, 1, 0, 0.333235, 0, 0.942844, 348.128, 38.8044, 276.637 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm115" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.789597, 0, -0.613625, 0, 1, 0, 0.613625, 0, 0.789597, 342.223, 48.4899, 246.14 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm116" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.880482, 0, -0.47408, 0, 1, 0, 0.47408, 0, 0.880482, 312.261, 39.9278, 246.151 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm117" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.193528, 0, 0.981095, 0, 1, 0, -0.981095, 0, -0.193528, 310.252, 28.5395, 281.379 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm118" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.408522, 0, 0.912749, 0, 1, 0, -0.912749, 0, 0.408522, 344.982, 45.1915, 223.179 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm119" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.0795199, 0, 0.996833, 0, 1, 0, -0.996833, 0, -0.0795199, 348.317, 30.9893, 186.762 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm120" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( -0.679435, 0, 0.733736, 0, 1, 0, -0.733736, 0, -0.679435, 298.71, 23.9216, 207.064 )
+script = ExtResource( 19 )
+
+[node name="CoconutPalm121" type="StaticBody" parent="Scatter3D" instance=ExtResource( 18 )]
+transform = Transform( 0.31439, 0, -0.949294, 0, 1, 0, 0.949294, 0, 0.31439, 281.627, 24.6373, 247.011 )
+script = ExtResource( 19 )
+
+[node name="Ocean" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.57462, -0.507587, -0.642003, 0, -0.784441, 0.620203, -0.818421, -0.356381, -0.450755, 0, 35.5108, 0 )
+visible = false
+shadow_enabled = true

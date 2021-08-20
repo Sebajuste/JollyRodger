@@ -27,11 +27,13 @@ export(String, "None", "GB", "Spain", "Pirate") var faction = "None" setget set_
 
 export var label : String = "" setget set_label
 
+
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
 onready var cannons = $Cannons
 onready var flag = $Flag
+onready var lights = $Lights
 onready var sticker := $Sticker3D
 
 onready var inventory : Inventory = $Inventory
@@ -83,6 +85,13 @@ func _physics_process(_delta):
 		if not Network.enabled or is_network_master():
 			var hit := Hit.new(damage_stats.health, self.get_path())
 			damage_stats.take_damage(hit)
+	
+	for water_mesh in get_tree().get_nodes_in_group("water_mesh"):
+		
+		var wave_height : float = water_mesh.get_wave_height( self.global_transform.origin )
+		
+		if global_transform.origin.y - wave_height < -2.0:
+			lights.visible = false
 	
 	speed = linear_velocity.length()
 	

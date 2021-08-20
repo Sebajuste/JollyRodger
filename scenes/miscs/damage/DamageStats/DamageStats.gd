@@ -10,6 +10,7 @@ signal health_undepleted()
 
 
 export var max_health: int = 10 setget set_max_health
+export var invincible := false
 
 
 var health: int = 0 setget set_health
@@ -55,7 +56,7 @@ func heal(value):
 
 
 func take_damage(hit, _hit_box = null) -> void:
-	if not is_alive():
+	if not is_alive() or invincible:
 		return
 	
 	var new_health = health - hit.damage
