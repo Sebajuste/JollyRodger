@@ -43,7 +43,7 @@ func sync_ocean():
 	var byte_buffer := NetByteBuffer.new(64)
 	var write_stream := NetStreamWriter.new(byte_buffer)
 	
-	var _r
+	var _r = null
 	
 	packet_id = packet_id + 1
 	_r = write_stream.serialize_bits(packet_id, 32) # frequency

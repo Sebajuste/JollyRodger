@@ -81,6 +81,8 @@ shape = SubResource( 2 )
 
 [node name="Flag" parent="." instance=ExtResource( 8 )]
 
+[node name="Lights" type="Spatial" parent="."]
+
 [node name="FloatManager" parent="." groups=[
 "water_floater_manager",
 ] instance=ExtResource( 4 )]

@@ -27,11 +27,13 @@ export(String, "None", "GB", "Spain", "Pirate") var faction = "None" setget set_
 
 export var label : String = "" setget set_label
 
+
 onready var float_manager = $FloatManager
 onready var damage_stats := $DamageStats
 onready var rudder : Position3D = $Rudder
 onready var cannons = $Cannons
 onready var flag = $Flag
+onready var lights = $Lights
 onready var sticker := $Sticker3D
 
 onready var inventory : Inventory = $Inventory

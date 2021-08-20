@@ -14,9 +14,13 @@ var Settings = {
 	{
 		"WIDTH": 1600,
 		"HEIGHT": 900,
-		"FullScreen": false,
+		"FullScreen": true,
 		"Vsync": true,
-		"Antialiasing": true
+		"Antialiasing": true,
+		"Trees": "high",
+		"RainDetails": "high",
+		"CloudsQuality": 25,
+		"GodRays": true
 	},
 	"Audio":
 	{
@@ -27,7 +31,7 @@ var Settings = {
 	},
 	"Game":
 	{
-		"Language": "",
+		"Language": "en",
 		"ControlsHelper": true
 	}
 }
@@ -85,8 +89,6 @@ func apply_settings():
 	
 	get_viewport().msaa = Viewport.MSAA_4X
 	
-	print("Settings.Audio.MASTER: ", Settings.Audio.MASTER)
-	
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Settings.Audio.MASTER)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Settings.Audio.MUSIC)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundEffect"), Settings.Audio.SOUND_EFFECTS)
@@ -105,7 +107,7 @@ func load_settings():
 	# Check for error if true exist the function else parse the file and load the config settings into Settings
 	var error = _config.load(Settings_Path)
 	if error != OK:
-		print("Error loading the settings. Error code: %s" % error)
+		push_error("Error loading the settings. Error code: %s" % error)
 		return LOAD_ERROR_COULDNT_OPEN
 	for section in Settings.keys():
 		for key in Settings[section]:

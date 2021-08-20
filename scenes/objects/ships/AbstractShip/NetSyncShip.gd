@@ -81,7 +81,8 @@ master func sync_ship():
 		"angular_velocity": ship.angular_velocity,
 		"transform": ship.global_transform,
 		"rudder_position": ship.rudder_position,
-		"sail_position": ship.sail_position
+		"sail_position": ship.sail_position,
+		"lights_enables": ship.lights.visible
 	}
 	
 	var byte_buffer := NetByteBuffer.new(64)
@@ -131,7 +132,8 @@ puppet func rpc_sync_ship_reception(byte_packet : PoolByteArray):
 		"angular_velocity": Vector3(),
 		"transform": Transform(),
 		"rudder_position": 0.0,
-		"sail_position": 0.0
+		"sail_position": 0.0,
+		"lights_enables": false
 	}
 	
 	_serialize(read_stream, properties)
@@ -144,6 +146,8 @@ puppet func rpc_sync_ship_reception(byte_packet : PoolByteArray):
 	
 	ship.rudder_position = properties.rudder_position
 	ship.sail_position = properties.sail_position
+	
+	ship.lights.visible = properties.lights_enables
 	
 	last_properties = properties
 	
@@ -159,6 +163,8 @@ func _serialize(stream : NetStream, properties: Dictionary ):
 	
 	properties.rudder_position = NetStream.serialize_float(stream, properties.rudder_position, -1.0, 1.0, 0.01)
 	properties.sail_position = NetStream.serialize_float(stream, properties.sail_position, 0.0, 1.0, 0.01)
+	
+	properties.lights_enables = NetStream.serialize_bool(stream, properties.lights_enables)
 	
 
 
