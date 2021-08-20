@@ -352,6 +352,10 @@ Configuration="*res://scripts/singletons/configuration.gd"
 GameTable="*res://scripts/singletons/GameTable.gd"
 DebugOverlay="*res://scenes/miscs/DebugOverlay/DebugOverlay.tscn"
 
+[editor]
+
+main_run_args="--server"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/SIsilicon.vfx.godrays/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg", "res://addons/zylann.scatter/plugin.cfg" )

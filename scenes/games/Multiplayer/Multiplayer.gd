@@ -24,8 +24,6 @@ onready var gui_weather_forecast = $GUI/ForecastContainer
 
 onready var options_window := $GUI/OptionsWindow
 
-var start_position := Vector3.ZERO
-
 var admin_mode := false
 
 
@@ -190,7 +188,7 @@ func write_save_file(savegame : Dictionary):
 	
 
 
-func create_player():
+func create_player( start_position := Vector3.ZERO):
 	
 	var faction : String = Network.get_self_property("faction")
 	
@@ -217,11 +215,17 @@ func create_player():
 	
 	player.label = Network.get_self_property("username")
 	player.faction = faction
-	player.transform.origin = start_position + Vector3(
-		rand_range(-30, 30),
-		2.0,
-		rand_range(-30, 30)
-	)
+	
+	if ship_save.has("position"):
+		player.transform.origin.x = ship_save.position.x
+		player.transform.origin.y = ship_save.position.y
+		player.transform.origin.z = ship_save.position.z
+	else:
+		player.transform.origin = start_position + Vector3(
+			rand_range(-30, 30),
+			2.0,
+			rand_range(-30, 30)
+		)
 	
 	world.add_child(player)
 	
@@ -273,6 +277,11 @@ func create_player():
 	ship_save = {
 		"equipment": player.equipment.items,
 		"inventory": player.inventory.items,
+		"position": {
+			"x": player.global_transform.origin.x,
+			"y": player.global_transform.origin.y,
+			"z": player.global_transform.origin.z
+		}
 	}
 	
 	savegame[faction] = ship_save
@@ -282,19 +291,44 @@ func create_player():
 
 
 func return_login_screen():
-	
+	save_current_ship()
 	Network.close_connection()
 	
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
 
 
+func save_current_ship():
+	
+	var savegame := read_save_file()
+	
+	var faction : String = Network.get_self_property("faction")
+	
+	var ship_save = {
+		"equipment": player.equipment.items,
+		"inventory": player.inventory.items,
+		"position": {
+			"x": player.global_transform.origin.x,
+			"y": player.global_transform.origin.y,
+			"z": player.global_transform.origin.z
+		}
+	}
+	
+	savegame[faction] = ship_save
+	
+	write_save_file(savegame)
+	
+	
+
+
 func _on_server_disconnected():
+	save_current_ship()
 	print("server disconnected")
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
 
 func _on_server_kicked(cause):
+	save_current_ship()
 	print("Kicked from server. Cause : ", cause)
 	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 
@@ -339,19 +373,21 @@ func _on_RestartGameButton_pressed():
 
 func _on_JoinUnitedKingdom_pressed():
 	$GUI/FactionSelector.close()
-	start_position = start_position_a.global_transform.origin
+	var start_position = start_position_a.global_transform.origin
 	Network.set_property("faction", "GB")
-	create_player()
+	create_player(start_position)
 
 
 func _on_JoinPirate_pressed():
 	$GUI/FactionSelector.close()
-	start_position = start_position_b.global_transform.origin
+	var start_position = start_position_b.global_transform.origin
 	Network.set_property("faction", "Pirate")
-	create_player()
+	create_player(start_position)
 
 
 func _on_ChangeFactionButton_pressed():
+	
+	save_current_ship()
 	
 	camera.set_target( null )
 	
@@ -377,20 +413,7 @@ func _on_OptionsButton_pressed():
 
 func on_inventory_changed(_items):
 	
-	var savegame := read_save_file()
-	
-	print("on_inventory_changed")
-	
-	var faction : String = Network.get_self_property("faction")
-	
-	var ship_save = {
-		"equipment": player.equipment.items,
-		"inventory": player.inventory.items,
-	}
-	
-	savegame[faction] = ship_save
-	
-	write_save_file(savegame)
+	save_current_ship()
 	
 	pass
 
