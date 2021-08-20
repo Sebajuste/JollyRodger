@@ -293,6 +293,7 @@ margin_bottom = 142.0
 selector_path = NodePath("../../../SelectorHandler")
 
 [node name="HelpContainer" type="MarginContainer" parent="GUI"]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -331.0

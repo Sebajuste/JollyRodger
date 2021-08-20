@@ -19,7 +19,10 @@ var ready_to_target := true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	
 	capturable.faction = faction
+	
+	set_invincible(invincible)
 	damage_stats.invincible = invincible
 	
 	pass # Replace with function body.
@@ -80,7 +83,7 @@ func get_nearest_target() -> Spatial:
 
 
 func set_invincible(value):
-	if not Network.enabled or is_network_master():
+	if is_inside_tree() and (not Network.enabled or is_network_master() ):
 		invincible = value
 		if damage_stats:
 			damage_stats.invincible = invincible

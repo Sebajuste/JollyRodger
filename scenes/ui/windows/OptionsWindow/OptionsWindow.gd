@@ -29,7 +29,7 @@ func update_title_translation():
 	
 
 
-func _on_configuration_changed():
+func _on_configuration_changed(_config):
 	
 	update_title_translation()
 	
