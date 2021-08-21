@@ -90,7 +90,7 @@ func _physics_process(_delta):
 		
 		var wave_height : float = water_mesh.get_wave_height( self.global_transform.origin )
 		
-		if global_transform.origin.y - wave_height < -2.0:
+		if global_transform.origin.y - wave_height < -2.0 and not alive:
 			lights.visible = false
 	
 	speed = linear_velocity.length()

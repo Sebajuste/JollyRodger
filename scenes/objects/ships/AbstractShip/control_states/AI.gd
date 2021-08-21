@@ -82,14 +82,13 @@ func process(_delta):
 	
 	for game_time in get_tree().get_nodes_in_group("game_time"):
 		
-		if game_time.hours > 18 or game_time.hours < 7:
+		if game_time.hours > 18 or game_time.hours < 8:
 			ship.lights.visible = true
 		else:
 			ship.lights.visible = false
 	
 	if not ship.alive:
 		_state_machine.transition_to("Control/None")
-	
 
 
 func _on_ennemy_entered(_ship : AbstractShip):
