@@ -12,7 +12,7 @@ height = 14.1367
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 2.44609, 0.134787, 8.3606 )
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 1, 0.933333, 0.572549, 1 )
 emission_enabled = true
 emission = Color( 1, 0.956863, 0.729412, 1 )
@@ -20,26 +20,24 @@ emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="QuadMesh" id=6]
-material = SubResource( 5 )
+[sub_resource type="QuadMesh" id=4]
+material = SubResource( 3 )
 size = Vector2( 0.85, 0.6 )
 
-[sub_resource type="QuadMesh" id=7]
-material = SubResource( 5 )
+[sub_resource type="QuadMesh" id=5]
+material = SubResource( 3 )
 size = Vector2( 3.3, 0.7 )
 
-[sub_resource type="SphereShape" id=3]
+[sub_resource type="SphereShape" id=6]
 radius = 12.5004
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="BoxShape" id=7]
 extents = Vector3( 3.00194, 2.06492, 9.17935 )
 
 [node name="SwedishRoyalYachtAmadis" instance=ExtResource( 3 )]
 mass = 25.0
-depth_before_submerged = 6.0
-displacement_amount = 2.4
 rudder_force = 110.0
-sail_force = 160.0
+sail_force = 375.0
 
 [node name="HullCollisionShape" parent="." index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0705829, -0.594138 )
@@ -71,18 +69,22 @@ omni_shadow_detail = 0
 
 [node name="Window1" type="MeshInstance" parent="Lights" index="2"]
 transform = Transform( 0.117208, 0, 0.993107, 0, 1, 0, -0.993107, 0, 0.117208, 2.19997, 1.62308, 6.19814 )
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="Window2" type="MeshInstance" parent="Lights" index="3"]
 transform = Transform( 0.114712, 0, -0.993399, 0, 1, 0, 0.993399, 0, 0.114712, -2.17226, 1.62308, 6.1934 )
-mesh = SubResource( 6 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="Window3" type="MeshInstance" parent="Lights" index="4"]
 transform = Transform( 0.999927, 0.0120865, 0.000342529, -0.0115628, 0.964114, -0.265238, -0.00353605, 0.265214, 0.964183, -0.00209104, 2.66758, 8.60546 )
-mesh = SubResource( 7 )
+mesh = SubResource( 5 )
 material/0 = null
+
+[node name="FloatManager" parent="." index="5"]
+depth_before_submerged = 6.0
+displacement_amount = 2.4
 
 [node name="Floater" parent="FloatManager" index="0" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -2, 8 )
@@ -130,7 +132,7 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.7035,
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.32715, -0.943612 )
 
 [node name="CollisionShape" parent="SelectArea" index="0"]
-shape = SubResource( 3 )
+shape = SubResource( 6 )
 
 [node name="Sticker3D" parent="." index="10"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.6567, 0 )
@@ -139,7 +141,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.6567, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.535989, 0 )
 
 [node name="CollisionShape" parent="HitBox" index="0"]
-shape = SubResource( 4 )
+shape = SubResource( 7 )
 
 [node name="DamageStats" parent="." index="16"]
 max_health = 40

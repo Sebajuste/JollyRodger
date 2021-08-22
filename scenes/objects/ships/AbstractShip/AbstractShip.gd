@@ -7,12 +7,7 @@ var CRATE_SCENE = preload("res://scenes/objects/Crate/Crate.tscn")
 
 signal destroyed
 
-
-export var water_drag := 2.0 # 0.99
-export var water_angular_drag := 2.0 # 0.5
-
-export var depth_before_submerged := 2.5
-export var displacement_amount := 0.5
+export var drag_coef := 10.0
 
 export var rudder_force := 10.0
 export var sail_force := 10.0
@@ -55,13 +50,6 @@ var speed := 0.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	for child in float_manager.get_children():
-		if child is WaterFloater:
-			child.water_drag = water_drag
-			child.water_angular_drag = water_angular_drag
-			child.depth_before_submerged = depth_before_submerged
-			child.displacement_amount = displacement_amount
-	
 	set_selectable(selectable)
 	set_control_mode(control_mode)
 	set_faction(faction)
@@ -73,13 +61,35 @@ func _ready():
 #	pass
 
 
-func _physics_process(_delta):
+func _physics_process(delta : float):
 	
 	if float_manager.is_in_water() and alive:
+		
+		# Drag force
+		var speed_squared := linear_velocity.length_squared()
+		
+		var volumic_mass : float = float_manager.get_water_volumic_mass()
+		
+		var f := 1.0/2.0 * volumic_mass * drag_coef * speed_squared
+		
+		var move_dir := linear_velocity.normalized()
+		
+		var resistance_force := Vector3(
+			-move_dir.x,
+			-move_dir.y,
+			-move_dir.z
+		) * f * delta
+		
+		add_central_force(resistance_force)
+		
+		# Rudder
 		add_torque(
 			-self.transform.basis.y * rudder_position * rudder_force
 		)
+		
+		# Sail
 		add_central_force( -self.transform.basis.z * sail_position * sail_force)
+
 	
 	if Vector3.UP.dot( global_transform.basis.y ) < 0.0:
 		if not Network.enabled or is_network_master():
@@ -155,13 +165,6 @@ func set_label(value):
 	label = value
 	if username_label:
 		username_label.text = value
-
-
-func _sink(duration := 60):
-	$SinkTween.interpolate_method($FloatManager, "set_displacement_amount",
-		displacement_amount, 0.0, duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$SinkTween.start()
 
 
 func _move_in_ground(duration : float = 30):

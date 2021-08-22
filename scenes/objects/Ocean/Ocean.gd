@@ -14,7 +14,7 @@ class WaveConfiog:
 export var wave_direction := Vector2(1.0, 0.1) setget set_wave_direction
 export var amplitude := 1.0 setget set_amplitude
 export(float, 0.0, 1.0) var steepness := 0.25 setget set_steepness
-
+export var volumic_mass := 10.0
 export(float, 0.0, 10.0) var wind_strength = 0.5
 
 var gerstner_height = 0.4;

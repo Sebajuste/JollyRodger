@@ -4,3 +4,5 @@
 
 [node name="FloatManager" type="Spatial"]
 script = ExtResource( 1 )
+
+[node name="SinkTween" type="Tween" parent="."]
