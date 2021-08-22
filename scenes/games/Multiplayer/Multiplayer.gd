@@ -7,6 +7,9 @@ var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
 var SHIP_WINDOW_SCENE = preload("res://scenes/ui/windows/ShipWindow/ShipWindow.tscn")
 var INVENTORY_TRANSFERT_SCENE = preload("res://scenes/ui/windows/InventoryTransfert/InventoryTransfert.tscn")
 
+var FACTION_WINDOW_SCENE = preload("res://scenes/ui/windows/FactionSelector/FactionSelector.tscn")
+var SINK_MENU_SCENE = preload("res://scenes/ui/windows/SinkWindow/SinkWindow.tscn")
+
 
 onready var world := $World
 onready var camera := $World/CameraRig
@@ -22,6 +25,7 @@ onready var gui_control := $GUI/ControlContainer/BoatControl
 onready var gui_cannons = $GUI/CannonsContainer/CannonStatus
 onready var gui_weather_forecast = $GUI/ForecastContainer
 
+onready var gui_game_menu := $GUI/GameMenu
 onready var options_window := $GUI/OptionsWindow
 
 var admin_mode := false
@@ -36,6 +40,8 @@ var player_ship_id := 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	var _r
+	
 	# If is not a dedicated server
 	if not "--server" in OS.get_cmdline_args():
 		
@@ -45,22 +51,19 @@ func _ready():
 		
 		$World/Ocean.update_shader()
 		
-		var _r
 		_r = get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 		_r = Network.connect("kicked", self, "_on_server_kicked")
-		
-		$GUI/FactionSelector.open()
 		
 		
 		print("Game ready")
 	else:
 		
-		var _r = get_tree().connect("network_peer_connected", self, "_on_player_connected")
+		_r = get_tree().connect("network_peer_connected", self, "_on_player_connected")
 		
 		# $AudioStreamPlayer.queue_free()
 		pass
 	
-	
+	create_faction_window()
 	
 	$World/Ocean.set_network_master( 1 )
 	
@@ -79,10 +82,22 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("ui_main_menu"):
-		if not $GUI/GameMenu.visible:
-			$GUI/GameMenu.open()
+		if not gui_game_menu.visible:
+			gui_game_menu.popup_centered()
 		else:
-			$GUI/GameMenu.close()
+			gui_game_menu.hide()
+		get_tree().set_input_as_handled()
+	
+	if event.is_action_pressed("show_forecast"):
+		if not gui_weather_forecast.visible:
+			gui_weather_forecast.visible = true
+		else:
+			gui_weather_forecast.visible = false
+		get_tree().set_input_as_handled()
+	
+
+
+func _unhandled_input(event):
 	
 	if event.is_action_pressed("use"):
 		var target : Spatial = selector_handler.get_select()
@@ -98,19 +113,9 @@ func _input(event):
 			gui_transfert.set_name_b(target.name)
 			
 			gui_transfert.popup_centered()
-			pass
+			
+			get_tree().set_input_as_handled()
 		
-		pass
-	
-	if event.is_action_pressed("show_forecast"):
-		
-		if not gui_weather_forecast.visible:
-			gui_weather_forecast.visible = true
-		else:
-			gui_weather_forecast.visible = false
-		
-		pass
-	
 
 
 func read_save_file() -> Dictionary:
@@ -185,6 +190,17 @@ func write_save_file(savegame : Dictionary):
 		fs.store_line( to_json(save) )
 		fs.close()
 	
+
+
+func create_faction_window():
+	var gui_faction_selector : Popup = FACTION_WINDOW_SCENE.instance()
+	gui_faction_selector.faction_manager = faction_manager
+	$GUI.add_child(gui_faction_selector)
+	var _r
+	_r = gui_faction_selector.connect("gb_faction_joined", self, "_on_JoinUnitedKingdom_pressed", [gui_faction_selector])
+	_r = gui_faction_selector.connect("pirate_faction_joined", self, "_on_JoinPirate_pressed", [gui_faction_selector])
+	_r = gui_faction_selector.connect("exited", self, "_on_QuitGameButton_pressed")
+	gui_faction_selector.popup_centered()
 	
 
 
@@ -209,12 +225,16 @@ func create_player( start_position := Vector3.ZERO):
 		player = SHIP_FRIGATE_SCENE.instance()
 	else:
 		player = SHIP_SLOOP_SCENE.instance()
+	
 	player.set_network_master( Network.get_self_peer_id() )
 	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
 	player_ship_id += 1
 	
 	player.label = Network.get_self_property("username")
 	player.faction = faction
+	
+	if ship_save.has("health"):
+		player.get_node("DamageStats").health = ship_save.health
 	
 	if ship_save.has("position"):
 		player.transform.origin.x = ship_save.position.x
@@ -231,7 +251,12 @@ func create_player( start_position := Vector3.ZERO):
 	
 	player.username_label.text = player.label
 	
-	player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
+	if ship_save.has("rotation"):
+		var quat := Quat(ship_save.rotation.x, ship_save.rotation.y, ship_save.rotation.z, ship_save.rotation.w)
+		player.transform.basis = Transform(quat).basis
+		pass
+	else:
+		player.look_at_from_position(player.global_transform.origin, Vector3.ZERO, Vector3.UP)
 	
 	camera.set_target( player.get_node("CaptainPlace") )
 	
@@ -244,6 +269,7 @@ func create_player( start_position := Vector3.ZERO):
 	gui_cannons.visible = true
 	gui_ingame_menu.visible = true
 	
+	player.selectable = false
 	selector_handler.exclude_select.clear()
 	selector_handler.exclude_select.append(player)
 	
@@ -265,36 +291,17 @@ func create_player( start_position := Vector3.ZERO):
 				}
 			)
 	
-	print("connect inventory event")
-	
 	_r = player.inventory.connect("inventory_updated", self, "on_inventory_changed")
 	_r = player.equipment.connect("inventory_updated", self, "on_inventory_changed")
-	
 	
 	#
 	# Save
 	#
-	ship_save = {
-		"equipment": player.equipment.items,
-		"inventory": player.inventory.items,
-		"position": {
-			"x": player.global_transform.origin.x,
-			"y": player.global_transform.origin.y,
-			"z": player.global_transform.origin.z
-		}
-	}
+	ship_save = create_json_ship(player)
 	
 	savegame[faction] = ship_save
 	
 	write_save_file(savegame)
-	
-
-
-func return_login_screen():
-	save_current_ship()
-	Network.close_connection()
-	
-	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
 
 
@@ -304,20 +311,40 @@ func save_current_ship():
 	
 	var faction : String = Network.get_self_property("faction")
 	
-	var ship_save = {
-		"equipment": player.equipment.items,
-		"inventory": player.inventory.items,
-		"position": {
-			"x": player.global_transform.origin.x,
-			"y": player.global_transform.origin.y,
-			"z": player.global_transform.origin.z
-		}
-	}
+	var ship_save = create_json_ship(player)
 	
 	savegame[faction] = ship_save
 	
 	write_save_file(savegame)
 	
+
+
+func create_json_ship(ship : AbstractShip) -> Dictionary:
+	var rot := ship.global_transform.basis.get_rotation_quat()
+	var pos := ship.global_transform.origin
+	return {
+		"equipment": ship.equipment.items,
+		"inventory": ship.inventory.items,
+		"health": ship.damage_stats.health,
+		"rotation": {
+			"x": rot.x,
+			"y": rot.y,
+			"z": rot.z,
+			"w": rot.w
+		},
+		"position": {
+			"x": pos.x,
+			"y": pos.y,
+			"z": pos.z
+		}
+	}
+
+
+func return_login_screen():
+	save_current_ship()
+	Network.close_connection()
+	
+	Loading.load_scene("scenes/ui/LoginPanel/LoginPanel.tscn")
 	
 
 
@@ -347,7 +374,14 @@ func _on_player_connected():
 
 func _on_ship_destroyed():
 	
-	$GUI/SinkMenu.open()
+	# $GUI/SinkMenu.open()
+	
+	var gui_sink = SINK_MENU_SCENE.instance()
+	$GUI.add_child(gui_sink)
+	
+	gui_sink.connect("confirmed", self, "create_player")
+	
+	gui_sink.popup_centered()
 	
 	camera.set_target( null )
 	
@@ -365,21 +399,23 @@ func _on_ship_destroyed():
 	write_save_file(savegame)
 	
 
-
+"""
 func _on_RestartGameButton_pressed():
 	$GUI/SinkMenu.close()
 	create_player()
+"""
 
-
-func _on_JoinUnitedKingdom_pressed():
-	$GUI/FactionSelector.close()
+func _on_JoinUnitedKingdom_pressed(window):
+	window.queue_free()
+	#$GUI/FactionSelector.close()
 	var start_position = start_position_a.global_transform.origin
 	Network.set_property("faction", "GB")
 	create_player(start_position)
 
 
-func _on_JoinPirate_pressed():
-	$GUI/FactionSelector.close()
+func _on_JoinPirate_pressed(window):
+	window.queue_free()
+	#$GUI/FactionSelector.close()
 	var start_position = start_position_b.global_transform.origin
 	Network.set_property("faction", "Pirate")
 	create_player(start_position)
@@ -402,14 +438,17 @@ func _on_ChangeFactionButton_pressed():
 		player.queue_free()
 		player = null
 	
-	$GUI/FactionSelector.open()
-	$GUI/GameMenu.close()
+	create_faction_window()
+	
+	gui_game_menu.hide()
+	
 
 
 func _on_OptionsButton_pressed():
 	
 	options_window.popup_centered()
 	
+
 
 func on_inventory_changed(_items):
 	
@@ -420,16 +459,16 @@ func on_inventory_changed(_items):
 
 
 func _on_QuitGameButton_pressed():
-	
+	save_current_ship()
 	get_tree().quit()
 	
 
-
+"""
 func _on_AcceptButton_pressed():
 	
-	$GUI/GameMenu.close()
+	gui_game_menu.close()
 	
-
+"""
 
 func _on_SpawnZone_object_created(object):
 	

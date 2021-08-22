@@ -1,7 +1,4 @@
-extends Control
-
-
-onready var options_window := $OptionsWindow
+extends AcceptDialog
 
 
 # Called when the node enters the scene tree for the first time.
@@ -14,14 +11,7 @@ func _ready():
 #	pass
 
 
-func _on_QuitButton_pressed():
+func _on_SinkWindow_popup_hide():
 	
-	get_tree().quit()
-	
-	pass # Replace with function body.
-
-
-func _on_OptionsButton_pressed():
-	
-	options_window.popup_centered()
+	queue_free()
 	

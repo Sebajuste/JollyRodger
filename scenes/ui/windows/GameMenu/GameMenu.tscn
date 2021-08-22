@@ -1,0 +1,81 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/ui/windows/GameMenu/GameMenu.gd" type="Script" id=1]
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=2]
+
+[node name="GameMenu" type="WindowDialog"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -134.0
+margin_top = -205.5
+margin_right = 134.0
+margin_bottom = 205.5
+theme = ExtResource( 2 )
+popup_exclusive = true
+window_title = "title_main_menu"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 228.0
+margin_bottom = 371.0
+size_flags_vertical = 3
+
+[node name="Content" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 228.0
+margin_bottom = 327.0
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="ChangeFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+margin_right = 228.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_change_faction"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+margin_top = 60.0
+margin_right = 228.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_options"
+
+[node name="QuitGameButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+margin_top = 120.0
+margin_right = 228.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_quit"
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 331.0
+margin_right = 228.0
+margin_bottom = 371.0
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="MarginContainer/VBoxContainer/Footer"]
+margin_left = 39.0
+margin_right = 189.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_resume"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/ResumeButton" to="." method="_on_ResumeButton_pressed"]

@@ -297,3 +297,4 @@ func _on_gui_input(event):
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index == BUTTON_RIGHT:
 				emit_signal("slot_action", "secondary")
+				get_tree().set_input_as_handled()

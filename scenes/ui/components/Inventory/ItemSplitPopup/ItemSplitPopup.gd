@@ -30,8 +30,10 @@ func _input(event):
 	
 	if event.is_action_pressed("ui_accept"):
 		_on_Confirm_pressed()
+		get_tree().set_input_as_handled()
 	if event.is_action_pressed("ui_cancel"):
 		queue_free()
+		get_tree().set_input_as_handled()
 
 
 func _on_Confirm_pressed():

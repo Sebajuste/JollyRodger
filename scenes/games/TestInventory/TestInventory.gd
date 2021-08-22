@@ -97,8 +97,6 @@ func _input(event):
 		
 		if object.is_in_group("has_inventory") and object .global_transform.origin.distance_squared_to(ship.global_transform.origin) < 20*20:
 			
-			print("create transfert")
-			
 			var gui_transfert = INVENTORY_TRANSFERT_SCENE.instance()
 			
 			gui_canvas_layer.add_child(gui_transfert)
@@ -107,6 +105,8 @@ func _input(event):
 			gui_transfert.set_inventory_b(object.inventory)
 			
 			gui_transfert.show()
+			
+			get_tree().set_input_as_handled()
 		
 
 

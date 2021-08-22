@@ -12,7 +12,7 @@
 [ext_resource path="res://scenes/objects/Crate/Crate.tscn" type="PackedScene" id=10]
 
 [node name="ShipWindow" type="WindowDialog"]
-modulate = Color( 1, 1, 1, 0 )
+visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -161,7 +161,7 @@ margin_right = 884.0
 margin_bottom = 40.0
 alignment = 1
 
-[node name="AcceptButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer"]
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer"]
 margin_left = 367.0
 margin_right = 517.0
 margin_bottom = 40.0
@@ -179,3 +179,4 @@ anims/fade_out = ExtResource( 7 )
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainerLeft/ShipEquipment" to="." method="_on_ShipEquipment_slot_action"]
 [connection signal="slot_action" from="MarginContainer/VBoxContainer/Content/HBoxContainer/VBoxContainerRight/ShipInventory" to="." method="_on_ShipInventory_slot_action"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]

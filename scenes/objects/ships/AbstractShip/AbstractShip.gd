@@ -141,10 +141,13 @@ func set_alive(value):
 
 
 func set_selectable(value):
-	
 	selectable = value
-	$SelectArea.input_ray_pickable = value
-	
+	if $SelectArea:
+		$SelectArea.input_ray_pickable = value
+		if selectable:
+			$SelectArea.collision_layer = 0x0400
+		else:
+			$SelectArea.collision_layer = 0x0000
 
 
 func set_control_mode(value):

@@ -5,6 +5,9 @@ const ANGLE_X_MIN: = -PI/4
 const ANGLE_X_MAX: =  PI/3
 
 
+var mouse_position_saved := Vector2.ZERO
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -34,21 +37,30 @@ func physics_process(_delta):
 
 
 
-func _input(event : InputEvent):
+func input(event : InputEvent):
+	
+	print("input ", event)
 	
 	_parent.input(event)
 	
 
 
-
 func unhandled_input(event):
 	
-	_parent.unhandled_input(event)
 	
 	if event.is_action_pressed("move_camera"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		mouse_position_saved = event.position
 		_parent.move_camera = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		print("_parent.move_camera = true")
+		#get_tree().set_input_as_handled()
 	
 	if event.is_action_released("move_camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		_parent.move_camera = false
+		get_viewport().warp_mouse(mouse_position_saved)
+		#get_tree().set_input_as_handled()
+	
+	_parent.unhandled_input(event)
+	

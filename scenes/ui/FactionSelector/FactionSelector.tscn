@@ -86,7 +86,7 @@ size_flags_vertical = 3
 text = "info_great_britain"
 autowrap = true
 
-[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="5"]
+[node name="JoinGBFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer" index="5"]
 margin_top = 406.0
 margin_right = 470.0
 margin_bottom = 446.0
@@ -148,7 +148,7 @@ size_flags_vertical = 3
 text = "info_pirates"
 autowrap = true
 
-[node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="5"]
+[node name="JoinPirateFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer" index="5"]
 margin_top = 406.0
 margin_right = 470.0
 margin_bottom = 446.0
@@ -159,3 +159,6 @@ text = "btn_join_pirates"
 text = "btn_quit"
 
 [connection signal="visibility_changed" from="." to="." method="_on_FactionSelector_visibility_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/HBoxContainer/UnitedKingdomFaction/VBoxContainer/JoinGBFactionButton" to="." method="_on_JoinGBFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/HBoxContainer/PirateFaction/VBoxContainer/JoinPirateFactionButton" to="." method="_on_JoinPirateFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer/AcceptButton" to="." method="_on_AcceptButton_pressed"]

@@ -33,7 +33,7 @@ func _ready():
 #	pass
 
 
-func _input(event):
+func _unhandled_input(event : InputEvent):
 	
 	if event is InputEventMouseButton:
 		
@@ -59,7 +59,6 @@ func _input(event):
 						return
 				
 				if has_select():
-					
 					var select = get_select()
 					emit_signal("unselected", select)
 				
@@ -88,7 +87,8 @@ func _input(event):
 					select_ready = false
 					
 					emit_signal("selected", object)
-					
+				
+				get_tree().set_input_as_handled() # consume the event
 				
 			elif not result or not result.has("collider"):
 				
@@ -106,6 +106,8 @@ func _input(event):
 						target_ref = null
 						
 						emit_signal("unselected", target)
+						
+						get_tree().set_input_as_handled() # consume the event
 
 
 func has_select() -> bool:

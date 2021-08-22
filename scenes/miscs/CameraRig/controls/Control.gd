@@ -25,8 +25,10 @@ func process(delta):
 
 func input(event : InputEvent):
 	
-	if event is InputEventMouseMotion and move_camera: # and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if event is InputEventMouseMotion and move_camera:
 		_input_relative += event.get_relative()
+		print("input -> change input relative ", _input_relative)
+		#get_tree().set_input_as_handled()
 	
 
 
@@ -34,8 +36,11 @@ func unhandled_input(event : InputEvent):
 	
 	if event.is_action_pressed("camera_zoom_in"):
 		camera_rig.set_zoom(camera_rig.zoom - camera_rig.zoom_speed)
+		get_tree().set_input_as_handled()
 	elif event.is_action_pressed("camera_zoom_out"):
 		camera_rig.set_zoom(camera_rig.zoom + camera_rig.zoom_speed)
-	elif event is InputEventMouseMotion and move_camera: # and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		_input_relative += event.get_relative()
+		get_tree().set_input_as_handled()
+	if event is InputEventMouseMotion and move_camera:
+			_input_relative += event.get_relative()
+			get_tree().set_input_as_handled()
 	

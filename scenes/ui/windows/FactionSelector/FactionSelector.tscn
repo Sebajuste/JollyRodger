@@ -1,0 +1,190 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/themes/default.theme" type="Theme" id=1]
+[ext_resource path="res://assets/2d/textures/black_flag.png" type="Texture" id=2]
+[ext_resource path="res://assets/2d/textures/flag_united_kingdom.png" type="Texture" id=3]
+[ext_resource path="res://scenes/ui/windows/FactionSelector/FactionSelector.gd" type="Script" id=4]
+
+[node name="FactionSelector" type="Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -358.0
+margin_top = -294.0
+margin_right = 358.0
+margin_bottom = 294.0
+rect_min_size = Vector2( 700, 600 )
+theme = ExtResource( 1 )
+popup_exclusive = true
+script = ExtResource( 4 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 676.0
+margin_bottom = 560.0
+custom_constants/separation = 20
+
+[node name="Content" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 676.0
+margin_bottom = 500.0
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="UnitedKingdomFaction" type="MarginContainer" parent="MarginContainer/VBoxContainer/Content"]
+margin_right = 316.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction"]
+margin_right = 316.0
+margin_bottom = 500.0
+custom_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_right = 316.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "title_great_britain"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_top = 50.0
+margin_right = 316.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 150 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_top = 210.0
+margin_right = 316.0
+margin_bottom = 235.0
+text = "Nombre de navire : %d"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_top = 245.0
+margin_right = 316.0
+margin_bottom = 249.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_top = 259.0
+margin_right = 316.0
+margin_bottom = 450.0
+size_flags_vertical = 3
+text = "info_great_britain"
+autowrap = true
+
+[node name="JoinGBFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer"]
+margin_top = 460.0
+margin_right = 316.0
+margin_bottom = 500.0
+rect_min_size = Vector2( 0, 40 )
+text = "btn_join_great_britain"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Content"]
+margin_left = 336.0
+margin_right = 340.0
+margin_bottom = 500.0
+
+[node name="PirateFaction" type="MarginContainer" parent="MarginContainer/VBoxContainer/Content"]
+margin_left = 360.0
+margin_right = 676.0
+margin_bottom = 500.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Content/PirateFaction"]
+margin_right = 316.0
+margin_bottom = 500.0
+custom_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_right = 316.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "title_pirates"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_top = 50.0
+margin_right = 316.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 150 )
+texture = ExtResource( 2 )
+stretch_mode = 6
+
+[node name="ShipCount" type="Label" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_top = 210.0
+margin_right = 316.0
+margin_bottom = 235.0
+text = "Nombre de navire : %d"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_top = 245.0
+margin_right = 316.0
+margin_bottom = 249.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_top = 259.0
+margin_right = 316.0
+margin_bottom = 450.0
+size_flags_vertical = 3
+text = "info_pirates"
+autowrap = true
+
+[node name="JoinPirateFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer"]
+margin_top = 460.0
+margin_right = 316.0
+margin_bottom = 500.0
+rect_min_size = Vector2( 0, 40 )
+text = "btn_join_pirates"
+
+[node name="Footer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 520.0
+margin_right = 676.0
+margin_bottom = 560.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Footer"]
+margin_right = 676.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/Footer/HBoxContainer"]
+margin_left = 263.0
+margin_right = 413.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_quit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/UnitedKingdomFaction/VBoxContainer/JoinGBFactionButton" to="." method="_on_JoinGBFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/PirateFaction/VBoxContainer/JoinPirateFactionButton" to="." method="_on_JoinPirateFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/HBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
