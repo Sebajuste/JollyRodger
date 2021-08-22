@@ -181,7 +181,6 @@ func _drop():
 		return
 	
 	if (not drop_equipment or not equipment.has_items()) and (not drop_inventory or not inventory.has_items()):
-		print("no items to drop")
 		return
 	
 	var crate = CRATE_SCENE.instance()

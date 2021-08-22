@@ -64,6 +64,12 @@ func _physics_process(_delta):
 		)
 
 
+func is_ennemy(target) -> bool:
+	if target.flag.faction != "None" or target.flag.faction != capturable.faction:
+		return true
+	return false
+
+
 func get_nearest_target() -> Spatial:
 	
 	var near_target = null
