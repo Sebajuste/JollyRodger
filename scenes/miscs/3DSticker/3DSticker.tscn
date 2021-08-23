@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 self_modulate = Color( 0.466667, 0.466667, 0.466667, 1 )
 margin_right = 250.0
 margin_bottom = 53.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

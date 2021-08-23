@@ -39,6 +39,13 @@ func physics_process(_delta):
 
 func input(event : InputEvent):
 	
+	
+	_parent.input(event)
+	
+
+
+func unhandled_input(event):
+	
 	if event is InputEventMouseButton and event.is_action_pressed("move_camera"):
 		mouse_position_saved = event.position
 		_parent.move_camera = true
@@ -51,11 +58,5 @@ func input(event : InputEvent):
 		get_viewport().warp_mouse(mouse_position_saved)
 		get_tree().set_input_as_handled()
 	else:
-		_parent.input(event)
-	
-
-
-func unhandled_input(event):
-	
-	_parent.unhandled_input(event)
+		_parent.unhandled_input(event)
 	

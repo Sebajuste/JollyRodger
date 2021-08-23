@@ -295,10 +295,8 @@ func _on_mouse_exited():
 	hover.visible = false
 
 
-func _on_gui_input(event):
-	
-	if has_item():
-		if event is InputEventMouseButton and event.pressed:
-			if event.button_index == BUTTON_RIGHT:
-				emit_signal("slot_action", "secondary")
-				get_tree().set_input_as_handled()
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if has_item() and event.button_index == BUTTON_RIGHT:
+			emit_signal("slot_action", "secondary")
+			get_tree().set_input_as_handled()
