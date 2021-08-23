@@ -230,7 +230,10 @@ func _drop():
 		
 
 
-func _on_DamageStats_health_depleted():
+func destroy():
+	
+	if not alive:
+		return
 	
 	if sticker:
 		sticker.visible = false

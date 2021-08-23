@@ -22,7 +22,7 @@ func _ready():
 		faction_manager = get_node(faction_manager_path)
 	
 	if faction_manager:
-		faction_manager.connect("faction_data_updated", self, "_on_faction_data_updated")
+		var _r := faction_manager.connect("faction_data_updated", self, "_on_faction_data_updated")
 		_on_faction_data_updated(faction_manager.faction_data)
 	
 	pass # Replace with function body.

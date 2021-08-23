@@ -48,17 +48,24 @@ margin_bottom = 40.0
 rect_min_size = Vector2( 150, 40 )
 text = "btn_change_faction"
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+[node name="ScuttleFactionButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
 margin_top = 60.0
 margin_right = 228.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 150, 40 )
-text = "btn_options"
+text = "btn_scuttle"
 
-[node name="QuitGameButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
 margin_top = 120.0
 margin_right = 228.0
 margin_bottom = 160.0
+rect_min_size = Vector2( 150, 40 )
+text = "btn_options"
+
+[node name="QuitGameButton" type="Button" parent="MarginContainer/VBoxContainer/Content"]
+margin_top = 180.0
+margin_right = 228.0
+margin_bottom = 220.0
 rect_min_size = Vector2( 150, 40 )
 text = "btn_quit"
 
@@ -76,6 +83,7 @@ rect_min_size = Vector2( 150, 40 )
 text = "btn_resume"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Content/ChangeFactionButton" to="." method="_on_ChangeFactionButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Content/ScuttleFactionButton" to="." method="_on_ScuttleFactionButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Content/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Content/QuitGameButton" to="." method="_on_QuitGameButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Footer/ResumeButton" to="." method="_on_ResumeButton_pressed"]

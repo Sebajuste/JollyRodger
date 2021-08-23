@@ -345,6 +345,7 @@ margin_right = 411.0
 margin_bottom = 268.0
 
 [node name="GameMenu" parent="GUI" instance=ExtResource( 13 )]
+visible = false
 
 [connection signal="object_created" from="World/SpawnZone" to="." method="_on_SpawnZone_object_created"]
 [connection signal="spawn_object" from="World/SpawnZone" to="." method="_on_SpawnZone_spawn_object"]
@@ -355,3 +356,4 @@ margin_bottom = 268.0
 [connection signal="change_faction_clicked" from="GUI/GameMenu" to="." method="_on_ChangeFactionButton_pressed"]
 [connection signal="options_clicked" from="GUI/GameMenu" to="." method="_on_OptionsButton_pressed"]
 [connection signal="quitgame_clicked" from="GUI/GameMenu" to="." method="_on_QuitGameButton_pressed"]
+[connection signal="ship_scuttled" from="GUI/GameMenu" to="." method="_on_GameMenu_ship_scuttled"]

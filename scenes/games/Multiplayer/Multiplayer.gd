@@ -1,6 +1,12 @@
 extends Node
 
 
+const START_POSITION_PATH := {
+	"GB": "World/Island04NetProxy/SpawnPositionA",
+	"Pirate": "World/Island05NetProxy/SpawnPositionB"
+}
+
+
 var SHIP_SLOOP_SCENE = preload("res://scenes/objects/ships/SwedishRoyalYachtAmadis/SwedishRoyalYachtAmadis.tscn")
 var SHIP_FRIGATE_SCENE = preload("res://scenes/objects/ships/SwedishHemmemaStyrbjorn/SwedishHemmemaStyrbjorn.tscn")
 var SELECT_HINT_SCENE = preload("res://scenes/miscs/SelectHint/SelectHint.tscn")
@@ -28,13 +34,11 @@ onready var gui_weather_forecast = $GUI/ForecastContainer
 onready var gui_game_menu := $GUI/GameMenu
 onready var options_window := $GUI/OptionsWindow
 
+
 var admin_mode := false
-
-
 var player : AbstractShip
 var player_ship_id := 0
 
-#var player_ship_window_ref = weakref(null)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -120,7 +124,8 @@ func _unhandled_input(event):
 
 func read_save_file() -> Dictionary:
 	
-	var filename : String = "%s.savegame" % Network.get_self_property("username").to_lower()
+	var username : String = Network.get_self_property("username").to_lower()
+	var filename : String = "%s.savegame" % username
 	
 	var fs := File.new()
 	
@@ -162,18 +167,17 @@ func read_save_file() -> Dictionary:
 func write_save_file(savegame : Dictionary):
 	
 	var username : String = Network.get_self_property("username").to_lower()
+	var filename : String = "%s.savegame" % username
 	
 	randomize()
 	
 	var save_seed := str(randi())
 	
 	var ctx := HashingContext.new()
-	var _r := ctx.start(HashingContext.HASH_SHA256)
+	var r := ctx.start(HashingContext.HASH_SHA256)
 	
-	var json_paylaod := to_json(savegame)
-	
-	_r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
-	_r = ctx.update(json_paylaod.to_utf8())
+	r = ctx.update(save_seed.to_utf8() + Network.Settings.SecurityKey.to_utf8())
+	r = ctx.update(to_json(savegame).to_utf8())
 	var res := ctx.finish()
 	
 	var save_hash := res.hex_encode()
@@ -184,11 +188,17 @@ func write_save_file(savegame : Dictionary):
 		"payload": savegame
 	}
 	
+	var dir := Directory.new()
+	r = dir.remove(filename)
+	
 	var fs := File.new()
-	var r = fs.open("%s.savegame" % username, File.WRITE)
+	r = fs.open(filename, File.WRITE)
 	if r == OK:
 		fs.store_line( to_json(save) )
 		fs.close()
+		print("saved : ", savegame)
+	else:
+		push_error("Cannot write savegame")
 	
 
 
@@ -204,7 +214,7 @@ func create_faction_window():
 	
 
 
-func create_player( start_position := Vector3.ZERO):
+func create_player():
 	
 	var faction : String = Network.get_self_property("faction")
 	
@@ -214,6 +224,7 @@ func create_player( start_position := Vector3.ZERO):
 	var ship_loaded := false
 	
 	if savegame.has(faction):
+		print("faction found in save")
 		ship_save = savegame[faction]
 		
 		if not ship_save.has("equipment") or ship_save.equipment.empty():
@@ -225,6 +236,15 @@ func create_player( start_position := Vector3.ZERO):
 		player = SHIP_FRIGATE_SCENE.instance()
 	else:
 		player = SHIP_SLOOP_SCENE.instance()
+	
+	
+	var start_position := Vector3.ZERO
+	
+	if START_POSITION_PATH.has(faction):
+		var start_path : String = START_POSITION_PATH[faction]
+		var start : Spatial = get_node(start_path)
+		start_position = start.global_transform.origin
+	
 	
 	player.set_network_master( Network.get_self_peer_id() )
 	player.set_name( "ship_%s_%d" % [str(Network.get_self_peer_id()), player_ship_id] )
@@ -301,6 +321,7 @@ func create_player( start_position := Vector3.ZERO):
 	
 	savegame[faction] = ship_save
 	
+	print("Save after create ship")
 	write_save_file(savegame)
 	
 
@@ -315,6 +336,7 @@ func save_current_ship():
 	
 	savegame[faction] = ship_save
 	
+	print("Save current ship")
 	write_save_file(savegame)
 	
 
@@ -372,16 +394,7 @@ func _on_player_connected():
 	pass
 
 
-func _on_ship_destroyed():
-	
-	# $GUI/SinkMenu.open()
-	
-	var gui_sink = SINK_MENU_SCENE.instance()
-	$GUI.add_child(gui_sink)
-	
-	gui_sink.connect("confirmed", self, "create_player")
-	
-	gui_sink.popup_centered()
+func destroy_ship():
 	
 	camera.set_target( null )
 	
@@ -396,8 +409,28 @@ func _on_ship_destroyed():
 	var savegame := read_save_file()
 	var faction : String = Network.get_self_property("faction")
 	var _r := savegame.erase(faction)
+	print("save after destroy -> ")
 	write_save_file(savegame)
+	player.destroy()
 	
+
+
+func _on_ship_destroyed():
+	
+	# $GUI/SinkMenu.open()
+	
+	var gui_sink = SINK_MENU_SCENE.instance()
+	$GUI.add_child(gui_sink)
+	
+	gui_sink.connect("confirmed", self, "create_player")
+	
+	gui_sink.popup_centered()
+	
+	destroy_ship()
+
+
+
+
 
 """
 func _on_RestartGameButton_pressed():
@@ -408,17 +441,17 @@ func _on_RestartGameButton_pressed():
 func _on_JoinUnitedKingdom_pressed(window):
 	window.queue_free()
 	#$GUI/FactionSelector.close()
-	var start_position = start_position_a.global_transform.origin
+	#var start_position = start_position_a.global_transform.origin
 	Network.set_property("faction", "GB")
-	create_player(start_position)
+	create_player()
 
 
 func _on_JoinPirate_pressed(window):
 	window.queue_free()
 	#$GUI/FactionSelector.close()
-	var start_position = start_position_b.global_transform.origin
+	#var start_position = start_position_b.global_transform.origin
 	Network.set_property("faction", "Pirate")
-	create_player(start_position)
+	create_player()
 
 
 func _on_ChangeFactionButton_pressed():
@@ -451,10 +484,8 @@ func _on_OptionsButton_pressed():
 
 
 func on_inventory_changed(_items):
-	
-	save_current_ship()
-	
-	pass
+	if player.is_alive():
+		save_current_ship()
 
 
 
@@ -521,3 +552,16 @@ func _on_InGameMenu_inventory_clicked():
 	player_ship_window.popup_centered()
 	
 
+
+
+func _on_GameMenu_ship_scuttled():
+	
+	print("_on_GameMenu_ship_scuttled")
+	
+	gui_game_menu.hide()
+	
+	destroy_ship()
+	
+	create_player()
+	
+	pass # Replace with function body.

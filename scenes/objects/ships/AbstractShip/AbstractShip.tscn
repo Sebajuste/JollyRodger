@@ -203,7 +203,7 @@ anims/sink = SubResource( 4 )
 [connection signal="item_quantity_changed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_quantity_changed"]
 [connection signal="item_removed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_removed"]
 [connection signal="damage_taken" from="DamageStats" to="ControlSM/Control/AI" method="_on_DamageStats_damage_taken"]
-[connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
+[connection signal="health_depleted" from="DamageStats" to="." method="destroy"]
 [connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
 [connection signal="peer_added" from="NetSyncShip" to="NetSyncShip" method="_on_NetSyncShip_peer_added"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]

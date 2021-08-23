@@ -82,7 +82,7 @@ func process(_delta):
 	
 	for game_time in get_tree().get_nodes_in_group("game_time"):
 		
-		if game_time.hours > 18 or game_time.hours < 8:
+		if game_time.hours > 18 or game_time.hours < 9:
 			ship.lights.visible = true
 		else:
 			ship.lights.visible = false
