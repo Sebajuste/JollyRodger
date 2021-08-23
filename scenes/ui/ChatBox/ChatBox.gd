@@ -38,7 +38,7 @@ func _input(event):
 			
 			if input_field.has_focus():
 				input_field.release_focus()
-				get_tree().set_input_as_handled()
+				#get_tree().set_input_as_handled()
 		
 		if event.pressed and event.scancode == KEY_ENTER:
 			

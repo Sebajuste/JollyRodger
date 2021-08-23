@@ -39,28 +39,23 @@ func physics_process(_delta):
 
 func input(event : InputEvent):
 	
-	print("input ", event)
+	if event is InputEventMouseButton and event.is_action_pressed("move_camera"):
+		mouse_position_saved = event.position
+		_parent.move_camera = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		get_tree().set_input_as_handled()
 	
-	_parent.input(event)
+	elif event is InputEventMouseButton and event.is_action_released("move_camera") and _parent.move_camera:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		_parent.move_camera = false
+		get_viewport().warp_mouse(mouse_position_saved)
+		get_tree().set_input_as_handled()
+	else:
+		_parent.input(event)
 	
 
 
 func unhandled_input(event):
-	
-	
-	if event.is_action_pressed("move_camera"):
-		mouse_position_saved = event.position
-		_parent.move_camera = true
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
-		print("_parent.move_camera = true")
-		#get_tree().set_input_as_handled()
-	
-	if event.is_action_released("move_camera"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		_parent.move_camera = false
-		get_viewport().warp_mouse(mouse_position_saved)
-		#get_tree().set_input_as_handled()
 	
 	_parent.unhandled_input(event)
 	

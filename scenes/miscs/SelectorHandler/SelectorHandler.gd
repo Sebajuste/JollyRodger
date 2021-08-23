@@ -33,11 +33,11 @@ func _ready():
 #	pass
 
 
-func _unhandled_input(event : InputEvent):
+func _input(event : InputEvent):
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.is_action_pressed("object_select"):
 			
 			var mouse_pos := get_viewport().get_mouse_position()
 			
@@ -87,8 +87,8 @@ func _unhandled_input(event : InputEvent):
 					select_ready = false
 					
 					emit_signal("selected", object)
-				
-				get_tree().set_input_as_handled() # consume the event
+					
+					get_tree().set_input_as_handled() # consume the event
 				
 			elif not result or not result.has("collider"):
 				

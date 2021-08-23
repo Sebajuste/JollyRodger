@@ -84,7 +84,9 @@ func _ready():
 #	pass
 
 
-func _input(event):
+#func _input(event):
+func _unhandled_input(event):
+	
 	if event.is_action_pressed("ui_main_menu"):
 		if not gui_game_menu.visible:
 			gui_game_menu.popup_centered()
@@ -101,7 +103,9 @@ func _input(event):
 	
 
 
-func _unhandled_input(event):
+#func _unhandled_input(event):
+	
+	#print("_input event : ", event)
 	
 	if event.is_action_pressed("use"):
 		var target : Spatial = selector_handler.get_select()
