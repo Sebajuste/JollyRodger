@@ -53,6 +53,10 @@ func _physics_process(delta : float):
 				Spawner.spawn(water_splash)
 				
 				# TODO : ricochet
+				
+				$LifeTimer.stop()
+				$LifeTimer.wait_time = 10
+				$LifeTimer.start()
 			
 			submerded = true
 			break
