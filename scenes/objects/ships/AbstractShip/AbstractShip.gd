@@ -40,6 +40,7 @@ onready var detection_area := $DetectionArea
 
 onready var username_label := $Sticker3D/Control/StickerUsername
 
+
 var rudder_position := 0.0 setget set_rudder_position
 var sail_position := 0.0 setget set_sail_position
 
