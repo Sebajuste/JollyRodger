@@ -101,12 +101,6 @@ func _unhandled_input(event):
 			gui_weather_forecast.visible = false
 		get_tree().set_input_as_handled()
 	
-
-
-#func _unhandled_input(event):
-	
-	#print("_input event : ", event)
-	
 	if event.is_action_pressed("use"):
 		var target : Spatial = selector_handler.get_select()
 		
@@ -257,8 +251,8 @@ func create_player():
 	player.label = Network.get_self_property("username")
 	player.faction = faction
 	
-	if ship_save.has("health"):
-		player.get_node("DamageStats").health = ship_save.health
+	#if ship_save.has("health"):
+	#	player.get_node("DamageStats").health = ship_save.health
 	
 	if ship_save.has("position"):
 		player.transform.origin.x = ship_save.position.x
@@ -273,6 +267,7 @@ func create_player():
 	
 	world.add_child(player)
 	
+	player.damage_stats.health = ship_save.health
 	player.username_label.text = player.label
 	
 	if ship_save.has("rotation"):
