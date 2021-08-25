@@ -121,7 +121,7 @@ omni_shadow_detail = 0
 script = ExtResource( 7 )
 lod_0_max_distance = 300.0
 lod_1_max_distance = 500.0
-lod_2_max_distance = 1000.0
+lod_2_max_distance = 2000.0
 
 [node name="Window1-lod0" type="MeshInstance" parent="Lights/LODSpatial" index="0"]
 transform = Transform( 0.117208, 0, 0.993107, 0, 1, 0, -0.993107, 0, 0.117208, 2.19997, 1.62308, 6.19814 )
