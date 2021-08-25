@@ -64,6 +64,7 @@ amplitude = 30.0
 steepness = 0.134
 
 [node name="CameraRig" parent="World" instance=ExtResource( 6 )]
+transform = Transform( 0.998193, 0, 0.0600904, 0, 1, 0, -0.0600904, 0, 0.998193, 0, 20.1905, 0 )
 mode = "Gimbal"
 current = true
 

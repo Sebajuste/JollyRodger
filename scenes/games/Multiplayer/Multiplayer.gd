@@ -267,7 +267,8 @@ func create_player():
 	
 	world.add_child(player)
 	
-	player.damage_stats.health = ship_save.health
+	if ship_save.has("health"):
+		player.damage_stats.health = ship_save.health
 	player.username_label.text = player.label
 	
 	if ship_save.has("rotation"):
@@ -327,16 +328,13 @@ func create_player():
 
 func save_current_ship():
 	
-	var savegame := read_save_file()
-	
-	var faction : String = Network.get_self_property("faction")
-	
-	var ship_save = create_json_ship(player)
-	
-	savegame[faction] = ship_save
-	
-	print("Save current ship")
-	write_save_file(savegame)
+	var faction = Network.get_self_property("faction")
+	if faction:
+		var savegame := read_save_file()
+		var ship_save = create_json_ship(player)
+		savegame[faction] = ship_save
+		print("Save current ship")
+		write_save_file(savegame)
 	
 
 
