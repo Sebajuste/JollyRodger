@@ -13,6 +13,7 @@ radius = 101.215
 height = 16.7897
 
 [node name="RepairDock" type="StaticBody"]
+input_ray_pickable = false
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -28,6 +29,10 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0 )
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 29.9899 )
 
 [node name="DetectionArea" parent="." instance=ExtResource( 5 )]
+input_ray_pickable = false
+monitorable = false
+collision_layer = 0
+collision_mask = 2
 group_name = "ship"
 
 [node name="CollisionShape" parent="DetectionArea" index="0"]

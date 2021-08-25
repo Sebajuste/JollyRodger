@@ -51,6 +51,7 @@ func _input(event):
 			if select_hint:
 				select_hint.queue_free()
 				select_hint = null
+				get_tree().set_input_as_handled()
 			target = null
 	
 
@@ -68,6 +69,7 @@ func _unhandled_input(event):
 				canon.fire_delay = rand_range(0.0, 0.5)
 				
 				canon.fire(target_pos, target_velocity)
+				get_tree().set_input_as_handled()
 			
 
 

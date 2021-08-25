@@ -17,7 +17,7 @@ func _ready():
 func enter(_msg: Dictionary = {}):
 	
 	camera_rig.set_as_toplevel(true)
-	pass
+	
 
 
 func physics_process(delta):
@@ -37,4 +37,3 @@ func physics_process(delta):
 			Vector3.UP
 		)
 	
-	pass

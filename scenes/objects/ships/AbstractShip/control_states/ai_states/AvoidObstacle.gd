@@ -13,6 +13,7 @@ var chosen_direction := Vector3.ZERO
 var nearest_collision := false
 var nearest_collision_distance := 0.0
 
+var max_sail := 1.0
 
 var ray_directions := []
 var interest := []
@@ -50,15 +51,15 @@ func process(delta):
 	
 	var forward := true if chosen_direction.dot(-ship.global_transform.basis.z) > 0 else false
 	
-	var max_sail := 1.0 if forward else 0.5
+	var local_max_sail := max_sail if forward else 0.5
 	
 	# If the ship is near of obstacles
 	if nearest_collision:
 		var s := look_ahead*200
 		var t = 1 - ( s - nearest_collision_distance ) / s
-		ship.sail_position = lerp(ship.sail_position, clamp(t, 0.1, max_sail), delta)
+		ship.sail_position = lerp(ship.sail_position, clamp(t, 0.1, local_max_sail), delta)
 	elif not chosen_direction.is_equal_approx(Vector3.ZERO):
-		ship.sail_position = lerp(ship.sail_position, max_sail, delta)
+		ship.sail_position = lerp(ship.sail_position, local_max_sail, delta)
 	else:
 		ship.sail_position = lerp(ship.sail_position, 0.0, delta)
 	
