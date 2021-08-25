@@ -36,8 +36,9 @@ func _input(event):
 		
 		if event.pressed and event.scancode == KEY_ESCAPE:
 			
-			input_field.release_focus()
-			
+			if input_field.has_focus():
+				input_field.release_focus()
+				#get_tree().set_input_as_handled()
 		
 		if event.pressed and event.scancode == KEY_ENTER:
 			
@@ -47,7 +48,7 @@ func _input(event):
 				input_field.release_focus()
 			else:
 				input_field.grab_focus()
-			
+			get_tree().set_input_as_handled()
 		
 		if event.pressed and event.scancode == KEY_TAB:
 			
@@ -108,6 +109,11 @@ func _get_peer_ids(channel_name) -> Array:
 
 
 func _on_MessageLineEdit_text_entered(text):
+	
+	text = text.strip_edges() # trim()
+	
+	if text == "":
+		return
 	
 	input_field.text = ""
 	input_field.release_focus()

@@ -3,6 +3,8 @@
 [ext_resource path="res://scenes/miscs/SelectArea/SelectArea.gd" type="Script" id=1]
 
 [node name="SelectArea" type="Area"]
+input_ray_pickable = false
+monitoring = false
 monitorable = false
 collision_layer = 1024
 collision_mask = 0

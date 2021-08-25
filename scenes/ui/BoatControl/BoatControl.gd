@@ -110,7 +110,8 @@ func _physics_process(_delta):
 			ship.sail_position = sails_control.value
 
 
-func _input(event):
+func _unhandled_input(event):
+	
 	if event.is_action_pressed("fire_order") and selector_handler:
 		
 		var ship = ship_ref.get_ref()
@@ -124,11 +125,12 @@ func _input(event):
 			
 			var target_pos := target.global_transform.origin + Vector3.UP*3.0
 			
-			
 			if target is RigidBody:
 				ship.cannons.fire(target_pos, target.linear_velocity)
 			else:
 				ship.cannons.fire(target_pos)
+			
+			get_tree().set_input_as_handled()
 	
 	if event.is_action_pressed("enable_lights"):
 		var ship = ship_ref.get_ref()
@@ -137,45 +139,45 @@ func _input(event):
 				ship.lights.visible = true
 			else:
 				ship.lights.visible = false
+			get_tree().set_input_as_handled()
 		
-		pass
-
-
-
-
-
-func _unhandled_input(event):
 	
 	if event.is_action_pressed("move_forward"):
 		move_backward = false
 		move_forward = true
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_released("move_forward"):
 		move_forward = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_pressed("move_backward"):
 		move_backward = true
 		move_forward = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_released("move_backward"):
 		move_backward = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_pressed("move_right"):
 		move_right = true
 		move_left = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_released("move_right"):
 		move_right = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_pressed("move_left"):
 		move_left = true
 		move_right = false
+		get_tree().set_input_as_handled()
 	
 	if event.is_action_released("move_left"):
 		move_left = false
-
-
-
+		get_tree().set_input_as_handled()
+	
 
 
 func set_ship(value):

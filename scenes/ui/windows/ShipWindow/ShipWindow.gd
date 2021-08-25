@@ -57,3 +57,9 @@ func _on_ShipInventory_slot_action(type, slot):
 				empty_slot.item_transfer(slot)
 			else:
 				empty_slot.item_give(slot)
+
+
+func _on_CloseButton_pressed():
+	
+	hide()
+	

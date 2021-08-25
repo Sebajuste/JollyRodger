@@ -19,6 +19,8 @@ func _ready():
 
 func enter(msg : Dictionary = {}):
 	
+	_parent.max_sail = 0.7
+	
 	if msg.has("move_position"):
 		move_position = msg.move_position
 	else:

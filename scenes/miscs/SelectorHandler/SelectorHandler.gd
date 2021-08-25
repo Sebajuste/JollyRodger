@@ -33,11 +33,11 @@ func _ready():
 #	pass
 
 
-func _input(event):
+func _input(event : InputEvent):
 	
 	if event is InputEventMouseButton:
 		
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.is_action_pressed("object_select"):
 			
 			var mouse_pos := get_viewport().get_mouse_position()
 			
@@ -59,7 +59,6 @@ func _input(event):
 						return
 				
 				if has_select():
-					
 					var select = get_select()
 					emit_signal("unselected", select)
 				
@@ -89,6 +88,7 @@ func _input(event):
 					
 					emit_signal("selected", object)
 					
+					get_tree().set_input_as_handled() # consume the event
 				
 			elif not result or not result.has("collider"):
 				
@@ -106,6 +106,8 @@ func _input(event):
 						target_ref = null
 						
 						emit_signal("unselected", target)
+						
+						get_tree().set_input_as_handled() # consume the event
 
 
 func has_select() -> bool:

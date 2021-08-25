@@ -3,14 +3,13 @@ extends Panel
 
 
 signal slot_action(type)
+signal item_equiped(item)
+signal item_unequiped(item)
 
 
 var TOOLTIP_SCENE = preload("res://scenes/ui/components/Inventory/ItemTooltip/ItemTooltip.tscn")
 var ITEM_HANDLER_SCENE = preload("res://scenes/ui/components/Inventory/ItemHandler/ItemHandler.tscn")
 var SPLIT_POPUP_SCENE = preload("res://scenes/ui/components/Inventory/ItemSplitPopup/ItemSplitPopup.tscn")
-
-signal item_equiped(item)
-signal item_unequiped(item)
 
 
 export var filter_category := ""
@@ -42,14 +41,19 @@ func get_drag_data(_pos):
 	
 	if has_item():
 		
+		
+		
 		var preview := TextureRect.new()
 		preview.expand = true
 		preview.texture = item_handler.item.icon
 		preview.rect_size = Vector2(48, 48)
 		preview.rect_min_size = Vector2(48, 48)
+		preview.rect_position = -preview.rect_size/2
 		preview.mouse_filter = MOUSE_FILTER_IGNORE
 		
-		set_drag_preview(preview)
+		var c := Control.new()
+		c.add_child(preview)
+		set_drag_preview(c)
 		
 		return self
 	
@@ -291,9 +295,8 @@ func _on_mouse_exited():
 	hover.visible = false
 
 
-func _on_gui_input(event):
-	
-	if has_item():
-		if event is InputEventMouseButton and event.pressed:
-			if event.button_index == BUTTON_RIGHT:
-				emit_signal("slot_action", "secondary")
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if has_item() and event.button_index == BUTTON_RIGHT:
+			emit_signal("slot_action", "secondary")
+			get_tree().set_input_as_handled()
