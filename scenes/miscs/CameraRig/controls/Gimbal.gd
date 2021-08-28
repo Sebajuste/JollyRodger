@@ -28,6 +28,8 @@ func process(delta):
 	camera_rig.pivot.rotation.y = 0
 	camera_rig.pivot.rotation.z = 0
 	
+	_parent.process(delta)
+	
 
 
 func physics_process(_delta):
@@ -38,7 +40,6 @@ func physics_process(_delta):
 
 
 func input(event : InputEvent):
-	
 	
 	_parent.input(event)
 	
@@ -57,6 +58,12 @@ func unhandled_input(event):
 		_parent.move_camera = false
 		get_viewport().warp_mouse(mouse_position_saved)
 		get_tree().set_input_as_handled()
+	
+	elif event is InputEventJoypadMotion and (event.axis == JOY_AXIS_2 or event.axis == JOY_AXIS_3):
+		
+		_parent.move_camera = true
+		
+		pass
 	else:
 		_parent.unhandled_input(event)
 	
