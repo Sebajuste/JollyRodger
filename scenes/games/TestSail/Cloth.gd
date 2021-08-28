@@ -142,6 +142,7 @@ func create_springs():
 	"""
 	
 	spring_nodes[size*size-size].dynamic = false
+	
 	spring_nodes[ size*size-1 ].dynamic = false
 	
 	"""
@@ -233,8 +234,6 @@ func update_mesh():
 	
 	var mesh : ArrayMesh = $MeshInstance.mesh
 	
-	#print( mesh.surface_get_array_len(0) )
-	
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, Mesh.PRIMITIVE_POINTS)
 	
@@ -243,7 +242,7 @@ func update_mesh():
 		
 		# Vertex 1
 		
-		var i = index / 2
+		var i := int(index / 2)
 		
 		if index % 2 == 0:
 			var idx : int = mdt.get_face_vertex(index, 0)

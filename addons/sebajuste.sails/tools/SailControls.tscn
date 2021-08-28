@@ -1,0 +1,80 @@
+[gd_scene format=2]
+
+[node name="SailControls" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="."]
+margin_right = 1024.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CheckBox"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+size_flags_vertical = 6
+text = "Fixe up"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox2" type="CheckBox" parent="."]
+margin_top = 28.0
+margin_right = 1024.0
+margin_bottom = 52.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CheckBox2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+text = "Fixe Left"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox3" type="CheckBox" parent="."]
+margin_top = 56.0
+margin_right = 1024.0
+margin_bottom = 80.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CheckBox3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+text = "Fixe Right"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox4" type="CheckBox" parent="."]
+margin_top = 84.0
+margin_right = 1024.0
+margin_bottom = 108.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CheckBox4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+text = "Fixe Bottom"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

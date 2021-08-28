@@ -235,6 +235,26 @@ _global_script_classes=[ {
 "path": "res://scenes/objects/Ocean/Ocean.gd"
 }, {
 "base": "Spatial",
+"class": "Sail",
+"language": "GDScript",
+"path": "res://addons/sebajuste.sails/sail.gd"
+}, {
+"base": "EditorSpatialGizmo",
+"class": "SailGizmo",
+"language": "GDScript",
+"path": "res://addons/sebajuste.sails/tools/SailGizmo.gd"
+}, {
+"base": "Reference",
+"class": "SailSpring",
+"language": "GDScript",
+"path": "res://addons/sebajuste.sails/spring.gd"
+}, {
+"base": "Reference",
+"class": "SailSpringBound",
+"language": "GDScript",
+"path": "res://addons/sebajuste.sails/spring_bound.gd"
+}, {
+"base": "Spatial",
 "class": "SceneSpawner",
 "language": "GDScript",
 "path": "res://scenes/miscs/SceneSpawner/SceneSpawner.gd"
@@ -254,7 +274,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ui/SimpleWindow/SimpleWindow.gd"
 }, {
-"base": "Object",
+"base": "Reference",
 "class": "Spring",
 "language": "GDScript",
 "path": "res://scenes/games/TestSail/Spring.gd"
@@ -330,6 +350,10 @@ _global_script_class_icons={
 "NetStreamWriter": "",
 "NetUtils": "",
 "Ocean": "",
+"Sail": "",
+"SailGizmo": "",
+"SailSpring": "",
+"SailSpringBound": "",
 "SceneSpawner": "",
 "ShipFlag": "",
 "ShipState": "",
@@ -367,7 +391,7 @@ main_run_args="--server"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/SIsilicon.vfx.godrays/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg", "res://addons/zylann.scatter/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/SIsilicon.vfx.godrays/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/sebajuste.sails/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg", "res://addons/zylann.scatter/plugin.cfg" )
 
 [input]
 

@@ -1,29 +1,17 @@
-class_name Spring
+# spring.gd
+class_name SailSpring
 extends Reference
 
 
-class SpringNode extends Reference:
-	var position : Vector3
-	var velocity : Vector3
-	var dynamic : bool
-	
-	func _init(_position : Vector3, _dynamic := true):
-		position = _position
-		velocity = Vector3.ZERO
-		dynamic = _dynamic
-
-
-var a
-var b
+var a : SailSpringBound
+var b : SailSpringBound
 var tightness : float
 var damp : float
 var length : float
-
-
 var last_spring_vector : Vector3
 
 
-func _init(_a , _b, _tightness: float, _damp : float, _length := -1.0):
+func _init(_a : SailSpringBound, _b : SailSpringBound, _tightness: float, _damp : float, _length := -1.0):
 	a = _a
 	b = _b
 	tightness = _tightness
