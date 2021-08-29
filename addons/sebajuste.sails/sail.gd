@@ -3,7 +3,7 @@ class_name Sail
 extends Spatial
 
 
-export var width := 2.0 setget set_width
+#export var width := 2.0 setget set_width
 export var height := 2.0 setget set_height
 export var size := 2 setget set_size
 
@@ -11,6 +11,10 @@ export var fix_upper := false
 export var fix_right := false
 export var fix_left := false
 export var fix_bottom := false
+export var fix_upper_right := false
+export var fix_upper_left := false
+export var fix_bottom_right := false
+export var fix_bottom_left := false
 
 export var tightness : float = 1.0 setget set_tightness
 export var damp : float = 20.0 setget set_damp
@@ -98,12 +102,18 @@ func create_springs():
 	
 	print("vertex_count : ", vertex_count)
 	
-	var vertex_spacing_x := width / float(size)
-	var vertex_spacing_y := height/ float(size)
 	
-	print("vertex_spacing_x : ", vertex_spacing_x)
+	var up_width := up_left_position - up_right_position
+	var bottom_width := bottom_left_position - bottom_right_position
 	
-	#var local_length := size / count_per_line
+	var up_width_spacing := up_width / float(size)
+	var bottom_width_spacing := bottom_width / float(size)
+	
+	var right_height := bottom_right_position - up_right_position
+	var left_height := bottom_left_position - up_left_position
+	
+	var right_height_spacing := right_height / float(size)
+	var left_height_spacing := left_height / float(size)
 	
 	spring_bounds.clear()
 	springs.clear()
@@ -114,12 +124,32 @@ func create_springs():
 		var x := int(index % (size+1))
 		var y := int(index / (size+1))
 		
+		var from := up_right_position + right_height_spacing*y
+		var to := up_left_position + left_height_spacing*y
+		
+		var delta := to - from
+		var delta_spacing := delta / float(size)
+		
+		var pos := from + delta_spacing*x
+		
+		#var h1 := y * right_height_spacing
+		#var h2 := y * left_height_spacing
+		
+		
+		
+		"""
+		var width := up_left_position.x - up_right_position.x
+		var vertex_spacing_x := width / float(size)
+		
+		var height := up_left_position.y - bottom_left_position.y
+		var vertex_spacing_y := height/ float(size)
+		
 		var pos := Vector3(
 			x*vertex_spacing_x,
 			-y*vertex_spacing_y,
 			0.0
 		)
-		
+		"""
 		var n := SailSpringBound.new(pos)
 		spring_bounds.append(n)
 		
@@ -153,10 +183,34 @@ func create_springs():
 			if not has_spring(node, node_up):
 				create_spring(node, node_up)
 	
+	"""
+	if fix_upper:
+		for index in (size+1):
+			spring_bounds[index].dynamic = false
 	
-	for index in (size+1):
-		spring_bounds[index].dynamic = false
+	if fix_bottom:
+		for index in range(spring_bounds.size() - size - 1, spring_bounds.size()):
+			spring_bounds[index].dynamic = false
+	"""
 	
+	if fix_upper_right:
+		spring_bounds[0].dynamic = false
+	if fix_upper_left:
+		spring_bounds[size].dynamic = false
+	if fix_bottom_right:
+		spring_bounds[spring_bounds.size()-1].dynamic = false
+	if fix_bottom_left:
+		spring_bounds[spring_bounds.size()-size-1].dynamic = false
+	
+	for index in spring_bounds.size():
+		if fix_upper and index < size+1:
+			spring_bounds[index].dynamic = false
+		if fix_bottom and index > spring_bounds.size() - size - 1:
+			spring_bounds[index].dynamic = false
+		if fix_right and index % (size+1) == 0:
+			spring_bounds[index].dynamic = false
+		if fix_left and index % (size+1) == size:
+			spring_bounds[index].dynamic = false
 
 
 func create_mesh():
@@ -244,11 +298,11 @@ func create_spring(a, b):
 	springs.append(spring)
 	pass
 
-
+"""
 func set_width(value):
 	width = abs(value)
 	create_sail()
-
+"""
 
 func set_height(value):
 	height = abs(value)

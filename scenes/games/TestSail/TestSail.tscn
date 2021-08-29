@@ -192,14 +192,17 @@ curve = SubResource( 5 )
 [node name="Sail" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.2297, -37.0412 )
 script = ExtResource( 16 )
-width = 5.0
-height = 3.0
-size = 5
+size = 10
 fix_upper = true
-tightness = 100.0
-damp = 100.0
+fix_bottom_right = true
+fix_bottom_left = true
+tightness = 300.0
+damp = 300.0
 wind = Vector3( 1, 0, -10 )
 material = ExtResource( 7 )
+up_left_position = Vector3( 10, 0, 0 )
+bottom_right_position = Vector3( 0, -6, 0 )
+bottom_left_position = Vector3( 10, -6, 0 )
 
 [editable path="SwedishRoyalYachtAmadis"]
 [editable path="SwedishRoyalYachtAmadis/Skin/scene"]

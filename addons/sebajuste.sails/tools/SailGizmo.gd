@@ -4,7 +4,7 @@ extends EditorSpatialGizmo
 
 
 # You can store data in the gizmo itself (more useful when working with handles).
-var gizmo_size = 3.0
+#var gizmo_size = 3.0
 
 
 func redraw():
@@ -15,40 +15,16 @@ func redraw():
 	
 	var lines = PoolVector3Array()
 	
-	
-	print("sail.width : ", sail.width)
-	print("sail.height : ", sail.height)
-	
-	lines.push_back(Vector3(0, 0, 0))
-	lines.push_back(Vector3(sail.width, 0, 0))
-	
-	lines.push_back(Vector3(sail.width, 0, 0))
-	lines.push_back(Vector3(sail.width, -sail.height, 0))
-	
-	lines.push_back(Vector3(sail.width, -sail.height, 0))
-	lines.push_back(Vector3(0, -sail.height, 0))
-	
-	lines.push_back(Vector3(0, -sail.height, 0))
-	lines.push_back(Vector3(0, 0, 0))
-	
 	for spring in sail.springs:
 		lines.push_back( spring.a.position )
 		lines.push_back( spring.b.position )
 	
-	
 	var handles = PoolVector3Array()
 	
-	print("> spatial.spring_nodes.size() : ", sail.spring_bounds.size() )
-	"""
-	for spring_node in spatial.spring_bounds:
-		handles.push_back( spring_node.position )
-		pass
-	"""
-	
-	handles.push_back( Vector3(0, 0, 0) )
-	handles.push_back( Vector3(sail.width, 0, 0) )
-	handles.push_back( Vector3(sail.width, -sail.height, 0) )
-	handles.push_back( Vector3(0, -sail.height, 0) )
+	handles.push_back( sail.up_right_position )
+	handles.push_back( sail.up_left_position )
+	handles.push_back( sail.bottom_left_position )
+	handles.push_back( sail.bottom_right_position )
 	
 	
 	
@@ -80,7 +56,43 @@ func get_handle_value(index : int):
 
 func set_handle(index: int, camera: Camera, point: Vector2):
 	
-	print("set_handle ", index, ", point ", point )
+	var sail : Sail = get_spatial_node()
+	
+	#var a : Vector3 = (sail.up_right_position - sail.up_left_position)
+	#var b : Vector3 = (sail.up_right_position - sail.bottom_right_position)
+	
+	var p1 := sail.global_transform * Transform(Basis(), sail.up_right_position+sail.global_transform.origin)
+	var p2 := sail.global_transform * Transform(Basis(), sail.up_left_position+sail.global_transform.origin)
+	var p3 := sail.global_transform * Transform(Basis(), sail.bottom_right_position+sail.global_transform.origin)
+	
+	#var a : Vector3 = (sail.up_right_position+sail.global_transform.origin) - (sail.up_left_position+sail.global_transform.origin)
+	#var b : Vector3 = (sail.up_right_position+sail.global_transform.origin) - (sail.bottom_right_position+sail.global_transform.origin)
+	
+	var a := p1.origin - p2.origin
+	var b := p1.origin - p3.origin
+	
+	var normal := a.cross(b).normalized()
+	
+	#print("normal : ", normal)
+	
+	var distance := normal.dot(sail.global_transform.origin)
+	
+	#print("distance : ", distance, " -> ", sail.global_transform.origin.length() )
+	
+	#print("set_handle ", index, ", point ", point )
+	
+	var from := camera.project_ray_origin(point)
+	var to := camera.project_ray_normal(point)
+	
+	var plane := Plane(normal, sail.global_transform.origin.length() )
+	
+	#var new_pos := Plane.PLANE_XY.intersects_ray(from, to.normalized())
+	
+	var new_pos := plane.intersects_ray(from, to.normalized())
+	
+	print("from : ", from)
+	print("to : ", to.normalized() )
+	print("new_pos : ", new_pos)
 	
 	pass
 
