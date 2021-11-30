@@ -5,7 +5,7 @@ signal target(target)
 signal untarget(target)
 
 
-class Ennemy:
+class Ennemy extends Reference:
 	
 	var ship : AbstractShip
 	var target_ref : WeakRef
@@ -37,10 +37,10 @@ class Ennemy:
 
 export(Resource) var boid_ennemy_config
 export(Resource) var boid_ally_config
+export var max_range := 500
 
 
 var ai_state
-
 
 var targets_engaged := []
 var current_target_ref := weakref(null)
@@ -61,8 +61,10 @@ func _ready():
 
 func enter(msg := {}):
 	if msg.has("target_object"):
-		var ennemy := Ennemy.new(ship, msg.target_object)
-		targets_engaged.append(ennemy)
+		if not has_target_ship(msg.target_object):
+			var ennemy := Ennemy.new(ship, msg.target_object)
+			targets_engaged.append(ennemy)
+	_parent.max_sail = 1.0
 
 
 func exit():
@@ -75,7 +77,7 @@ func process(delta):
 	var ennemies_ship : Array = ship.detection_area.get_ennemies()
 	
 	# clean invalid or to far away targets
-	var max_range : float = ship.cannons.get_max_range()
+	#var max_range : float = ship.cannons.get_max_range()
 	var max_range_squared := max_range*max_range
 	for index in range(targets_engaged.size()-1, -1, -1):
 		var ennemy : Ennemy = targets_engaged[index]
@@ -86,6 +88,8 @@ func process(delta):
 				targets_engaged.remove(index)
 		else:
 			targets_engaged.remove(index)
+	
+	print("targets_engaged : ", targets_engaged.size(), ", ennemies_ship : ", ennemies_ship.size() )
 	
 	# Quit Combat mode if not target are available
 	if targets_engaged.empty() and ennemies_ship.empty():
@@ -112,7 +116,7 @@ func process(delta):
 	if not ennemies.empty():
 		set_target(ennemies[0].target_ref.get_ref())
 	else:
-		set_target(null)
+		_state_machine.transition_to("AvoidObstacle/Idle")
 	
 	
 	#
@@ -172,6 +176,14 @@ func physics_process(delta):
 		ennemy.free()
 	for ally in allies_boids:
 		ally.free()
+
+
+func has_target_ship(ship : AbstractShip) -> bool:
+	for ennemy in targets_engaged:
+		var target = ennemy.target_ref.get_ref()
+		if target == ship:
+			return true
+	return false
 
 
 func set_target(value):

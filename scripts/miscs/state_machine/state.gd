@@ -26,6 +26,10 @@ func physics_process(_delta):
 	pass
 
 
+func input(_event: InputEvent):
+	pass
+
+
 func unhandled_input(_event: InputEvent):
 	pass
 

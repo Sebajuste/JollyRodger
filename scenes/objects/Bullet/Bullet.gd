@@ -1,9 +1,13 @@
 extends RigidBody
 
+
 var WATER_SPLASH_SCENE = preload("res://scenes/miscs/WaterSplash/WaterSplash.tscn")
 
 
 onready var damage_source := $DamageSource
+
+
+export var drag_coef := 0.2
 
 
 var submerded := false
@@ -19,16 +23,20 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(_delta):
+	
+	if global_transform.origin.y < -10:
+		queue_free()
+	
+	pass
 
 
-func _physics_process(_delta):
+func _physics_process(delta : float):
 	
 	if not is_inside_tree():
 		return
 	
-	var colliding_bodies := get_colliding_bodies()
+	var volumic_mass := 1.0
 	
 	for water_mesh in get_tree().get_nodes_in_group("water_mesh"):
 		
@@ -36,25 +44,41 @@ func _physics_process(_delta):
 		
 		if wave_height > self.global_transform.origin.y:
 			
+			volumic_mass = water_mesh.volumic_mass
+			
 			if not submerded:
 				var water_splash : Spatial = WATER_SPLASH_SCENE.instance()
 				water_splash.transform.origin = self.global_transform.origin
-				#get_parent().add_child(water_splash)
 				
 				Spawner.spawn(water_splash)
 				
 				# TODO : ricochet
 				
+				$LifeTimer.stop()
+				$LifeTimer.wait_time = 10
+				$LifeTimer.start()
 			
 			submerded = true
-		else:
-			submerded = false
+			break
+		#else:
+		#	submerded = false
 	
+	if submerded:
+		
+		var speed_squared := linear_velocity.length_squared()
+		
+		var f := 1.0/2.0 * volumic_mass * drag_coef * speed_squared
+		
+		var move_dir := linear_velocity.normalized()
+		
+		var resistance_force := Vector3(
+			-move_dir.x,
+			-move_dir.y,
+			-move_dir.z
+		) * f * delta
+		
+		add_central_force(resistance_force)
 	
-	if colliding_bodies.size() > 0:
-		self.visible = false
-		queue_free()
-		pass
 
 
 func _integrate_forces(state : PhysicsDirectBodyState):

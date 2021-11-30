@@ -19,13 +19,9 @@ var ready_to_target := true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	
 	capturable.faction = faction
-	
 	set_invincible(invincible)
-	damage_stats.invincible = invincible
 	
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,6 +60,12 @@ func _physics_process(_delta):
 		)
 
 
+func is_ennemy(target) -> bool:
+	if target.flag.faction != "None" or target.flag.faction != capturable.faction:
+		return true
+	return false
+
+
 func get_nearest_target() -> Spatial:
 	
 	var near_target = null
@@ -83,8 +85,8 @@ func get_nearest_target() -> Spatial:
 
 
 func set_invincible(value):
+	invincible = value
 	if is_inside_tree() and (not Network.enabled or is_network_master() ):
-		invincible = value
 		if damage_stats:
 			damage_stats.invincible = invincible
 

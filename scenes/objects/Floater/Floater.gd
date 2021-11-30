@@ -109,6 +109,13 @@ func get_water_height() -> float:
 	return water_manager.get_wave_height(self.global_transform.origin)
 
 
+func get_water_volumic_mass() -> float:
+	if not water_manager:
+		push_error("No water manager for floater")
+		return 0.0
+	return water_manager.volumic_mass
+
+
 func get_gravity() -> Vector3:
 	
 	return ProjectSettings.get_setting("physics/3d/default_gravity_vector") * ProjectSettings.get_setting("physics/3d/default_gravity")

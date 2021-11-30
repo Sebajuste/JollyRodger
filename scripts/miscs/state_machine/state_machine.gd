@@ -17,9 +17,8 @@ export var enable := true
 
 onready var state: Node = get_node(initial_state) setget set_state
 
+
 var _state_name: String
-
-
 var _next_state : NextState
 
 
@@ -58,6 +57,11 @@ func _physics_process(delta):
 	if enable:
 		state.physics_process(delta)
 	
+
+
+func _input(event: InputEvent):
+	if enable:
+		state.input(event)
 
 
 func _unhandled_input(event: InputEvent):

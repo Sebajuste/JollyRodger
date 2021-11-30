@@ -9,7 +9,7 @@ signal reloaded
 var BULLET_SCENE = preload("res://scenes/objects/Bullet/Bullet.tscn")
 
 
-export var speed := 80.0
+export var speed := 80.0 setget set_speed
 export var fire_rate : int = 6 setget set_fire_rate
 export var fire_delay := 0.0 setget set_fire_delay
 
@@ -122,6 +122,9 @@ func _on_fire_delayed():
 		rpc_fire()
 
 
+func set_speed(value):
+	speed = max(1, value)
+	self.max_range = Balistic.max_range(speed, 9.8, 0.0)
 
 func set_fire_rate(value):
 	

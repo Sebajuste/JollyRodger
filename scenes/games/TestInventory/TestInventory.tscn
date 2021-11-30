@@ -34,13 +34,13 @@ faction = "Spain"
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0501, 0, 14.512 )
 faction = "GB"
 
-[node name="HitBox" parent="ShipAI" index="10"]
+[node name="HitBox" parent="ShipAI" index="11"]
 particles_scene = null
 
 [node name="CollisionShape" parent="ShipAI/DetectionArea" index="0"]
 shape = SubResource( 1 )
 
-[node name="DamageStats" parent="ShipAI" index="15"]
+[node name="DamageStats" parent="ShipAI" index="16"]
 max_health = 5
 
 [node name="Combat" parent="ShipAI/ControlSM/Control/AI/StateSM/AvoidObstacle" index="3"]

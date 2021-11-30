@@ -40,6 +40,13 @@ func get_allies() -> Array:
 	return allies
 
 
+func ship_detected(ship) -> bool:
+	for detected_ref in ships_detected:
+		if detected_ref.get_ref() == ship:
+			return true
+	return false
+
+
 func _is_ennemy_ship(ship):
 	if ship.flag.faction != "" and ship.flag.faction != "None" and ship.flag.faction != owner.flag.faction:
 		return true
@@ -49,7 +56,7 @@ func _is_ennemy_ship(ship):
 func _on_DetectionArea_body_entered(body):
 	if body == owner:
 		return
-	if body.is_in_group("ship"):
+	if body.is_in_group("ship") and not ship_detected(body):
 		print("[%s] ship detected : %s" % [owner.name, body.name])
 		ships_detected.append(weakref(body))
 		if _is_ennemy_ship(body):
@@ -57,7 +64,7 @@ func _on_DetectionArea_body_entered(body):
 
 
 func _on_DetectionArea_body_exited(body):
-	
-	ships_detected.erase(body)
-	
-
+	for index in range(ships_detected.size()):
+		var ship_ref = ships_detected[index]
+		if ship_ref.get_ref() == body:
+			ships_detected.remove(index)

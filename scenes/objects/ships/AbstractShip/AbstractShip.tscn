@@ -46,17 +46,28 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 240, 300 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 240, 300 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
-"args": [ 60 ],
-"method": "_sink"
-}, {
 "args": [ 60.0 ],
 "method": "_move_in_ground"
 }, {
 "args": [  ],
 "method": "queue_free"
+} ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("FloatManager")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 60 ],
+"method": "sink"
 } ]
 }
 
@@ -189,7 +200,7 @@ anims/sink = SubResource( 4 )
 [connection signal="item_quantity_changed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_quantity_changed"]
 [connection signal="item_removed" from="Equipment" to="EquipmentManager" method="_on_Equipment_item_removed"]
 [connection signal="damage_taken" from="DamageStats" to="ControlSM/Control/AI" method="_on_DamageStats_damage_taken"]
-[connection signal="health_depleted" from="DamageStats" to="." method="_on_DamageStats_health_depleted"]
+[connection signal="health_depleted" from="DamageStats" to="." method="destroy"]
 [connection signal="transitioned" from="ControlSM/Control/AI/StateSM" to="ControlSM/Control/AI" method="_on_StateSM_transitioned"]
 [connection signal="peer_added" from="NetSyncShip" to="NetSyncShip" method="_on_NetSyncShip_peer_added"]
 [connection signal="timeout" from="NetSyncShip/Timer" to="NetSyncShip" method="sync_ship"]

@@ -49,7 +49,8 @@ func get_state() -> Dictionary:
 	return {
 		"alive": owner.alive,
 		"position": owner.global_transform.origin,
-		"label": owner.label
+		"label": owner.label,
+		"faction": owner.faction
 	}
 
 
@@ -62,6 +63,8 @@ func set_state(state : Dictionary):
 		owner.label = state.label
 		owner.username_label.text = state.label
 		owner.username_label.visible = true
+	if state.has("faction"):
+		owner.faction = state.faction
 
 
 puppet func rpc_init_status(config : Dictionary):

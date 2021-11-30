@@ -26,7 +26,10 @@ func _process(_delta):
 	if cam:
 		var cam_dir = (cam.global_transform.origin - global_transform.origin).normalized()
 		var cam_dot = cam_dir.dot( cam.global_transform.basis.z )
-		if cam_dot > 0.0:
+		
+		var distance_squared : float = cam.global_transform.origin.distance_squared_to(self.global_transform.origin)
+		
+		if cam_dot > 0.0 and distance_squared < 1000*1000:
 			var screen_pos = cam.unproject_position(pos)
 			$Control.set_position( Vector2(screen_pos.x - $Control.rect_size.x/2, screen_pos.y - $Control.rect_size.y/2) )
 			$Control.visible = true

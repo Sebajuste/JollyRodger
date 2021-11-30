@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/themes/default.theme" type="Theme" id=1]
 [ext_resource path="res://assets/themes/window_background2.tres" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/ui/components/Resizeable/Resizeable.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/Arial_12.tres" type="DynamicFont" id=7]
 [ext_resource path="res://assets/fonts/Arial_14.tres" type="DynamicFont" id=8]
+[ext_resource path="res://scenes/ui/ChatBox/MessageLineEdit.gd" type="Script" id=9]
 
 [node name="ChatBox" type="Control"]
 anchor_right = 1.0
@@ -134,6 +135,7 @@ margin_right = 932.0
 margin_bottom = 26.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="SendButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 936.0
